@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "288023555374",
+    "project_id": "dalily-382cb",
+    "storage_bucket": "dalily-382cb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:288023555374:android:87b1fc558d5f1624449ebf",
+        "android_client_info": {
+          "package_name": "com.mueid.dalily"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQ8cDIXMDgXy3vJlBykBF1bXsixQ0dOww"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

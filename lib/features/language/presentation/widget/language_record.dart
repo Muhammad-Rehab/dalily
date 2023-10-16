@@ -47,11 +47,11 @@ class _LanguageRecordState extends State<LanguageRecord> {
               child: Row(
               children: [
                 Text(item['name'],style: bodyVerSmall(context),),
-                const SizedBox(width: 10,),
+                const SizedBox(width: 5,),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 5),
-                  width: 20,
-                  height: 20,
+                  width: 15,
+                  height: 15,
                   child: Image.asset(item['flag'],fit: BoxFit.fill,),
                 )
               ],

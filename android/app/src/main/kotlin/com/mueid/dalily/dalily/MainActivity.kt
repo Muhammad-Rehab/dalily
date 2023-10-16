@@ -1,4 +1,4 @@
-package com.mueid.dalily.dalily
+package com.mueid.dalily
 
 import io.flutter.embedding.android.FlutterActivity
 
