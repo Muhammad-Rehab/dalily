@@ -2,54 +2,56 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppThemeData {
-  static bool isArabic = true;
-
-  static TextStyle lightTextStyle = isArabic
-      ? GoogleFonts.tajawal().copyWith(color: const Color.fromRGBO(25, 26, 25, 1))
-      : GoogleFonts.lato().copyWith(color: const Color.fromRGBO(25, 26, 25, 1));
-  static TextStyle darkTextStyle = isArabic
-      ? GoogleFonts.tajawal().copyWith(color: const Color.fromRGBO(216, 233, 168, 1))
-      : GoogleFonts.lato().copyWith(color: const Color.fromRGBO(216, 233, 168, 1));
 
   static ThemeData lightTheme = ThemeData(
       primaryColor: const Color.fromRGBO(30, 81, 40, 1),
       scaffoldBackgroundColor: const Color.fromRGBO(216, 233, 168, 1),
-      textTheme: TextTheme(
-        displayLarge: lightTextStyle.copyWith(
+      textTheme:const TextTheme(
+        displayLarge: TextStyle(
           fontSize: 30 ,
-          fontWeight: FontWeight.bold
+          fontWeight: FontWeight.bold,
+            color:  Color.fromRGBO(25, 26, 25, 1),
         ),
-        displayMedium: lightTextStyle.copyWith(
+        displayMedium: TextStyle(
             fontSize: 28 ,
-            fontWeight: FontWeight.bold
+            fontWeight: FontWeight.bold,
+            color:  Color.fromRGBO(25, 26, 25, 1),
         ),
-        displaySmall: lightTextStyle.copyWith(
+        displaySmall: TextStyle(
             fontSize: 26 ,
-            fontWeight: FontWeight.bold
+            fontWeight: FontWeight.bold,
+          color:  Color.fromRGBO(25, 26, 25, 1),
         ),
-        titleLarge: lightTextStyle.copyWith(
+        titleLarge: TextStyle(
             fontSize: 24 ,
-            fontWeight: FontWeight.bold
+            fontWeight: FontWeight.bold,
+          color:  Color.fromRGBO(25, 26, 25, 1),
         ),
-        titleMedium: lightTextStyle.copyWith(
+        titleMedium: TextStyle(
             fontSize: 22 ,
-            fontWeight: FontWeight.bold
+            fontWeight: FontWeight.bold,
+          color:  Color.fromRGBO(25, 26, 25, 1),
         ),
-        titleSmall: lightTextStyle.copyWith(
+        titleSmall: TextStyle(
             fontSize: 20 ,
-            fontWeight: FontWeight.bold
+            fontWeight: FontWeight.bold,
+          color:  Color.fromRGBO(25, 26, 25, 1),
         ),
-        bodyLarge: lightTextStyle.copyWith(
+        bodyLarge: TextStyle(
             fontSize: 20 ,
+          color:  Color.fromRGBO(25, 26, 25, 1),
         ),
-        bodyMedium: lightTextStyle.copyWith(
+        bodyMedium: TextStyle(
           fontSize: 18 ,
+          color:  Color.fromRGBO(25, 26, 25, 1),
         ),
-        bodySmall: lightTextStyle.copyWith(
+        bodySmall: TextStyle(
           fontSize: 16 ,
+          color:  Color.fromRGBO(25, 26, 25, 1),
         ),
-        labelSmall: lightTextStyle.copyWith(
+        labelSmall: TextStyle(
           fontSize: 14 ,
+          color:  Color.fromRGBO(25, 26, 25, 1),
         )
       ),
       drawerTheme:const DrawerThemeData(
@@ -67,42 +69,52 @@ class AppThemeData {
   static ThemeData darkTheme  = ThemeData(
       primaryColor: const Color.fromRGBO(30, 81, 40, 1),
       scaffoldBackgroundColor: const Color.fromRGBO(25, 26, 25, 1),
-      textTheme: TextTheme(
-              displayLarge: darkTextStyle.copyWith(
+      textTheme: const TextTheme(
+              displayLarge: TextStyle(
                   fontSize: 30 ,
-                  fontWeight: FontWeight.bold
+                  fontWeight: FontWeight.bold,
+                  color:  Color.fromRGBO(216, 233, 168, 1),
               ),
-              displayMedium: darkTextStyle.copyWith(
+              displayMedium: TextStyle(
                   fontSize: 28 ,
-                  fontWeight: FontWeight.bold
+                  fontWeight: FontWeight.bold,
+                color:  Color.fromRGBO(216, 233, 168, 1),
               ),
-              displaySmall: darkTextStyle.copyWith(
+              displaySmall: TextStyle(
                   fontSize: 26 ,
-                  fontWeight: FontWeight.bold
+                  fontWeight: FontWeight.bold,
+                color:  Color.fromRGBO(216, 233, 168, 1),
               ),
-              titleLarge: darkTextStyle.copyWith(
+              titleLarge: TextStyle(
                   fontSize: 24 ,
-                  fontWeight: FontWeight.bold
+                  fontWeight: FontWeight.bold,
+                color:  Color.fromRGBO(216, 233, 168, 1),
               ),
-              titleMedium: darkTextStyle.copyWith(
+              titleMedium: TextStyle(
                   fontSize: 22 ,
-                  fontWeight: FontWeight.bold
+                  fontWeight: FontWeight.bold,
+                color:  Color.fromRGBO(216, 233, 168, 1),
               ),
-              titleSmall: darkTextStyle.copyWith(
+              titleSmall: TextStyle(
                   fontSize: 20 ,
-                  fontWeight: FontWeight.bold
+                  fontWeight: FontWeight.bold,
+                color:  Color.fromRGBO(216, 233, 168, 1),
               ),
-              bodyLarge: darkTextStyle.copyWith(
+              bodyLarge: TextStyle(
                 fontSize: 20 ,
+                  color:  Color.fromRGBO(216, 233, 168, 1),
               ),
-              bodyMedium: darkTextStyle.copyWith(
+              bodyMedium: TextStyle(
                 fontSize: 18 ,
+                color:  Color.fromRGBO(216, 233, 168, 1),
               ),
-              bodySmall: darkTextStyle.copyWith(
+              bodySmall: TextStyle(
                 fontSize: 16 ,
+                color:  Color.fromRGBO(216, 233, 168, 1),
               ),
-              labelSmall: darkTextStyle.copyWith(
+              labelSmall: TextStyle(
                 fontSize: 14 ,
+                color:  Color.fromRGBO(216, 233, 168, 1),
               )
           ),
       drawerTheme:const DrawerThemeData(

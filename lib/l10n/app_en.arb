@@ -1,4 +1,7 @@
 {
   "app_name": "Dalily",
-  "dark_them": "Dark Theme"
+  "dark_them": "Dark theme",
+  "change_language": "Change language",
+  "arabic_lang": "Arabic",
+  "english_lang": "English"
 }

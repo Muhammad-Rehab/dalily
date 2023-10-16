@@ -1,4 +1,7 @@
 {
   "app_name": "دليلي",
-  "dark_them": "الوضع الداكن"
+  "dark_them": "الوضع الداكن",
+  "change_language": "تغيير اللغه",
+  "arabic_lang": "العربية",
+  "english_lang": "الانجليزية"
 }
