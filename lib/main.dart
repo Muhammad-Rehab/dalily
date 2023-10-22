@@ -1,7 +1,7 @@
 
 import 'package:dalily/config/super_injection_container.dart';
 import 'package:dalily/config/theme.dart';
-import 'package:dalily/core/helper/font_helper.dart';
+import 'package:dalily/features/authentication/presentation/screans/login.dart';
 import 'package:dalily/features/language/data/model/language_model.dart';
 import 'package:dalily/features/language/language_injection_container.dart';
 import 'package:dalily/features/language/presentation/cubit/language_cubit.dart';
@@ -56,28 +56,37 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
 
     return BlocBuilder<ThemeCubit,ThemeState>(builder: (context,state) =>
-        BlocBuilder<LanguageCubit,LanguageState>(builder: (context,state) =>  DefaultTextStyle(
-          style: FontHelper.getDefaultTextFamily(context),
-          child: MaterialApp(
-            title: 'Flutter Demo',
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
-            locale: serverLocator<LanguageModel>().locale,
-            darkTheme: AppThemeData.darkTheme,
-            theme: AppThemeData.lightTheme,
-            themeMode: serverLocator<AppThemeModel>().themeMode,
-            debugShowCheckedModeBanner: false,
-            home: Scaffold(
-              drawer: const Drawer(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ThemeRecord(),
-                    LanguageRecord(),
-                  ],
-                ),
+        BlocBuilder<LanguageCubit,LanguageState>(builder: (context,state) =>  MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: serverLocator<LanguageModel>().locale,
+          darkTheme: AppThemeData.darkTheme,
+          theme: AppThemeData.lightTheme,
+          themeMode: serverLocator<AppThemeModel>().themeMode,
+          debugShowCheckedModeBanner: false,
+          home: Scaffold(
+            drawer: const Drawer(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ThemeRecord(),
+                  LanguageRecord(),
+                ],
               ),
-              appBar: AppBar(
+            ),
+            appBar: AppBar(),
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Builder(
+                    builder: (context) {
+                      return ElevatedButton(onPressed: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=> LoginScreen()));
+                      }, child: Text("Log in screen"));
+                    }
+                  )
+                ],
               ),
             ),
           ),

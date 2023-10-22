@@ -7,11 +7,11 @@ import 'package:google_fonts/google_fonts.dart';
 
 
 TextStyle displayLarge(BuildContext context) {
-  if (context.watch<LanguageCubit>().isArabic) {
+  if (context.read<LanguageCubit>().isArabic) {
     return GoogleFonts.tajawal().copyWith(
       fontSize: 30 ,
       fontWeight: FontWeight.bold,
-        color: context.watch<ThemeCubit>().isDark
+        color: context.read<ThemeCubit>().isDark
             ? const Color.fromRGBO(216, 233, 168, 1)
             : const Color.fromRGBO(25, 26, 25, 1),
     );
@@ -19,7 +19,7 @@ TextStyle displayLarge(BuildContext context) {
     return GoogleFonts.lato().copyWith(
       fontSize: 30 ,
       fontWeight: FontWeight.bold,
-      color: context.watch<ThemeCubit>().isDark
+      color: context.read<ThemeCubit>().isDark
           ? const Color.fromRGBO(216, 233, 168, 1)
           : const Color.fromRGBO(25, 26, 25, 1),
     );
@@ -27,11 +27,11 @@ TextStyle displayLarge(BuildContext context) {
 }
 
 TextStyle displayMedium(BuildContext context) {
-  if (context.watch<LanguageCubit>().isArabic) {
+  if (context.read<LanguageCubit>().isArabic) {
     return GoogleFonts.tajawal().copyWith(
       fontSize: 28 ,
       fontWeight: FontWeight.bold,
-        color: context.watch<ThemeCubit>().isDark
+        color: context.read<ThemeCubit>().isDark
             ? const Color.fromRGBO(216, 233, 168, 1)
             : const Color.fromRGBO(25, 26, 25, 1),
     );
@@ -39,7 +39,7 @@ TextStyle displayMedium(BuildContext context) {
     return GoogleFonts.lato().copyWith(
       fontSize: 28 ,
       fontWeight: FontWeight.bold,
-      color: context.watch<ThemeCubit>().isDark
+      color: context.read<ThemeCubit>().isDark
           ? const Color.fromRGBO(216, 233, 168, 1)
           : const Color.fromRGBO(25, 26, 25, 1),
     );
@@ -47,11 +47,11 @@ TextStyle displayMedium(BuildContext context) {
 }
 
 TextStyle displaySmall(BuildContext context) {
-  if (context.watch<LanguageCubit>().isArabic) {
+  if (context.read<LanguageCubit>().isArabic) {
     return GoogleFonts.tajawal().copyWith(
       fontSize: 26 ,
       fontWeight: FontWeight.bold,
-        color: context.watch<ThemeCubit>().isDark
+        color: context.read<ThemeCubit>().isDark
             ? const Color.fromRGBO(216, 233, 168, 1)
             : const Color.fromRGBO(25, 26, 25, 1),
     );
@@ -59,7 +59,7 @@ TextStyle displaySmall(BuildContext context) {
     return GoogleFonts.lato().copyWith(
       fontSize: 26 ,
       fontWeight: FontWeight.bold,
-      color: context.watch<ThemeCubit>().isDark
+      color: context.read<ThemeCubit>().isDark
           ? const Color.fromRGBO(216, 233, 168, 1)
           : const Color.fromRGBO(25, 26, 25, 1),
     );
@@ -67,11 +67,11 @@ TextStyle displaySmall(BuildContext context) {
 }
 
 TextStyle titleLarge(BuildContext context) {
-  if (context.watch<LanguageCubit>().isArabic) {
+  if (context.read<LanguageCubit>().isArabic) {
     return GoogleFonts.tajawal().copyWith(
       fontSize: 24 ,
       fontWeight: FontWeight.bold,
-        color: context.watch<ThemeCubit>().isDark
+        color: context.read<ThemeCubit>().isDark
             ? const Color.fromRGBO(216, 233, 168, 1)
             : const Color.fromRGBO(25, 26, 25, 1),
     );
@@ -79,7 +79,7 @@ TextStyle titleLarge(BuildContext context) {
     return GoogleFonts.lato().copyWith(
       fontSize: 24 ,
       fontWeight: FontWeight.bold,
-      color: context.watch<ThemeCubit>().isDark
+      color: context.read<ThemeCubit>().isDark
           ? const Color.fromRGBO(216, 233, 168, 1)
           : const Color.fromRGBO(25, 26, 25, 1),
     );
@@ -87,11 +87,11 @@ TextStyle titleLarge(BuildContext context) {
 }
 
 TextStyle titleMedium(BuildContext context) {
-  if (context.watch<LanguageCubit>().isArabic) {
+  if (context.read<LanguageCubit>().isArabic) {
     return GoogleFonts.tajawal().copyWith(
       fontSize: 22 ,
       fontWeight: FontWeight.bold,
-      color: context.watch<ThemeCubit>().isDark
+      color: context.read<ThemeCubit>().isDark
           ? const Color.fromRGBO(216, 233, 168, 1)
           : const Color.fromRGBO(25, 26, 25, 1),
     );
@@ -99,7 +99,7 @@ TextStyle titleMedium(BuildContext context) {
     return GoogleFonts.lato().copyWith(
       fontSize: 22 ,
       fontWeight: FontWeight.bold,
-      color: context.watch<ThemeCubit>().isDark
+      color: context.read<ThemeCubit>().isDark
           ? const Color.fromRGBO(216, 233, 168, 1)
           : const Color.fromRGBO(25, 26, 25, 1),
     );
@@ -107,11 +107,11 @@ TextStyle titleMedium(BuildContext context) {
 }
 
 TextStyle titleSmall(BuildContext context) {
-  if (context.watch<LanguageCubit>().isArabic) {
+  if (context.read<LanguageCubit>().isArabic) {
     return GoogleFonts.tajawal().copyWith(
       fontSize: 20 ,
       fontWeight: FontWeight.bold,
-      color: context.watch<ThemeCubit>().isDark
+      color: context.read<ThemeCubit>().isDark
           ? const Color.fromRGBO(216, 233, 168, 1)
           : const Color.fromRGBO(25, 26, 25, 1),
     );
@@ -119,7 +119,7 @@ TextStyle titleSmall(BuildContext context) {
     return GoogleFonts.lato().copyWith(
       fontSize: 20 ,
       fontWeight: FontWeight.bold,
-      color: context.watch<ThemeCubit>().isDark
+      color: context.read<ThemeCubit>().isDark
           ? const Color.fromRGBO(216, 233, 168, 1)
           : const Color.fromRGBO(25, 26, 25, 1),
     );
@@ -127,17 +127,17 @@ TextStyle titleSmall(BuildContext context) {
 }
 
 TextStyle bodyLarge(BuildContext context) {
-  if (context.watch<LanguageCubit>().isArabic) {
+  if (context.read<LanguageCubit>().isArabic) {
     return GoogleFonts.tajawal().copyWith(
       fontSize: 20 ,
-      color: context.watch<ThemeCubit>().isDark
+      color: context.read<ThemeCubit>().isDark
           ? const Color.fromRGBO(216, 233, 168, 1)
           : const Color.fromRGBO(25, 26, 25, 1),
     );
   } else {
     return GoogleFonts.lato().copyWith(
       fontSize: 20 ,
-      color: context.watch<ThemeCubit>().isDark
+      color: context.read<ThemeCubit>().isDark
           ? const Color.fromRGBO(216, 233, 168, 1)
           : const Color.fromRGBO(25, 26, 25, 1),
     );
@@ -145,17 +145,17 @@ TextStyle bodyLarge(BuildContext context) {
 }
 
 TextStyle bodyMedium(BuildContext context) {
-  if (context.watch<LanguageCubit>().isArabic) {
+  if (context.read<LanguageCubit>().isArabic) {
     return GoogleFonts.tajawal().copyWith(
       fontSize: 18 ,
-      color: context.watch<ThemeCubit>().isDark
+      color: context.read<ThemeCubit>().isDark
           ? const Color.fromRGBO(216, 233, 168, 1)
           : const Color.fromRGBO(25, 26, 25, 1),
     );
   } else {
     return GoogleFonts.lato().copyWith(
       fontSize: 18 ,
-      color: context.watch<ThemeCubit>().isDark
+      color: context.read<ThemeCubit>().isDark
           ? const Color.fromRGBO(216, 233, 168, 1)
           : const Color.fromRGBO(25, 26, 25, 1),
     );
@@ -163,17 +163,17 @@ TextStyle bodyMedium(BuildContext context) {
 }
 
 TextStyle bodySmall(BuildContext context) {
-  if (context.watch<LanguageCubit>().isArabic) {
+  if (context.read<LanguageCubit>().isArabic) {
     return GoogleFonts.tajawal().copyWith(
       fontSize: 16 ,
-      color: context.watch<ThemeCubit>().isDark
+      color: context.read<ThemeCubit>().isDark
           ? const Color.fromRGBO(216, 233, 168, 1)
           : const Color.fromRGBO(25, 26, 25, 1),
     );
   } else {
     return GoogleFonts.lato().copyWith(
       fontSize: 16 ,
-      color: context.watch<ThemeCubit>().isDark
+      color: context.read<ThemeCubit>().isDark
           ? const Color.fromRGBO(216, 233, 168, 1)
           : const Color.fromRGBO(25, 26, 25, 1),
     );
@@ -181,17 +181,17 @@ TextStyle bodySmall(BuildContext context) {
 }
 
 TextStyle bodyVerSmall(BuildContext context) {
-  if (context.watch<LanguageCubit>().isArabic) {
+  if (context.read<LanguageCubit>().isArabic) {
     return GoogleFonts.tajawal().copyWith(
       fontSize: 14 ,
-      color: context.watch<ThemeCubit>().isDark
+      color: context.read<ThemeCubit>().isDark
           ? const Color.fromRGBO(216, 233, 168, 1)
           : const Color.fromRGBO(25, 26, 25, 1),
     );
   } else {
     return GoogleFonts.lato().copyWith(
       fontSize: 14 ,
-      color: context.watch<ThemeCubit>().isDark
+      color: context.read<ThemeCubit>().isDark
           ? const Color.fromRGBO(216, 233, 168, 1)
           : const Color.fromRGBO(25, 26, 25, 1),
     );
