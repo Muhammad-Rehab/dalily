@@ -7,3 +7,4 @@ abstract class Failure extends Equatable{
 }
 
 class CashFailure extends Failure {}
+

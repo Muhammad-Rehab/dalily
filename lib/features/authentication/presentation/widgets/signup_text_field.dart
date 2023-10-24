@@ -21,7 +21,7 @@ class SignUpTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 50),
-      height: maxLines == 1 ? 50: null,
+      // height: maxLines == 1 ? 50: null,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.secondary.withOpacity(.2),
         borderRadius: BorderRadius.circular(30),

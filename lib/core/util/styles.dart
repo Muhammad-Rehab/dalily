@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 
 TextStyle displayLarge(BuildContext context) {
-  if (context.read<LanguageCubit>().isArabic) {
+  if (BlocProvider.of<LanguageCubit>(context).isArabic) {
     return GoogleFonts.tajawal().copyWith(
       fontSize: 30 ,
       fontWeight: FontWeight.bold,
@@ -27,7 +27,7 @@ TextStyle displayLarge(BuildContext context) {
 }
 
 TextStyle displayMedium(BuildContext context) {
-  if (context.read<LanguageCubit>().isArabic) {
+  if (BlocProvider.of<LanguageCubit>(context).isArabic) {
     return GoogleFonts.tajawal().copyWith(
       fontSize: 28 ,
       fontWeight: FontWeight.bold,
@@ -47,7 +47,7 @@ TextStyle displayMedium(BuildContext context) {
 }
 
 TextStyle displaySmall(BuildContext context) {
-  if (context.read<LanguageCubit>().isArabic) {
+  if (BlocProvider.of<LanguageCubit>(context).isArabic) {
     return GoogleFonts.tajawal().copyWith(
       fontSize: 26 ,
       fontWeight: FontWeight.bold,
@@ -67,7 +67,7 @@ TextStyle displaySmall(BuildContext context) {
 }
 
 TextStyle titleLarge(BuildContext context) {
-  if (context.read<LanguageCubit>().isArabic) {
+  if (BlocProvider.of<LanguageCubit>(context).isArabic) {
     return GoogleFonts.tajawal().copyWith(
       fontSize: 24 ,
       fontWeight: FontWeight.bold,
@@ -87,7 +87,7 @@ TextStyle titleLarge(BuildContext context) {
 }
 
 TextStyle titleMedium(BuildContext context) {
-  if (context.read<LanguageCubit>().isArabic) {
+  if (BlocProvider.of<LanguageCubit>(context).isArabic) {
     return GoogleFonts.tajawal().copyWith(
       fontSize: 22 ,
       fontWeight: FontWeight.bold,
@@ -107,7 +107,7 @@ TextStyle titleMedium(BuildContext context) {
 }
 
 TextStyle titleSmall(BuildContext context) {
-  if (context.read<LanguageCubit>().isArabic) {
+  if (BlocProvider.of<LanguageCubit>(context).isArabic) {
     return GoogleFonts.tajawal().copyWith(
       fontSize: 20 ,
       fontWeight: FontWeight.bold,
@@ -127,7 +127,7 @@ TextStyle titleSmall(BuildContext context) {
 }
 
 TextStyle bodyLarge(BuildContext context) {
-  if (context.read<LanguageCubit>().isArabic) {
+  if (BlocProvider.of<LanguageCubit>(context).isArabic) {
     return GoogleFonts.tajawal().copyWith(
       fontSize: 20 ,
       color: context.read<ThemeCubit>().isDark
@@ -145,7 +145,7 @@ TextStyle bodyLarge(BuildContext context) {
 }
 
 TextStyle bodyMedium(BuildContext context) {
-  if (context.read<LanguageCubit>().isArabic) {
+  if (BlocProvider.of<LanguageCubit>(context).isArabic) {
     return GoogleFonts.tajawal().copyWith(
       fontSize: 18 ,
       color: context.read<ThemeCubit>().isDark
@@ -163,7 +163,7 @@ TextStyle bodyMedium(BuildContext context) {
 }
 
 TextStyle bodySmall(BuildContext context) {
-  if (context.read<LanguageCubit>().isArabic) {
+  if (BlocProvider.of<LanguageCubit>(context).isArabic) {
     return GoogleFonts.tajawal().copyWith(
       fontSize: 16 ,
       color: context.read<ThemeCubit>().isDark
@@ -181,7 +181,7 @@ TextStyle bodySmall(BuildContext context) {
 }
 
 TextStyle bodyVerSmall(BuildContext context) {
-  if (context.read<LanguageCubit>().isArabic) {
+  if (BlocProvider.of<LanguageCubit>(context).isArabic) {
     return GoogleFonts.tajawal().copyWith(
       fontSize: 14 ,
       color: context.read<ThemeCubit>().isDark
