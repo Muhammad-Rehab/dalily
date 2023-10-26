@@ -17,6 +17,10 @@ class AppStrings {
   static const String personalImage = '/personal_image';
   static const String workImages = '/work_images';
 
+  static const String categoriesCollection = 'categories';
+  static const String categoriesStorageRef = '$appName/categories';
+
+
   static const String trueString = 'true';
 
 

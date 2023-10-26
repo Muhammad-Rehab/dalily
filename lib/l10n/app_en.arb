@@ -45,5 +45,10 @@
   "confirm_entry": "Confirm the entry",
   "invalid_otp_code": "The verification code from SMS/TOTP is invalid",
   "ok": "Ok",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "add_category": "Add Category",
+  "category_name": "English Category Name",
+  "category_name_en": "English Category Name",
+  "update_category": "Update Category",
+  "categories": "Categories"
 }

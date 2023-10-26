@@ -1,11 +1,19 @@
-
+import 'package:dalily/config/routes.dart';
 import 'package:dalily/config/super_injection_container.dart';
 import 'package:dalily/config/theme.dart';
 import 'package:dalily/core/helper/block_observer.dart';
+import 'package:dalily/core/util/app_strings.dart';
 import 'package:dalily/features/authentication/auth_injection.dart';
 import 'package:dalily/features/authentication/presentation/cubit/authentication_cubit.dart';
 import 'package:dalily/features/authentication/presentation/cubit/authentications_state.dart';
 import 'package:dalily/features/authentication/presentation/screans/main_auth.dart';
+import 'package:dalily/features/categories/category_injection_container.dart';
+import 'package:dalily/features/categories/presentation/cubit/category_cubit.dart';
+import 'package:dalily/features/categories/presentation/cubit/category_states.dart';
+import 'package:dalily/features/categories/presentation/screens/cat_screen_details.dart';
+import 'package:dalily/features/categories/presentation/screens/category_screen.dart';
+import 'package:dalily/features/categories/presentation/screens/splash.dart';
+import 'package:dalily/features/categories/presentation/widgets/category_drawer_button.dart';
 import 'package:dalily/features/language/data/model/language_model.dart';
 import 'package:dalily/features/language/language_injection_container.dart';
 import 'package:dalily/features/language/presentation/cubit/language_cubit.dart';
@@ -28,15 +36,17 @@ void main() async {
   themeInjectionContainer();
   languageInjectionContainer();
   authInjectionContainer();
+  categoryInjectionContainer();
 
   Bloc.observer = LoggingBlocObserver();
   runApp(MultiBlocProvider(
-      providers: [
-        BlocProvider<ThemeCubit>(create: (context)=> serverLocator<ThemeCubit>()),
-        BlocProvider<LanguageCubit>(create: (context)=> serverLocator<LanguageCubit>()),
-        BlocProvider<AuthenticationCubit>(create: (context)=> serverLocator<AuthenticationCubit>()),
-      ],
-      child:const MyApp(),
+    providers: [
+      BlocProvider<ThemeCubit>(create: (context) => serverLocator<ThemeCubit>()),
+      BlocProvider<LanguageCubit>(create: (context) => serverLocator<LanguageCubit>()),
+      BlocProvider<AuthenticationCubit>(create: (context) => serverLocator<AuthenticationCubit>()),
+      BlocProvider<CategoryCubit>(create: (context) => serverLocator<CategoryCubit>()),
+    ],
+    child: const MyApp(),
   ));
 }
 
@@ -48,33 +58,38 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
-  loadData()async{
-      BlocProvider.of<LanguageCubit>(context).loadLanguage();
-      BlocProvider.of<ThemeCubit>(context).loadTheme();
+  loadData() async {
+    BlocProvider.of<LanguageCubit>(context).loadLanguage();
+    BlocProvider.of<ThemeCubit>(context).loadTheme();
   }
-
-
 
   @override
   void initState() {
     loadData();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-
-    return BlocBuilder<ThemeCubit,ThemeState>(builder: (context,state) =>
-        BlocBuilder<LanguageCubit,LanguageState>(builder: (context,state) =>  MaterialApp(
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          locale: serverLocator<LanguageModel>().locale,
-          darkTheme: AppThemeData.darkTheme,
-          theme: AppThemeData.lightTheme,
-          themeMode: serverLocator<AppThemeModel>().themeMode,
-          debugShowCheckedModeBanner: false,
-          home: const HomePage(),
-        )));
+    return BlocBuilder<ThemeCubit, ThemeState>(
+        builder: (context, state) => BlocBuilder<LanguageCubit, LanguageState>(
+            builder: (context, state) => MaterialApp(
+                  localizationsDelegates: AppLocalizations.localizationsDelegates,
+                  supportedLocales: AppLocalizations.supportedLocales,
+                  locale: serverLocator<LanguageModel>().locale,
+                  darkTheme: AppThemeData.darkTheme,
+                  theme: AppThemeData.lightTheme,
+                  themeMode: serverLocator<AppThemeModel>().themeMode,
+                  debugShowCheckedModeBanner: false,
+                  initialRoute: AppRoutes.initialRoute,
+                  routes: {
+                    AppRoutes.initialRoute: (context) => HomePage(),
+                    AppRoutes.splash: (context) => SplashScreen(),
+                    AppRoutes.mainAuthRoute: (context) => MainAuthScreen(),
+                    AppRoutes.categoryDetails: (context) => CategoryDetailsScreen(),
+                    AppRoutes.categoryScreen: (context) => CategoryScreen(),
+                  },
+                )));
   }
 }
 
@@ -87,9 +102,11 @@ class HomePage extends StatelessWidget {
       drawer: const Drawer(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ThemeRecord(),
             LanguageRecord(),
+            CategoryDrawerButton(),
           ],
         ),
       ),
@@ -98,19 +115,28 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Builder(
-                builder: (context) {
-                  return ElevatedButton(onPressed: (){
+            Builder(builder: (context) {
+              return ElevatedButton(
+                  onPressed: () {
                     BlocProvider.of<AuthenticationCubit>(context).initAuthCubit(InitialAuthenticationState());
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> MainAuthScreen()));
-                  }, child: const Text("Log in screen"));
-                }
-            )
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MainAuthScreen()));
+                  },
+                  child: const Text("Log in screen"));
+            }),
+            BlocBuilder<CategoryCubit,CategoryState>(
+              builder:(ctx,state)=> ElevatedButton(
+                onPressed: () {
+                  BlocProvider.of<CategoryCubit>(context).getCategories().then((value) {
+                    if(state is CategoryIsLoaded){
+                      Navigator.of(context).pushNamed(AppRoutes.categoryScreen,arguments: state.categories);
+                    }});
+                },
+                child: const Text("Category Screen"),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 }
-
-

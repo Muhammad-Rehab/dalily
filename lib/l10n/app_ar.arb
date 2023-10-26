@@ -45,5 +45,10 @@
   "confirm_entry": "تأكيد الدخول",
   "invalid_otp_code": "كود التاكيد غير صحيح الرجاء التاكد من صحته",
   "ok": "نعم",
-  "cancel": "إلغاء"
+  "cancel": "إلغاء",
+  "add_category": "إضافة فئة",
+  "category_name": "اسم الفئة بالعربي",
+  "category_name_en": "اسم الفئة بالانجليزي",
+  "update_category": "تحديث الفئة",
+  "categories": "الفئات"
 }
