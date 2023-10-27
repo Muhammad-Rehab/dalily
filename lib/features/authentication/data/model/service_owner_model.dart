@@ -1,8 +1,9 @@
 import 'package:dalily/features/authentication/domain/entity/service_owner.dart';
 
 class ServiceOwnerModel extends ServiceOwner {
-  ServiceOwnerModel({required super.id, required super.name, required super.phoneNumber, required super.occupation,
-  super.personalImage,super.workImages,super.address,super.secondPhoneNumber,super.thirdPhoneNumber
+  ServiceOwnerModel({required super.id, required super.name, required super.phoneNumber, required super.categoryId,
+  super.personalImage,super.workImages,super.address,super.secondPhoneNumber,super.thirdPhoneNumber,
+  super.serviceDescription,super.serviceName,
 });
 
   factory ServiceOwnerModel.fromJson(Map<String, dynamic> json) {
@@ -10,7 +11,9 @@ class ServiceOwnerModel extends ServiceOwner {
       id: json['id'],
       name: json['name'],
       phoneNumber: json['phone_number'],
-      occupation: json['occupation'],
+      categoryId: json['category_id'],
+      serviceName: json['service_name'],
+      serviceDescription: json['description'],
       address: json['address'],
       personalImage: json['personal_image'],
       workImages: json['work_images'],
@@ -24,7 +27,7 @@ class ServiceOwnerModel extends ServiceOwner {
       'id': id,
       'name': name,
       'phone_number':phoneNumber,
-      'occupation':occupation,
+      'category_id':categoryId,
       'address': address,
       'personal_image': personalImage,
       'work_images': workImages,

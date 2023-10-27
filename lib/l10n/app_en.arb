@@ -50,5 +50,11 @@
   "category_name": "English Category Name",
   "category_name_en": "English Category Name",
   "update_category": "Update Category",
-  "categories": "Categories"
+  "categories": "Categories",
+  "service_name": "Service Nickname",
+  "service_name_hint": "Store or office nickname (Al-Fath Store)",
+  "description": "Service Description",
+  "description_hint": "Such as Al-Fath Store for home appliances",
+  "select_category": "Select Category"
+
 }

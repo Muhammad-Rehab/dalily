@@ -2,7 +2,6 @@ import 'package:dalily/config/routes.dart';
 import 'package:dalily/config/super_injection_container.dart';
 import 'package:dalily/config/theme.dart';
 import 'package:dalily/core/helper/block_observer.dart';
-import 'package:dalily/core/util/app_strings.dart';
 import 'package:dalily/features/authentication/auth_injection.dart';
 import 'package:dalily/features/authentication/presentation/cubit/authentication_cubit.dart';
 import 'package:dalily/features/authentication/presentation/cubit/authentications_state.dart';
@@ -12,7 +11,7 @@ import 'package:dalily/features/categories/presentation/cubit/category_cubit.dar
 import 'package:dalily/features/categories/presentation/cubit/category_states.dart';
 import 'package:dalily/features/categories/presentation/screens/cat_screen_details.dart';
 import 'package:dalily/features/categories/presentation/screens/category_screen.dart';
-import 'package:dalily/features/categories/presentation/screens/splash.dart';
+import 'package:dalily/core/screens/splash/splash.dart';
 import 'package:dalily/features/categories/presentation/widgets/category_drawer_button.dart';
 import 'package:dalily/features/language/data/model/language_model.dart';
 import 'package:dalily/features/language/language_injection_container.dart';
@@ -58,16 +57,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  loadData() async {
-    BlocProvider.of<LanguageCubit>(context).loadLanguage();
-    BlocProvider.of<ThemeCubit>(context).loadTheme();
-  }
-
-  @override
-  void initState() {
-    loadData();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +70,7 @@ class _MyAppState extends State<MyApp> {
                   theme: AppThemeData.lightTheme,
                   themeMode: serverLocator<AppThemeModel>().themeMode,
                   debugShowCheckedModeBanner: false,
-                  initialRoute: AppRoutes.initialRoute,
+                  initialRoute: AppRoutes.splash,
                   routes: {
                     AppRoutes.initialRoute: (context) => HomePage(),
                     AppRoutes.splash: (context) => SplashScreen(),
@@ -123,16 +112,12 @@ class HomePage extends StatelessWidget {
                   },
                   child: const Text("Log in screen"));
             }),
-            BlocBuilder<CategoryCubit,CategoryState>(
-              builder:(ctx,state)=> ElevatedButton(
-                onPressed: () {
-                  BlocProvider.of<CategoryCubit>(context).getCategories().then((value) {
-                    if(state is CategoryIsLoaded){
-                      Navigator.of(context).pushNamed(AppRoutes.categoryScreen,arguments: state.categories);
-                    }});
-                },
-                child: const Text("Category Screen"),
-              ),
+            ElevatedButton(
+              onPressed: () {
+                    Navigator.of(context).pushNamed(AppRoutes.categoryScreen,
+                        arguments: BlocProvider.of<CategoryCubit>(context).appCategories);
+              },
+              child: const Text("Category Screen"),
             ),
           ],
         ),

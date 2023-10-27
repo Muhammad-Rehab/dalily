@@ -50,5 +50,11 @@
   "category_name": "اسم الفئة بالعربي",
   "category_name_en": "اسم الفئة بالانجليزي",
   "update_category": "تحديث الفئة",
-  "categories": "الفئات"
+  "categories": "الفئات",
+  "service_name": "اسم الشهره للخدمه",
+  "service_name_hint": "اسم الشهره للمحل,(معرض الفتح)",
+  "description": "الوصف",
+  "description_hint": "مثل معرض الفتح للاجهزه المنزليه",
+  "select_category": "اختر الفئة"
+
 }

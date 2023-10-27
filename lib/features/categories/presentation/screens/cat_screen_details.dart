@@ -70,14 +70,10 @@ class _CategoryDetailsScreen extends State<CategoryDetailsScreen> {
 
   }
 
-  getCategories() {
-    BlocProvider.of<CategoryCubit>(context).getCategories();
-  }
 
   @override
   void initState() {
     super.initState();
-    getCategories();
   }
 
   @override
