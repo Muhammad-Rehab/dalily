@@ -32,9 +32,9 @@ class CategoryCubit extends Cubit<CategoryState>{
     );
   }
 
-  addCategory(CategoryModel categoryModel) async {
+  addCategory(CategoryModel categoryModel,List<CategoryModel> parents) async {
     emit(CategoryIsAdding());
-    Either<ServerFailure, void> response = await addCategoryUseCase.call(categoryModel);
+    Either<ServerFailure, void> response = await addCategoryUseCase.call([categoryModel,parents]);
     emit(response.fold(
           (serverFailure) => CategoryErrorState(message: serverFailure.message),
             (r) => CategoryAddedState(),

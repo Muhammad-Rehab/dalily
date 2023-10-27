@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dalily/features/categories/domain/entity/category.dart';
 
 class CategoryModel extends Category {
@@ -6,14 +8,21 @@ class CategoryModel extends Category {
   CategoryModel({required super.id, required super.arabicName,required super.englishName, required super.image, required this.subCategory, super
       .parentId});
 
-  factory CategoryModel.fromJson(Map<String, dynamic> json) {
+  factory CategoryModel.fromJson(Map<String, dynamic> jsonModel) {
+
+    List<CategoryModel> hold =[] ;
+    if((jsonModel['sub_category'] != null )){
+      for(var item in jsonDecode(jsonModel['sub_category']) ){
+      hold.add(CategoryModel.fromJson(item));
+      }
+    }
     return CategoryModel(
-      id: json['id'],
-      arabicName: json['arabic_name'],
-      englishName: json['english_name'],
-      image: json['image'],
-      parentId: json['parent_id'],
-      subCategory: [],
+      id: jsonModel['id'],
+      arabicName: jsonModel['arabic_name'],
+      englishName: jsonModel['english_name'],
+      image: jsonModel['image'],
+      parentId: jsonModel['parent_id'],
+      subCategory: hold,
     );
   }
 
@@ -24,7 +33,7 @@ class CategoryModel extends Category {
       'english_name':englishName,
       'image': image,
       'parent_id': parentId,
-      'sub_category': subCategory,
+      'sub_category': jsonEncode(subCategory),
     };
   }
 }

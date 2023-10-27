@@ -9,7 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 abstract class CategoryRemoteDataResource {
   Future<List<CategoryModel>> getCategory();
-  Future<void> addCategory(CategoryModel categoryModel);
+  Future<void> addCategory(CategoryModel categoryModel,List<CategoryModel> parents);
   Future<void> update(CategoryModel categoryModel,bool updateImage);
 }
 
@@ -23,28 +23,29 @@ class CategoryRemoteDataResourceImp extends CategoryRemoteDataResource {
   Future<List<CategoryModel>> getCategory() async{
     QuerySnapshot<Map<String, dynamic>> response = await firebaseFirestore
         .collection(AppStrings.categoriesCollection).get();
-    Map<String,CategoryModel> categories = {};
-    CategoryModel hold;
+    List<CategoryModel> categories = [];
     response.docs.forEach((item) {
-       hold = CategoryModel.fromJson(item.data());
-      if(hold.parentId != null){
-        categories[hold.parentId]!.subCategory.add(hold);
-      }else{
-        categories[hold.id] = hold;
-      }
+       categories.add(CategoryModel.fromJson(item.data()));
     });
-    return categories.values.toList();
+    return categories;
   }
 
   @override
-  Future<void> addCategory(CategoryModel categoryModel) async {
+  Future<void> addCategory(CategoryModel categoryModel,List<CategoryModel> parents) async {
 
       await firebaseStorage.ref(AppStrings.categoriesStorageRef)
           .child(categoryModel.id).putFile(File(categoryModel.image));
       categoryModel.image = await firebaseStorage.ref(AppStrings.categoriesStorageRef)
           .child(categoryModel.id).getDownloadURL();
-      await firebaseFirestore.collection(AppStrings.categoriesCollection)
-          .doc(categoryModel.id).set(categoryModel.toJson());
+
+      if(parents.isNotEmpty){
+        parents.last.subCategory.add(categoryModel);
+        await firebaseFirestore.collection(AppStrings.categoriesCollection)
+            .doc(parents.first.id).update(parents.first.toJson());
+      }else{
+        await firebaseFirestore.collection(AppStrings.categoriesCollection)
+            .doc(categoryModel.id).set(categoryModel.toJson());
+      }
 
   }
 

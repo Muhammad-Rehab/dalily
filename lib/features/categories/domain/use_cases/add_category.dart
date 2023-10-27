@@ -5,13 +5,13 @@ import 'package:dalily/features/categories/data/model/category_model.dart';
 import 'package:dalily/features/categories/domain/repository/category_repo.dart';
 import 'package:dartz/dartz.dart';
 
-class AddCategoryUseCase extends UseCase<void,CategoryModel> {
+class AddCategoryUseCase extends UseCase<void,List<dynamic>> {
 
   CategoryRepository categoryRepository ;
   AddCategoryUseCase({required this.categoryRepository});
 
   @override
-  Future<Either<ServerFailure, void>> call(CategoryModel param) => categoryRepository.addCategory(param);
+  Future<Either<ServerFailure, void>> call(List param) => categoryRepository.addCategory(categoryModel: param[0],parents: param[1]);
 
 
 }

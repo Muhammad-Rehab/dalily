@@ -26,9 +26,9 @@ class CategoryRepositoryImp extends CategoryRepository{
   }
 
   @override
-  Future<Either<ServerFailure, void>> addCategory(CategoryModel categoryModel)async {
+  Future<Either<ServerFailure, void>> addCategory({required CategoryModel categoryModel,required List<CategoryModel> parents})async {
     try{
-      return Right(await categoryRemoteDataResource.addCategory(categoryModel));
+      return Right(await categoryRemoteDataResource.addCategory(categoryModel,parents));
     }catch (e){
       debugPrint('category repo imp / addCategory()');
       debugPrint(e.toString());

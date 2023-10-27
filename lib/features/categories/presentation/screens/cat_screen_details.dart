@@ -21,15 +21,16 @@ class CategoryDetailsScreen extends StatefulWidget {
 }
 
 class _CategoryDetailsScreen extends State<CategoryDetailsScreen> {
+
   XFile? _categoryImage;
   String? arabicName;
-
   String? englishName;
-
   String? parentId;
-  late bool isAdd;
 
+  late bool isAdd;
   CategoryModel? categoryModel;
+
+  List<CategoryModel> categoriesID = [];
 
   pickImage(ImageSource src) async {
     final ImagePicker imagePicker = ImagePicker();
@@ -54,7 +55,7 @@ class _CategoryDetailsScreen extends State<CategoryDetailsScreen> {
         'english_name': englishName,
         'image': _categoryImage!.path,
       };
-      BlocProvider.of<CategoryCubit>(context).addCategory(CategoryModel.fromJson(data));
+      BlocProvider.of<CategoryCubit>(context).addCategory(CategoryModel.fromJson(data),categoriesID);
     }else{
 
       Map<String, dynamic> data = {
@@ -70,11 +71,6 @@ class _CategoryDetailsScreen extends State<CategoryDetailsScreen> {
 
   }
 
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -226,19 +222,52 @@ class _CategoryDetailsScreen extends State<CategoryDetailsScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'Parent id',
-                      style: titleSmall(context),
+                    Expanded(
+                      child: Text(
+                        'Parent id',
+                        style: titleSmall(context),
+                      ),
                     ),
-                    DropdownButton<String>(
-                      alignment: Alignment.center,
-                      value: parentId,
-                      dropdownColor: Theme.of(context).colorScheme.primary,
-                      style: titleSmall(context).copyWith(color: Colors.white),
-                      items: BlocProvider.of<CategoryCubit>(context)
-                          .appCategories
-                          .map((category) => DropdownMenuItem<String>(
-                                value: category.id,
+                    Column(
+                      children: List.generate(categoriesID.length + 1, (index) {
+                        if(categoriesID.isEmpty){
+                          return DropdownButton<CategoryModel>(
+                            alignment: Alignment.center,
+                            dropdownColor: Theme.of(context).colorScheme.primary,
+                            style: titleSmall(context).copyWith(color: Colors.white),
+                            items: BlocProvider.of<CategoryCubit>(context)
+                                .appCategories
+                                .map((category) => DropdownMenuItem<CategoryModel>(
+                              value: category,
+                              child: SizedBox(
+                                width: 150,
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(
+                                    BlocProvider.of<LanguageCubit>(context).isArabic ? category.arabicName : category.englishName,
+                                    style: titleSmall(context),
+                                  ),
+                                ),
+                              ),
+                            ))
+                                .toList(),
+                            onChanged: (val) {
+                                parentId = val!.id;
+                                categoriesID.add(val);
+                                setState(() {});
+                            },
+                          );
+                        }else{
+                          if(index == 0){
+                            return DropdownButton<CategoryModel>(
+                              alignment: Alignment.center,
+                              dropdownColor: Theme.of(context).colorScheme.primary,
+                              style: titleSmall(context).copyWith(color: Colors.white),
+                              value: categoriesID.first,
+                              items: BlocProvider.of<CategoryCubit>(context)
+                                  .appCategories
+                                  .map((category) => DropdownMenuItem<CategoryModel>(
+                                value: category,
                                 child: SizedBox(
                                   width: 150,
                                   child: FittedBox(
@@ -250,12 +279,49 @@ class _CategoryDetailsScreen extends State<CategoryDetailsScreen> {
                                   ),
                                 ),
                               ))
-                          .toList(),
-                      onChanged: (val) {
-                        setState(() {
-                          parentId = val;
-                        });
-                      },
+                                  .toList(),
+                              onChanged: (val) {
+                                parentId = val!.id;
+                                categoriesID.clear();
+                                categoriesID.add(val);
+                                setState(() {});
+                              },
+                            );
+                          }else if(categoriesID[index-1].subCategory.isNotEmpty){
+                            return DropdownButton<CategoryModel>(
+                              alignment: Alignment.center,
+                              dropdownColor: Theme.of(context).colorScheme.primary,
+                              value: (index >= categoriesID.length)?null:categoriesID[index],
+                              style: titleSmall(context).copyWith(color: Colors.white),
+                              items: categoriesID[index-1].subCategory
+                                  .map((category) => DropdownMenuItem<CategoryModel>(
+                                value: category,
+                                child: SizedBox(
+                                  width: 150,
+                                  child: FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                      BlocProvider.of<LanguageCubit>(context).isArabic ? category.arabicName : category.englishName,
+                                      style: titleSmall(context),
+                                    ),
+                                  ),
+                                ),
+                              ))
+                                  .toList(),
+                              onChanged: (val) {
+                                parentId = val!.id;
+                                if(!categoriesID.contains(val)){
+                                  categoriesID.removeRange(index, categoriesID.length);
+                                  categoriesID.add(val);
+                                }
+                                setState(() {});
+                              },
+                            );
+                          }else {
+                            return Container();
+                          }
+                        }
+                      }),
                     ),
                   ],
                 ),
