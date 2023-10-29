@@ -7,7 +7,7 @@ class SignUpTextField extends StatelessWidget {
 
   SignUpTextField({Key? key,this.keyboardType = TextInputType.name,
     required this.labelText,this.validator,this.onSaved,this.isPhoneNumber = false,this.hintText,
-   this.maxLines = 1 ,
+   this.maxLines = 1 , this.onChanged,
   }) : super(key: key);
 
   bool isPhoneNumber ;
@@ -16,6 +16,7 @@ class SignUpTextField extends StatelessWidget {
   String ? hintText ;
   int maxLines ;
   String ? Function(String ? value) ? validator ;
+  String ? Function(String ? value) ? onChanged;
   void Function(String ? value) ? onSaved ;
   @override
   Widget build(BuildContext context) {
@@ -30,6 +31,7 @@ class SignUpTextField extends StatelessWidget {
         textDirection: isPhoneNumber ? TextDirection.ltr : null,
         style: bodyVerSmall(context).copyWith(fontWeight: FontWeight.bold),
         maxLines: maxLines,
+        onChanged: onChanged,
         keyboardType: keyboardType,
         decoration: InputDecoration(
           border: OutlineInputBorder(

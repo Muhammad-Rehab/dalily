@@ -29,18 +29,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   XFile? _personalImage;
   List<String> _workImages = [];
+  List<String> categoryIds = [];
   Map<String, dynamic> userData = {
     'id': '',
     'name': '',
     "phone_number": "",
     "address": "",
-    "category_id": '',
+    "category_ids": [],
     'work_images': [],
     'personal_image': '',
     'second_phone_number': '',
     'third_phone_number': '',
     'service_name': '',
     'description': '',
+    'comment': ''
   };
   List<CategoryModel> categoryModels = [];
   double dropDownHeight = 70;
@@ -85,6 +87,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _formKey.currentState!.save();
       userData['personal_image'] = _personalImage?.path;
       userData['work_images'] = _workImages;
+      userData['category_ids'] = categoryIds;
       ServiceOwnerModel serviceOwnerModel = ServiceOwnerModel.fromJson(userData);
       BlocProvider.of<AuthenticationCubit>(context).sendOtp(
         serviceOwnerModel.phoneNumber,
@@ -95,11 +98,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
   }
 
-  getDropDownLength(CategoryModel categoryModel){
-    if(categoryModel.subCategory.isNotEmpty){
-      dropDownHeight = (categoryModels.length+1) * 70 ;
-    }else{
-      dropDownHeight = (categoryModels.length) * 70 ;
+  getDropDownLength(CategoryModel categoryModel) {
+    if (categoryModel.subCategory.isNotEmpty) {
+      dropDownHeight = (categoryModels.length + 1) * 70;
+    } else {
+      dropDownHeight = (categoryModels.length) * 70;
     }
   }
 
@@ -252,7 +255,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       userData['phone_number'] = "+2${value!.replaceAll(' ', '')}";
                     },
                   ),
-                  const SizedBox(height: 15,),
+                  const SizedBox(
+                    height: 15,
+                  ),
                   /*//Occupation
                   SignUpTextField(
                     labelText: AppLocalizations.of(context)!.occupation,
@@ -287,16 +292,38 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                   // select category
                   Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 50,),
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 50,
+                    ),
                     padding: const EdgeInsets.all(10),
                     height: 50,
                     width: double.infinity,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(AppLocalizations.of(context)!.select_category,
+                        Text(
+                          AppLocalizations.of(context)!.select_category,
                           style: bodyMedium(context).copyWith(fontWeight: FontWeight.bold),
                           textAlign: TextAlign.start,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 50,
+                    ),
+                    padding: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+                    width: double.infinity,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            AppLocalizations.of(context)!.add_comment,
+                            style: bodyVerSmall(context).copyWith(fontWeight: FontWeight.bold, color: Colors.red),
+                            textAlign: TextAlign.start,
+                          ),
                         ),
                       ],
                     ),
@@ -307,173 +334,146 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: List.generate(categoryModels.length+1, (index){
-                        if (categoryModels.isEmpty){
+                      children: List.generate(categoryModels.length + 1, (index) {
+                        if (categoryModels.isEmpty) {
                           return Container(
                             width: double.infinity,
-                            padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 5),
+                            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
                             decoration: BoxDecoration(
                               color: Theme.of(context).colorScheme.secondary.withOpacity(.3),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: DropdownButtonFormField<CategoryModel>(
-                              borderRadius:BorderRadius.circular(20) ,
+                              borderRadius: BorderRadius.circular(20),
                               dropdownColor: Theme.of(context).colorScheme.background,
                               iconSize: 20,
-                              icon: Icon(Icons.arrow_drop_down_circle_outlined,color: Theme.of(context).colorScheme.secondary,),
-                              items: BlocProvider.of<CategoryCubit>(context).appCategories
-                                  .map((item) => DropdownMenuItem<CategoryModel>(
-                                value: item,
-                                child: Text(
-                                  BlocProvider.of<LanguageCubit>(context).isArabic ? item.arabicName : item.englishName,
-                                  style: titleSmall(context),
-                                ),
+                              icon: Icon(
+                                Icons.arrow_drop_down_circle_outlined,
+                                color: Theme.of(context).colorScheme.secondary,
                               ),
-                              ).toList(),
-                              validator: (val){
-                                if(val == null){
+                              items: BlocProvider.of<CategoryCubit>(context)
+                                  .appCategories
+                                  .map(
+                                    (item) => DropdownMenuItem<CategoryModel>(
+                                      value: item,
+                                      child: Text(
+                                        BlocProvider.of<LanguageCubit>(context).isArabic ? item.arabicName : item.englishName,
+                                        style: titleSmall(context),
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                              validator: (val) {
+                                if (val == null && userData['comment'].isEmpty) {
                                   return AppLocalizations.of(context)!.occupation_validate_message;
                                 }
                               },
-                              onSaved: (val){
-                                if(val!.subCategory.isEmpty){
-                                  userData['category_id'] = val.id;
+                              onSaved: (val) {
+                                if (val != null && !categoryIds.contains(val.id)) {
+                                  categoryIds.add(val.id);
                                 }
                               },
-                              onChanged: (val){
+                              onChanged: (val) {
                                 categoryModels.add(val!);
                                 getDropDownLength(val);
                                 setState(() {});
                               },
                             ),
                           );
-                        }else{
-                          if (index == 0){
+                        } else {
+                          if (index == 0) {
                             return Container(
                               width: double.infinity,
-                              padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 5),                              margin: const EdgeInsets.symmetric(vertical: 5),
+                              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+                              margin: const EdgeInsets.symmetric(vertical: 5),
                               decoration: BoxDecoration(
                                 color: Theme.of(context).colorScheme.secondary.withOpacity(.3),
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: DropdownButtonFormField<CategoryModel>(
-                                borderRadius:BorderRadius.circular(20) ,
+                                borderRadius: BorderRadius.circular(20),
                                 iconSize: 20,
                                 dropdownColor: Theme.of(context).colorScheme.background,
-                                icon: Icon(Icons.arrow_drop_down_circle_outlined,color: Theme.of(context).colorScheme.secondary,),
-                                value: categoryModels[index],
-                                items: BlocProvider.of<CategoryCubit>(context).appCategories
-                                    .map((item) => DropdownMenuItem<CategoryModel>(
-                                  value: item,
-                                  child: Text(
-                                    BlocProvider.of<LanguageCubit>(context).isArabic ? item.arabicName : item.englishName,
-                                    style: titleSmall(context),
-                                  ),
+                                icon: Icon(
+                                  Icons.arrow_drop_down_circle_outlined,
+                                  color: Theme.of(context).colorScheme.secondary,
                                 ),
-                                ).toList(),
-                                validator: (val){
-                                  if(val == null){
+                                value: categoryModels[index],
+                                items: BlocProvider.of<CategoryCubit>(context)
+                                    .appCategories
+                                    .map(
+                                      (item) => DropdownMenuItem<CategoryModel>(
+                                        value: item,
+                                        child: Text(
+                                          BlocProvider.of<LanguageCubit>(context).isArabic ? item.arabicName : item.englishName,
+                                          style: titleSmall(context),
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                                validator: (val) {
+                                  if (val == null && userData['comment'].isEmpty) {
                                     return AppLocalizations.of(context)!.occupation_validate_message;
                                   }
                                 },
-                                onSaved: (val){
-                                  if(val!.subCategory.isEmpty){
-                                    userData['category_id'] = val.id;
+                                onSaved: (val) {
+                                  if (val != null && !categoryIds.contains(val.id)) {
+                                    categoryIds.add(val.id);
                                   }
                                 },
-                                onChanged: (val){
-                                  if(!categoryModels.contains(val)){
+                                onChanged: (val) {
+                                  if (!categoryModels.contains(val)) {
                                     categoryModels.clear();
                                     categoryModels.add(val!);
-                                    if(val.subCategory.isNotEmpty){
-                                      dropDownHeight += 70 ;
+                                    if (val.subCategory.isNotEmpty) {
+                                      dropDownHeight += 70;
                                     }
                                     setState(() {});
                                   }
                                 },
                               ),
                             );
-                          }
-                          else if(categoryModels[index-1].subCategory.isNotEmpty){
+                          } else if (categoryModels[index - 1].subCategory.isNotEmpty) {
                             return Container(
                               width: double.infinity,
-                              padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 5),                              margin: const EdgeInsets.symmetric(vertical: 5),
+                              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+                              margin: const EdgeInsets.symmetric(vertical: 5),
                               decoration: BoxDecoration(
                                 color: Theme.of(context).colorScheme.secondary.withOpacity(.3),
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: DropdownButtonFormField<CategoryModel>(
                                 dropdownColor: Theme.of(context).colorScheme.background,
-                                borderRadius:BorderRadius.circular(20) ,
-                                iconSize: 20,
-                                icon: Icon(Icons.arrow_drop_down_circle_outlined,color: Theme.of(context).colorScheme.secondary,),
-                                items: categoryModels[index-1].subCategory
-                                    .map((item) => DropdownMenuItem<CategoryModel>(
-                                  value: item,
-                                  child: Text(
-                                    BlocProvider.of<LanguageCubit>(context).isArabic ? item.arabicName : item.englishName,
-                                    style: titleSmall(context),
-                                  ),
-                                ),
-                                ).toList(),
-                                validator: (val){
-                                  if(val == null){
-                                    return AppLocalizations.of(context)!.occupation_validate_message;
-                                  }
-                                },
-                                onSaved: (val){
-                                  if(val!.subCategory.isEmpty){
-                                    userData['category_id'] = val.id;
-                                  }
-                                },
-                                onChanged: (val){
-                                  if(!categoryModels.contains(val)){
-                                    categoryModels.add(val!);
-                                    getDropDownLength(val);
-                                    setState(() {});
-                                  }
-                                },
-                              ),
-                            );
-                          }
-                          else if(categoryModels[index-1].subCategory.isEmpty){
-                            return Container();
-                          }
-                          else{
-                            return Container(
-                              width: double.infinity,
-                              padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 5),                              margin: const EdgeInsets.symmetric(vertical: 5),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.secondary.withOpacity(.3),
                                 borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: DropdownButtonFormField<CategoryModel>(
-                                dropdownColor: Theme.of(context).colorScheme.background,
-                                borderRadius:BorderRadius.circular(20) ,
                                 iconSize: 20,
-                                icon: Icon(Icons.arrow_drop_down_circle_outlined,color: Theme.of(context).colorScheme.secondary,),
-                                value: categoryModels[index],
-                                items: categoryModels[index-1].subCategory
-                                    .map((item) => DropdownMenuItem<CategoryModel>(
-                                  value: item,
-                                  child: Text(
-                                    BlocProvider.of<LanguageCubit>(context).isArabic ? item.arabicName : item.englishName,
-                                    style: titleSmall(context),
-                                  ),
+                                icon: Icon(
+                                  Icons.arrow_drop_down_circle_outlined,
+                                  color: Theme.of(context).colorScheme.secondary,
                                 ),
-                                ).toList(),
-                                validator: (val){
-                                  if(val == null){
+                                items: categoryModels[index - 1]
+                                    .subCategory
+                                    .map(
+                                      (item) => DropdownMenuItem<CategoryModel>(
+                                        value: item,
+                                        child: Text(
+                                          BlocProvider.of<LanguageCubit>(context).isArabic ? item.arabicName : item.englishName,
+                                          style: titleSmall(context),
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                                validator: (val) {
+                                  if (val == null && userData['comment'].isEmpty) {
                                     return AppLocalizations.of(context)!.occupation_validate_message;
                                   }
                                 },
-                                onSaved: (val){
-                                  if(val!.subCategory.isEmpty){
-                                    userData['category_id'] = val.id;
+                                onSaved: (val) {
+                                  if (val != null && !categoryIds.contains(val.id)) {
+                                    categoryIds.add(val.id);
                                   }
                                 },
-                                onChanged: (val){
-                                  if(!categoryModels.contains(val)){
+                                onChanged: (val) {
+                                  if (!categoryModels.contains(val)) {
                                     categoryModels.removeRange(index, categoryModels.length);
                                     categoryModels.add(val!);
                                     getDropDownLength(val);
@@ -482,12 +482,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 },
                               ),
                             );
+                          } else {
+                            return Container();
                           }
                         }
                       }),
                     ),
                   ),
-                  const SizedBox(height: 15,),
+                  const SizedBox(
+                    height: 15,
+                  ),
 
                   //service name
                   SignUpTextField(
@@ -614,7 +618,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                   const SizedBox(
-                    height: 10,
+                    height: 15,
                   ),
 
                   if (extraPhoneNumbers)
@@ -670,6 +674,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       height: 30,
                     ),
 
+                  // comment
+                  SignUpTextField(
+                    labelText: AppLocalizations.of(context)!.comment,
+                    keyboardType: TextInputType.text,
+                    onChanged: (val) {
+                      userData['comment'] = val!;
+                    },
+                    maxLines: 1,
+                    validator: (val) {
+                      if ((val == null || val.isEmpty) && categoryModels.isEmpty) {
+                        return AppLocalizations.of(context)!.comment_error;
+                      }
+                    },
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
                   // sign up button
                   BlocBuilder<AuthenticationCubit, AuthenticationState>(builder: (context, state) {
                     if (state is IsSendingOtpState) {

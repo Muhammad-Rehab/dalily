@@ -32,7 +32,7 @@
   "occupation_validate_message": "You must enter the profession or craft you work in",
   "pick_work_images": "Choose photos of your products or business",
   "work_image_max_length": "The maximum number is 3 photos only",
-  "other_auth_error": "An error in logging in, please try at a later time",
+  "other_auth_error": "Error logging in. Please check your internet connection and try again",
   "invalid_phone_number": "Invalid phone number",
   "phone_already_exist": "The phone number is already registered in another account",
   "too_many_request": "The number of requests exceeds the maximum allowed",
@@ -55,6 +55,9 @@
   "service_name_hint": "Store or office nickname (Al-Fath Store)",
   "description": "Service Description",
   "description_hint": "Such as Al-Fath Store for home appliances",
-  "select_category": "Select Category"
+  "select_category": "Select Category",
+  "comment": "Comments",
+  "comment_error": "You must write a comment if you do not choose a category",
+  "add_comment": "If you do not find a suitable category for your service, you can write it in the comments box below"
 
 }
