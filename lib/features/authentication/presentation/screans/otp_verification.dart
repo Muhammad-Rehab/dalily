@@ -4,6 +4,8 @@ import 'package:dalily/features/authentication/data/model/service_owner_model.da
 import 'package:dalily/features/authentication/presentation/cubit/authentication_cubit.dart';
 import 'package:dalily/features/authentication/presentation/cubit/authentications_state.dart';
 import 'package:dalily/features/authentication/presentation/widgets/auth_header_widget.dart';
+import 'package:dalily/features/items/data/model/ItemModel.dart';
+import 'package:dalily/features/items/presentation/cubit/item_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -11,12 +13,13 @@ import 'package:sms_autofill/sms_autofill.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
   ServiceOwnerModel? serviceOwnerModel;
-
+  ItemModel ? itemModel;
   bool fromRegister;
 
   String ? phoneNumber ;
 
-  OtpVerificationScreen({Key? key, this.fromRegister = false, this.serviceOwnerModel,this.phoneNumber}) : super(key: key);
+  OtpVerificationScreen({Key? key, this.fromRegister = false, this.serviceOwnerModel,this.phoneNumber,
+  this.itemModel}) : super(key: key);
 
   @override
   State<OtpVerificationScreen> createState() => _OtpVerificationScreenState();
@@ -80,10 +83,12 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
               ),
               // confirm entry button
               BlocConsumer<AuthenticationCubit, AuthenticationState>(
-                listener: (context,state){
+                listener: (ctx,state){
                   if(state is AuthLoggedInState && widget.fromRegister){
                     widget.serviceOwnerModel!.id = state.id;
                     context.read<AuthenticationCubit>().register(widget.serviceOwnerModel!, context);
+                    widget.itemModel!.itemServiceOwners.first = widget.serviceOwnerModel! ;
+                    BlocProvider.of<ItemCubit>(context,listen: false).addItem(widget.itemModel!, ctx);
                   }
                 },
                   builder: (context, state) {

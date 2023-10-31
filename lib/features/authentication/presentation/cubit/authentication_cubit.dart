@@ -7,6 +7,7 @@ import 'package:dalily/features/authentication/domain/usecases/login.dart';
 import 'package:dalily/features/authentication/domain/usecases/register.dart';
 import 'package:dalily/features/authentication/domain/usecases/send_otp.dart';
 import 'package:dalily/features/authentication/presentation/cubit/authentications_state.dart';
+import 'package:dalily/features/items/data/model/ItemModel.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,7 +47,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   }
 
   Future<void> sendOtp(String phoneNumber,BuildContext context,{ServiceOwnerModel ?serviceOwnerModel
-    ,bool fromRegister = false, bool stopTimer = false}) async {
+    ,bool fromRegister = false, bool stopTimer = false,ItemModel ? itemModel}) async {
     emit(IsSendingOtpState());
     Either<AppFirebaseAuthException, Stream<String>> response = await sendOtpUseCase.call(phoneNumber);
     emit(response.fold((authException) {
@@ -54,7 +55,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     }, (right) {
       right.listen((event) {
         if(event == AppStrings.trueString){
-          emit(CodeIsSendState(phoneNumber: phoneNumber,serviceOwnerModel: serviceOwnerModel,fromRegister: fromRegister));
+          emit(CodeIsSendState(phoneNumber: phoneNumber,serviceOwnerModel: serviceOwnerModel,
+              fromRegister: fromRegister,itemModel: itemModel),);
           if(!stopTimer){
             startTimer();
           }

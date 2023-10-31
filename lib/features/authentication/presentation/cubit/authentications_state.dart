@@ -1,5 +1,6 @@
 
 import 'package:dalily/features/authentication/data/model/service_owner_model.dart';
+import 'package:dalily/features/items/data/model/ItemModel.dart';
 import 'package:equatable/equatable.dart';
 
 class AuthenticationState extends Equatable {
@@ -20,8 +21,9 @@ class CodeIsSendState extends AuthenticationState {
   String phoneNumber ;
   bool fromRegister ;
   ServiceOwnerModel ? serviceOwnerModel ;
+  ItemModel ? itemModel ;
 
-  CodeIsSendState({this.serviceOwnerModel,required this.phoneNumber,this.fromRegister = false});
+  CodeIsSendState({this.serviceOwnerModel,required this.phoneNumber,this.fromRegister = false,this.itemModel});
 }
 
 class AuthExceptionState extends AuthenticationState {

@@ -67,8 +67,9 @@ class CategoryScreen extends StatelessWidget {
                 arguments: appCategories[index].subCategory,
                 );
               }else{
-                // TODO navigate to items screen
-                print('I am here 0');
+                Navigator.pushNamed(context, AppRoutes.itemsScreen,
+                arguments: appCategories[index].id,
+                );
               }
             },
             child: Container(

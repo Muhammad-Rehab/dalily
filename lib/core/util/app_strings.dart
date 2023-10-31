@@ -20,8 +20,11 @@ class AppStrings {
   static const String categoriesCollection = 'categories';
   static const String categoriesStorageRef = '$appName/categories';
 
+  static const String itemsCollection = 'items';
+
 
   static const String trueString = 'true';
+  static const String nullCashError = 'null_cash_error';
 
 
 

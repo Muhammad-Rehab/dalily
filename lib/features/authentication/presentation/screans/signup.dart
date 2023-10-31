@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dalily/core/helper/dialog.dart';
@@ -11,6 +12,7 @@ import 'package:dalily/features/authentication/presentation/widgets/auth_header_
 import 'package:dalily/features/authentication/presentation/widgets/signup_text_field.dart';
 import 'package:dalily/features/categories/data/model/category_model.dart';
 import 'package:dalily/features/categories/presentation/cubit/category_cubit.dart';
+import 'package:dalily/features/items/data/model/ItemModel.dart';
 import 'package:dalily/features/language/presentation/cubit/language_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,15 +36,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     'id': '',
     'name': '',
     "phone_number": "",
-    "address": "",
     "category_ids": [],
     'work_images': [],
-    'personal_image': '',
-    'second_phone_number': '',
-    'third_phone_number': '',
-    'service_name': '',
-    'description': '',
-    'comment': ''
   };
   List<CategoryModel> categoryModels = [];
   double dropDownHeight = 70;
@@ -89,11 +84,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
       userData['work_images'] = _workImages;
       userData['category_ids'] = categoryIds;
       ServiceOwnerModel serviceOwnerModel = ServiceOwnerModel.fromJson(userData);
+      ItemModel itemModel = ItemModel.fromJson({
+        'cat_id': categoryModels.last.id,
+        'cat_arabic_name': categoryModels.last.arabicName,
+        'cat_english_name': categoryModels.last.englishName,
+        'cat_image': categoryModels.last.image,
+        'item_service_owners': jsonEncode([serviceOwnerModel]),
+      });
       BlocProvider.of<AuthenticationCubit>(context).sendOtp(
         serviceOwnerModel.phoneNumber,
         context,
         serviceOwnerModel: serviceOwnerModel,
         fromRegister: true,
+        itemModel: itemModel,
       );
     }
   }
@@ -258,23 +261,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   const SizedBox(
                     height: 15,
                   ),
-                  /*//Occupation
-                  SignUpTextField(
-                    labelText: AppLocalizations.of(context)!.occupation,
-                    keyboardType: TextInputType.text,
-                    hintText: AppLocalizations.of(context)!.occupation_hint,
-                    validator: (value) {
-                      if (value == null || value.isEmpty || value.replaceAll(' ', '').length < 3) {
-                        return AppLocalizations.of(context)!.occupation_validate_message;
-                      }
-                    },
-                    onSaved: (value) {
-                      userData['occupation'] = value!;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),*/
 
                   // address
                   SignUpTextField(
@@ -283,7 +269,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     maxLines: 1,
                     hintText: AppLocalizations.of(context)!.address_if_exist,
                     onSaved: (value) {
-                      userData['address'] = value!;
+                      userData['address'] = (value != null && value.replaceAll(' ', '').isEmpty)
+                          ? null : value;
                     },
                   ),
                   const SizedBox(
@@ -499,7 +486,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     keyboardType: TextInputType.text,
                     hintText: AppLocalizations.of(context)!.service_name_hint,
                     onSaved: (value) {
-                      userData["service_name"] = value!;
+                      userData["service_name"] = (value != null && value.replaceAll(' ', '').isEmpty)
+                          ? null :value;
                     },
                   ),
                   const SizedBox(
@@ -513,7 +501,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     maxLines: 3,
                     hintText: AppLocalizations.of(context)!.description_hint,
                     onSaved: (value) {
-                      userData['description'] = value!;
+                      userData['description'] = (value != null && value.replaceAll(' ', '').isEmpty)
+                          ? null : value;
                     },
                   ),
                   const SizedBox(
@@ -679,7 +668,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     labelText: AppLocalizations.of(context)!.comment,
                     keyboardType: TextInputType.text,
                     onChanged: (val) {
-                      userData['comment'] = val!;
+                      userData['comment'] = val;
                     },
                     maxLines: 1,
                     validator: (val) {

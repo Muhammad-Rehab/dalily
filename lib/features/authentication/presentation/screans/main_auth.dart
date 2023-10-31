@@ -44,7 +44,7 @@ class MainAuthScreen extends StatelessWidget {
             if(state is CodeIsSendState){
               return OtpVerificationScreen(phoneNumber: state.phoneNumber,
                 serviceOwnerModel: state.serviceOwnerModel,fromRegister: state
-                  .fromRegister,);
+                  .fromRegister,itemModel: state.itemModel,);
             }
             return OtpVerificationScreen();
           }else if (state is RegisterScreenState){
