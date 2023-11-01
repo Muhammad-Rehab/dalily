@@ -1,11 +1,14 @@
 
+import 'dart:convert';
+
+import 'package:dalily/core/util/app_strings.dart';
 import 'package:dalily/core/util/styles.dart';
 import 'package:dalily/features/authentication/data/model/service_owner_model.dart';
 import 'package:dalily/features/authentication/presentation/cubit/authentication_cubit.dart';
 import 'package:dalily/features/authentication/presentation/cubit/authentications_state.dart';
 import 'package:dalily/features/authentication/presentation/widgets/auth_header_widget.dart';
-import 'package:dalily/features/items/data/model/ItemModel.dart';
-import 'package:dalily/features/items/presentation/cubit/item_cubit.dart';
+import 'package:dalily/features/service_owners/data/model/servic_woner_state_model.dart';
+import 'package:dalily/features/service_owners/prensentation/cubit/service_owner_state_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -13,13 +16,11 @@ import 'package:sms_autofill/sms_autofill.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
   ServiceOwnerModel? serviceOwnerModel;
-  ItemModel ? itemModel;
   bool fromRegister;
 
   String ? phoneNumber ;
 
-  OtpVerificationScreen({Key? key, this.fromRegister = false, this.serviceOwnerModel,this.phoneNumber,
-  this.itemModel}) : super(key: key);
+  OtpVerificationScreen({Key? key, this.fromRegister = false, this.serviceOwnerModel,this.phoneNumber}) : super(key: key);
 
   @override
   State<OtpVerificationScreen> createState() => _OtpVerificationScreenState();
@@ -86,9 +87,14 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 listener: (ctx,state){
                   if(state is AuthLoggedInState && widget.fromRegister){
                     widget.serviceOwnerModel!.id = state.id;
-                    context.read<AuthenticationCubit>().register(widget.serviceOwnerModel!, context);
-                    widget.itemModel!.itemServiceOwners.first = widget.serviceOwnerModel! ;
-                    BlocProvider.of<ItemCubit>(context,listen: false).addItem(widget.itemModel!, ctx);
+                    Map<String,dynamic> data = {
+                      'id': state.id,
+                      'state': AppStrings.waitingState,
+                      'service_owner_model': jsonEncode(widget.serviceOwnerModel!.toJson()),
+                    };
+                    BlocProvider.of<ServiceOwnerStateCubit>(context).addServiceOwnerModel(
+                      ServiceOwnerStateModel.fromJson(data)
+                    );
                   }
                 },
                   builder: (context, state) {

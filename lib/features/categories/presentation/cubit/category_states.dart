@@ -1,5 +1,6 @@
 
 import 'package:dalily/features/categories/data/model/category_model.dart';
+import 'package:dalily/features/service_owners/prensentation/cubit/service_owner_state_states.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class CategoryState extends Equatable {
@@ -31,3 +32,8 @@ class CategoryAddedState extends CategoryState {}
 
 class CategoryIsUpdatedStated extends CategoryState {}
 
+class GettingSingleLocalCatState extends CategoryState {}
+class LoadedSingleLocalCatState extends CategoryState {
+  final CategoryModel ? categoryModel ;
+  LoadedSingleLocalCatState({required this.categoryModel});
+}

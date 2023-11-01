@@ -7,9 +7,10 @@ class SignUpTextField extends StatelessWidget {
 
   SignUpTextField({Key? key,this.keyboardType = TextInputType.name,
     required this.labelText,this.validator,this.onSaved,this.isPhoneNumber = false,this.hintText,
-   this.maxLines = 1 , this.onChanged,
+   this.maxLines = 1 , this.onChanged,this.initialValue
   }) : super(key: key);
 
+  String ? initialValue ;
   bool isPhoneNumber ;
   TextInputType keyboardType ;
   String labelText ;
@@ -32,6 +33,7 @@ class SignUpTextField extends StatelessWidget {
         style: bodyVerSmall(context).copyWith(fontWeight: FontWeight.bold),
         maxLines: maxLines,
         onChanged: onChanged,
+        initialValue: initialValue,
         keyboardType: keyboardType,
         decoration: InputDecoration(
           border: OutlineInputBorder(

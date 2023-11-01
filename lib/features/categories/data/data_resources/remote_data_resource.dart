@@ -9,6 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 abstract class CategoryRemoteDataResource {
   Future<List<CategoryModel>> getCategory();
+  CategoryModel ? getSingleLocalCategory({required String id, required List<CategoryModel> categories});
   Future<void> addCategory(CategoryModel categoryModel,List<CategoryModel> parents);
   Future<void> update(CategoryModel categoryModel,bool updateImage);
 }
@@ -61,6 +62,21 @@ class CategoryRemoteDataResourceImp extends CategoryRemoteDataResource {
     await firebaseFirestore.collection(AppStrings.categoriesCollection)
         .doc(categoryModel.id).update(categoryModel.toJson());
 
+  }
+
+  @override
+  CategoryModel ? getSingleLocalCategory({required String id , required List<CategoryModel> categories}) {
+    for(CategoryModel item in categories){
+      if(item.id == id){
+        return item ;
+      }else if (item.subCategory.isNotEmpty){
+        CategoryModel ? hold =  getSingleLocalCategory(id: id, categories: item.subCategory);
+        if(hold != null){
+          return hold ;
+        }
+      }
+    }
+    return null ;
   }
 
 }

@@ -12,7 +12,7 @@ class AppStrings {
   static const String otherAuthError = 'other_auth_error';
 
 
-  static const String serviceOwnerCollection = 'service_owners';
+  static const String serviceOwnersCollection = 'service_owners';
   static const String serviceOwnerStorageRef = '$appName/service_owners';
   static const String personalImage = '/personal_image';
   static const String workImages = '/work_images';
@@ -25,6 +25,10 @@ class AppStrings {
 
   static const String trueString = 'true';
   static const String nullCashError = 'null_cash_error';
+
+  static const String waitingState = 'waiting';
+  static const String rejectedState = 'rejected';
+  static const String acceptedState = 'accepted';
 
 
 

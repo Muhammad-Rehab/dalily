@@ -48,4 +48,16 @@ class CategoryRepositoryImp extends CategoryRepository{
 
   }
 
+  @override
+  Either<CashFailure,CategoryModel?> getSingleLocalCategory({required String id,
+    required List<CategoryModel> categories}) {
+    try{
+      return Right(categoryRemoteDataResource.getSingleLocalCategory(id: id, categories: categories));
+    }catch(e){
+      debugPrint('cat repo imp / getSingleLocalCategory()');
+      debugPrint(e.toString());
+      return const Left(CashFailure());
+    }
+  }
+
 }

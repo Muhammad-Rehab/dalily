@@ -93,6 +93,6 @@ class AuthRemoteDataImpl extends AuthRemoteData {
             .getDownloadURL();
       }
     }
-    await FirebaseFirestore.instance.collection(AppStrings.serviceOwnerCollection).doc(serviceOwnerModel.id).set(serviceOwnerModel.toJson());
+    await FirebaseFirestore.instance.collection(AppStrings.serviceOwnersCollection).doc(serviceOwnerModel.id).set(serviceOwnerModel.toJson());
   }
 }

@@ -84,19 +84,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
       userData['work_images'] = _workImages;
       userData['category_ids'] = categoryIds;
       ServiceOwnerModel serviceOwnerModel = ServiceOwnerModel.fromJson(userData);
-      ItemModel itemModel = ItemModel.fromJson({
-        'cat_id': categoryModels.last.id,
-        'cat_arabic_name': categoryModels.last.arabicName,
-        'cat_english_name': categoryModels.last.englishName,
-        'cat_image': categoryModels.last.image,
-        'item_service_owners': jsonEncode([serviceOwnerModel]),
-      });
       BlocProvider.of<AuthenticationCubit>(context).sendOtp(
         serviceOwnerModel.phoneNumber,
         context,
         serviceOwnerModel: serviceOwnerModel,
         fromRegister: true,
-        itemModel: itemModel,
       );
     }
   }
@@ -230,6 +222,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       if (value == null || value.isEmpty || value.replaceAll(' ', '').length < 9) {
                         return AppLocalizations.of(context)!.full_name_error;
                       }
+                      return null;
                     },
                     onSaved: (value) {
                       userData["name"] = value!;
@@ -253,6 +246,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       } else if (!value.startsWith('010') && !value.startsWith('011') && !value.startsWith('012') && !value.startsWith('015')) {
                         return AppLocalizations.of(context)!.wrong_phone_number_format;
                       }
+                      return null;
                     },
                     onSaved: (value) {
                       userData['phone_number'] = "+2${value!.replaceAll(' ', '')}";
@@ -354,6 +348,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 if (val == null && userData['comment'].isEmpty) {
                                   return AppLocalizations.of(context)!.occupation_validate_message;
                                 }
+                                return null;
                               },
                               onSaved: (val) {
                                 if (val != null && !categoryIds.contains(val.id)) {
@@ -402,6 +397,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   if (val == null && userData['comment'].isEmpty) {
                                     return AppLocalizations.of(context)!.occupation_validate_message;
                                   }
+                                  return null;
                                 },
                                 onSaved: (val) {
                                   if (val != null && !categoryIds.contains(val.id)) {
@@ -453,6 +449,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   if (val == null && userData['comment'].isEmpty) {
                                     return AppLocalizations.of(context)!.occupation_validate_message;
                                   }
+                                  return null;
                                 },
                                 onSaved: (val) {
                                   if (val != null && !categoryIds.contains(val.id)) {
@@ -627,6 +624,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             !value.startsWith('015')) {
                           return AppLocalizations.of(context)!.wrong_phone_number_format;
                         }
+                        return null;
                       },
                       onSaved: (value) {
                         userData['second_phone_number'] = "+2$value";
@@ -653,6 +651,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             !value.startsWith('015')) {
                           return AppLocalizations.of(context)!.wrong_phone_number_format;
                         }
+                        return null;
                       },
                       onSaved: (value) {
                         userData['third_phone_number'] = "+2$value";
@@ -669,12 +668,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     keyboardType: TextInputType.text,
                     onChanged: (val) {
                       userData['comment'] = val;
+                      return null;
                     },
                     maxLines: 1,
                     validator: (val) {
                       if ((val == null || val.isEmpty) && categoryModels.isEmpty) {
                         return AppLocalizations.of(context)!.comment_error;
                       }
+                      return null;
                     },
                   ),
                   const SizedBox(

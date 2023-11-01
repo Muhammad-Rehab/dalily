@@ -15,12 +15,15 @@ import 'package:dalily/core/screens/splash/splash.dart';
 import 'package:dalily/features/categories/presentation/widgets/category_drawer_button.dart';
 import 'package:dalily/features/items/item_injection_container.dart';
 import 'package:dalily/features/items/presentation/cubit/item_cubit.dart';
+import 'package:dalily/features/service_owners/prensentation/cubit/service_owner_state_cubit.dart';
+import 'package:dalily/features/service_owners/prensentation/screens/admin_waiting_list.dart';
 import 'package:dalily/features/items/presentation/screens/items_screen.dart';
 import 'package:dalily/features/language/data/model/language_model.dart';
 import 'package:dalily/features/language/language_injection_container.dart';
 import 'package:dalily/features/language/presentation/cubit/language_cubit.dart';
 import 'package:dalily/features/language/presentation/cubit/language_state.dart';
 import 'package:dalily/features/language/presentation/widget/language_record.dart';
+import 'package:dalily/features/service_owners/service_owners_injection_container.dart';
 import 'package:dalily/features/theme/data/model/app_theme_model.dart';
 import 'package:dalily/features/theme/presentation/cubit/theme_cubit.dart';
 import 'package:dalily/features/theme/presentation/cubit/theme_state.dart';
@@ -42,6 +45,7 @@ void main() async {
   authInjectionContainer();
   categoryInjectionContainer();
   getItemInjectionContainer();
+  serviceOwnersInjectionContaier();
 
   Bloc.observer = LoggingBlocObserver();
   runApp(
@@ -54,6 +58,7 @@ void main() async {
       BlocProvider<AuthenticationCubit>(create: (context) => serverLocator<AuthenticationCubit>()),
       BlocProvider<CategoryCubit>(create: (context) => serverLocator<CategoryCubit>()),
       BlocProvider<ItemCubit>(create: (context) => serverLocator<ItemCubit>()),
+      BlocProvider<ServiceOwnerStateCubit>(create: (context) => serverLocator<ServiceOwnerStateCubit>()),
     ],
     child: const MyApp(),
   ),)
@@ -130,6 +135,12 @@ class HomePage extends StatelessWidget {
                         arguments: BlocProvider.of<CategoryCubit>(context).appCategories);
               },
               child: const Text("Category Screen"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (_)=> AdminWaitingList()));
+              },
+              child: const Text("Waiting List"),
             ),
           ],
         ),

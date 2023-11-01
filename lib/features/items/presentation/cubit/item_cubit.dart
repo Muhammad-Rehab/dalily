@@ -28,7 +28,7 @@ class ItemCubit extends Cubit<ItemState> {
     }, (itemModel) => ItemLoadedState(itemModel: itemModel)));
   }
 
-  addItem(ItemModel itemModel, BuildContext context) async {
+  Future addItem(ItemModel itemModel, BuildContext context) async {
     emit(ItemIsAddingState());
     final Either<Failure, void> response = await addItemUseCase.call(itemModel);
     emit(
