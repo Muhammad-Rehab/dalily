@@ -86,8 +86,11 @@ class ItemsScreen extends StatelessWidget {
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(75),
-                            child: Image.network(
-                              state.itemModel.catImage,
+                            child: FadeInImage(
+                              placeholder: const AssetImage(ImageHelper.badConnection),
+                              image: NetworkImage(
+                                state.itemModel.catImage,
+                              ),
                               fit: BoxFit.fill,
                             ),
                           ),
@@ -132,7 +135,7 @@ class ItemsScreen extends StatelessWidget {
                                 ),
                               ),
                               title: Text(
-                                items[index].serviceName != null || items[index].serviceName!.isEmpty
+                                items[index].serviceName != null && items[index].serviceName!.isNotEmpty
                                     ? items[index].serviceName!
                                     : items[index].name.length < 25
                                         ? items[index].name

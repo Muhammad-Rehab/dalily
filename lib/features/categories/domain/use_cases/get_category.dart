@@ -11,6 +11,6 @@ class GetCategoryUseCase extends UseCase<List<CategoryModel>,NoParam>{
   GetCategoryUseCase({required this.categoryRepository});
 
   @override
-  Future<Either<ServerFailure, List<CategoryModel>>> call(NoParam param) => categoryRepository.getData();
+  Future<Either<Failure, List<CategoryModel>>> call(NoParam param) => categoryRepository.getData();
 
 }

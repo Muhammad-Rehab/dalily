@@ -30,6 +30,8 @@ class AppStrings {
   static const String rejectedState = 'rejected';
   static const String acceptedState = 'accepted';
 
+  static const String categoryListSharedKey = 'category_list';
+
 
 
 }

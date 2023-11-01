@@ -1,6 +1,9 @@
 
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dalily/core/error/failure.dart';
+import 'package:dalily/core/util/app_strings.dart';
+import 'package:dalily/features/categories/data/data_resources/local_data_resource.dart';
 import 'package:dalily/features/categories/data/data_resources/remote_data_resource.dart';
 import 'package:dalily/features/categories/data/model/category_model.dart';
 import 'package:dalily/features/categories/domain/repository/category_repo.dart';
@@ -10,18 +13,27 @@ import 'package:flutter/cupertino.dart';
 class CategoryRepositoryImp extends CategoryRepository{
 
   CategoryRemoteDataResource categoryRemoteDataResource ;
-
-  CategoryRepositoryImp({required this.categoryRemoteDataResource});
+  CategoryLocalDataResource categoryLocalDataResource ;
+  Connectivity connectivity ;
+  CategoryRepositoryImp({required this.categoryRemoteDataResource,required this.categoryLocalDataResource, required this.connectivity});
 
   @override
-  Future<Either<ServerFailure, List<CategoryModel>>> getData() async{
+  Future<Either<Failure, List<CategoryModel>>> getData() async{
     try{
-      List<CategoryModel> response = await categoryRemoteDataResource.getCategory();
-      return Right(response);
+      final ConnectivityResult connectivityResult = await connectivity.checkConnectivity();
+      if(connectivityResult != ConnectivityResult.none){
+        List<CategoryModel> response = await categoryRemoteDataResource.getCategory();
+        await categoryLocalDataResource.addCategoryList(response);
+        return Right(response);
+      }else{
+        List<CategoryModel> ?response = categoryLocalDataResource.getCategory();
+        return response!=null ? Right(response): const Left(CashFailure(message: AppStrings.nullCashError));
+      }
+
     }catch(e){
       debugPrint('category repo imp / getData() ');
       debugPrint(e.toString());
-      return Left(ServerFailure());
+      return const Left(ServerFailure());
     }
   }
 
@@ -43,7 +55,7 @@ class CategoryRepositoryImp extends CategoryRepository{
    }catch (e){
      debugPrint('category rop iml / update()');
      debugPrint(e.toString());
-     return Left(ServerFailure());
+     return const Left(ServerFailure());
    }
 
   }

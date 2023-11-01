@@ -1,4 +1,3 @@
-
 import 'package:dalily/core/helper/image_helper.dart';
 import 'package:dalily/core/util/styles.dart';
 import 'package:dalily/features/authentication/data/model/service_owner_model.dart';
@@ -10,8 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class ItemDetailsScreen extends StatelessWidget {
   final ServiceOwnerModel serviceOwnerModel;
 
-
-  ItemDetailsScreen({Key? key, required this.serviceOwnerModel}) : super(key: key) ;
+  ItemDetailsScreen({Key? key, required this.serviceOwnerModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +57,13 @@ class ItemDetailsScreen extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(75),
                       child: serviceOwnerModel.personalImage != null
-                          ? Image.network(
-                              serviceOwnerModel.personalImage!,
+                          ? FadeInImage(
+                              placeholder: const AssetImage(
+                                ImageHelper.avatarImage,
+                              ),
+                              image: NetworkImage(
+                                serviceOwnerModel.personalImage!,
+                              ),
                               fit: BoxFit.fill,
                             )
                           : Image.asset(
@@ -74,7 +77,9 @@ class ItemDetailsScreen extends StatelessWidget {
                   ),
                   // name
                   Text(
-                    serviceOwnerModel.serviceName!.isEmpty ? serviceOwnerModel.name : serviceOwnerModel.serviceName!,
+                    serviceOwnerModel.serviceName != null && serviceOwnerModel.serviceName!.isNotEmpty
+                        ? serviceOwnerModel.serviceName!
+                        : serviceOwnerModel.name,
                     style: titleLarge(context),
                   ),
                   const SizedBox(
@@ -266,45 +271,46 @@ class ItemDetailsScreen extends StatelessWidget {
                   ),
 
                   // work images
-                  Container(
-                    margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                    height: 410,
-                    alignment: BlocProvider.of<LanguageCubit>(context).isArabic ? Alignment.bottomRight : Alignment.bottomLeft,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          AppLocalizations.of(context)!.previous_work,
-                          style: titleMedium(context).copyWith(color: Theme.of(context).colorScheme.primary),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Expanded(
-                          child: GridView.builder(
-                            scrollDirection: Axis.vertical,
-                            physics: const NeverScrollableScrollPhysics(),
-                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2, mainAxisExtent: 180, mainAxisSpacing: 10, crossAxisSpacing: 10),
-                            itemCount: (serviceOwnerModel.workImages == null) ? 0 : serviceOwnerModel.workImages!.length,
-                            itemBuilder: (context, index) => Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Image.network(
-                                  serviceOwnerModel.workImages![index],
-                                  fit: BoxFit.fill,
+                  if (serviceOwnerModel.workImages != null && serviceOwnerModel.workImages!.isNotEmpty)
+                    Container(
+                      margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
+                      height: 410,
+                      alignment: BlocProvider.of<LanguageCubit>(context).isArabic ? Alignment.bottomRight : Alignment.bottomLeft,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            AppLocalizations.of(context)!.previous_work,
+                            style: titleMedium(context).copyWith(color: Theme.of(context).colorScheme.primary),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Expanded(
+                            child: GridView.builder(
+                              scrollDirection: Axis.vertical,
+                              physics: const NeverScrollableScrollPhysics(),
+                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2, mainAxisExtent: 180, mainAxisSpacing: 10, crossAxisSpacing: 10),
+                              itemCount: (serviceOwnerModel.workImages == null) ? 0 : serviceOwnerModel.workImages!.length,
+                              itemBuilder: (context, index) => Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.network(
+                                    serviceOwnerModel.workImages![index],
+                                    fit: BoxFit.fill,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        )
-                      ],
+                          )
+                        ],
+                      ),
                     ),
-                  ),
                 ],
               ),
             ),

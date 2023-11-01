@@ -1,4 +1,5 @@
 import 'package:dalily/config/routes.dart';
+import 'package:dalily/core/helper/image_helper.dart';
 import 'package:dalily/core/util/styles.dart';
 import 'package:dalily/features/categories/data/model/category_model.dart';
 import 'package:dalily/features/language/presentation/cubit/language_cubit.dart';
@@ -11,7 +12,7 @@ class CategoryScreen extends StatelessWidget {
 
     CategoryScreen({Key? key}) : super(key: key);
 
-   late final List<CategoryModel> appCategories ;
+   late List<CategoryModel> appCategories ;
    late bool isArabic ;
   @override
   Widget build(BuildContext context) {
@@ -86,7 +87,11 @@ class CategoryScreen extends StatelessWidget {
                     width: 100,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-                      child: Image.network(appCategories[index].image,fit: BoxFit.fill,),
+                      child: FadeInImage(
+                        placeholder: const AssetImage(ImageHelper.badConnection),
+                        image: NetworkImage(appCategories[index].image,),
+                        fit: BoxFit.fill,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 15,),

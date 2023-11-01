@@ -25,9 +25,9 @@ class CategoryCubit extends Cubit<CategoryState>{
   
   Future<void> getCategories() async {
     emit(CategoryIsLoading());
-    Either<ServerFailure, List<CategoryModel>> response = await getCategoryUseCase.call(NoParam());
+    Either<Failure, List<CategoryModel>> response = await getCategoryUseCase.call(NoParam());
     emit(response.fold(
-            (serverFailure) => CategoryErrorState() ,
+            (failure) => CategoryErrorState(message: failure.message) ,
             (categories) {
               appCategories = categories ;
              return CategoryIsLoaded(categories: categories);

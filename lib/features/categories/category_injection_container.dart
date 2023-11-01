@@ -1,6 +1,7 @@
 
 
 import 'package:dalily/config/super_injection_container.dart';
+import 'package:dalily/features/categories/data/data_resources/local_data_resource.dart';
 import 'package:dalily/features/categories/data/data_resources/remote_data_resource.dart';
 import 'package:dalily/features/categories/data/repositroy/category_repository_imp.dart';
 import 'package:dalily/features/categories/domain/repository/category_repo.dart';
@@ -26,7 +27,11 @@ categoryInjectionContainer(){
   serverLocator.registerLazySingleton(() => UpdateCategoryUseCase(categoryRepository: serverLocator()));
 
   serverLocator.registerLazySingleton<CategoryRepository>(() =>
-      CategoryRepositoryImp(categoryRemoteDataResource: serverLocator()));
+      CategoryRepositoryImp(categoryRemoteDataResource: serverLocator(),categoryLocalDataResource: serverLocator(),
+      connectivity: serverLocator()
+      ));
+
+  serverLocator.registerLazySingleton<CategoryLocalDataResource>(() => CategoryLocalDataResourceImp(sharedPreferences: serverLocator(),),);
   serverLocator.registerLazySingleton<CategoryRemoteDataResource>(() =>
       CategoryRemoteDataResourceImp(firebaseFirestore: serverLocator(),firebaseStorage: serverLocator()));
 
