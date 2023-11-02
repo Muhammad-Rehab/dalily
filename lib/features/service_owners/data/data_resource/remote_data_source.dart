@@ -13,6 +13,8 @@ abstract class ServiceOwnerStateRemoteSource {
   Future<void> updateServiceOwnerState({required String id, required String state, String? description});
 
   Future<ServiceOwnerStateModel> getSingleServiceOwner({required String id});
+  
+  Future<ServiceOwnerModel> getCurrentUserData({required String id});
 
   Future<void> addServiceOwner({required ServiceOwnerStateModel serviceOwnerStateModel});
 }
@@ -77,5 +79,13 @@ class ServiceOwnerStateRemoteSourceImp extends ServiceOwnerStateRemoteSource {
     }
     await firebaseFirestore.collection(AppStrings.serviceOwnersCollection)
         .doc(serviceOwnerStateModel.id).set(serviceOwnerStateModel.toJson());
+  }
+
+  @override
+  Future<ServiceOwnerModel> getCurrentUserData({required String id}) async {
+    final QuerySnapshot<Map<String, dynamic>> response = await firebaseFirestore.collection(AppStrings.serviceOwnersCollection).where('cat_id',isEqualTo: id)
+        .limit(1).get();
+    return ServiceOwnerModel.fromJson(response.docs.first.data()['service_owner_model']);
+    
   }
 }

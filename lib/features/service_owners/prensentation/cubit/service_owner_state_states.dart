@@ -1,3 +1,4 @@
+import 'package:dalily/features/authentication/data/model/service_owner_model.dart';
 import 'package:dalily/features/service_owners/data/model/servic_woner_state_model.dart';
 import 'package:equatable/equatable.dart';
 
@@ -34,4 +35,8 @@ class AddedOwnerState extends ServiceOwnerStateStates {}
 
 class ServiceOwnerStateError extends ServiceOwnerStateStates {}
 
-
+class GettingCurrentUserData extends ServiceOwnerStateStates {}
+class LoadedCurrentUserData extends ServiceOwnerStateStates {
+  final ServiceOwnerModel serviceOwnerModel ;
+  LoadedCurrentUserData({required this.serviceOwnerModel});
+}

@@ -1,5 +1,6 @@
 
 import 'package:dalily/core/error/failure.dart';
+import 'package:dalily/features/authentication/data/model/service_owner_model.dart';
 import 'package:dalily/features/service_owners/data/data_resource/remote_data_source.dart';
 import 'package:dalily/features/service_owners/data/model/servic_woner_state_model.dart';
 import 'package:dalily/features/service_owners/domain/repository/service_owner_state_repository.dart';
@@ -55,6 +56,16 @@ class ServiceOwnerStateRepoImp extends ServiceOwnerStateRepository {
     debugPrint(e.toString());
     return const Left(ServerFailure());
     }
+  }
+
+  @override
+  Future<Either<ServerFailure, ServiceOwnerModel>> getCurrentUserData({required String id}) async {
+     try{
+       final ServiceOwnerModel response = await serviceOwnerStateRemoteSource.getCurrentUserData(id: id);
+       return Right(response);
+     }catch (e){
+       return const Left(ServerFailure());
+     }
   }
 
 }
