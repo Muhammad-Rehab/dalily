@@ -1,9 +1,12 @@
 import 'dart:async';
 
+import 'package:dalily/core/error/failure.dart';
 import 'package:dalily/core/error/firebase_auth_exception.dart';
+import 'package:dalily/core/usecase/usecase.dart';
 import 'package:dalily/core/util/app_strings.dart';
 import 'package:dalily/features/authentication/data/model/service_owner_model.dart';
 import 'package:dalily/features/authentication/domain/usecases/login.dart';
+import 'package:dalily/features/authentication/domain/usecases/logout.dart';
 import 'package:dalily/features/authentication/domain/usecases/send_otp.dart';
 import 'package:dalily/features/authentication/presentation/cubit/authentications_state.dart';
 import 'package:dalily/features/items/data/model/ItemModel.dart';
@@ -15,9 +18,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class AuthenticationCubit extends Cubit<AuthenticationState> {
   SendOtpUseCase sendOtpUseCase;
   LoginUseCase loginUseCase;
+  LogOutUseCase logOutUseCase;
+
   Timer? _timer;
 
-  AuthenticationCubit({required this.sendOtpUseCase, required this.loginUseCase}) : super(InitialAuthenticationState());
+  AuthenticationCubit({required this.sendOtpUseCase, required this.loginUseCase, required this.logOutUseCase}) : super(InitialAuthenticationState());
 
   logIn(String otp, BuildContext context) async {
     emit(IsLoggingInState());
@@ -66,6 +71,17 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     } else {
       return AuthExceptionState(message: AppLocalizations.of(context)!.other_auth_error);
     }
+  }
+
+  logOut(BuildContext context) async {
+    emit(LoggingOutState());
+    final Either<Failure, void> response = await logOutUseCase.call(NoParam());
+    emit(
+      response.fold(
+        (l) => AuthExceptionState(message: AppLocalizations.of(context)!.internet_connection_error),
+        (r) => UserLoggedOutState(),
+      ),
+    );
   }
 
   initAuthCubit(AuthenticationState authenticationState) {

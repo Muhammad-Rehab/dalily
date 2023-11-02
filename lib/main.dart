@@ -6,6 +6,7 @@ import 'package:dalily/features/authentication/auth_injection.dart';
 import 'package:dalily/features/authentication/presentation/cubit/authentication_cubit.dart';
 import 'package:dalily/features/authentication/presentation/cubit/authentications_state.dart';
 import 'package:dalily/features/authentication/presentation/screans/main_auth.dart';
+import 'package:dalily/features/authentication/presentation/widgets/logout_record.dart';
 import 'package:dalily/features/categories/category_injection_container.dart';
 import 'package:dalily/features/categories/presentation/cubit/category_cubit.dart';
 import 'package:dalily/features/categories/presentation/cubit/category_states.dart';
@@ -113,6 +114,7 @@ class HomePage extends StatelessWidget {
             ThemeRecord(),
             LanguageRecord(),
             CategoryDrawerButton(),
+            LogOutRecord(),
           ],
         ),
       ),

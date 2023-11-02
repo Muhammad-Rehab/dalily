@@ -49,4 +49,15 @@ class AuthRepoImpl extends AuthRepository {
       return Left(OtherAuthException());
     }
   }
+
+  @override
+  Future<Either<AppFirebaseAuthException, void>> logOut() async{
+    try{
+      return Right( await authRemoteData.logOut());
+    }catch (e){
+      debugPrint('auth repo imp / logOut()');
+      debugPrint(e.toString());
+      return Left(OtherAuthException());
+    }
+  }
 }

@@ -8,6 +8,9 @@ abstract class AuthRemoteData {
   Future<Stream<String>> sendOtp(String phoneNumber);
 
   Future<String> logIn(String otp);
+
+  Future<void> logOut();
+
 }
 
 class AuthRemoteDataImpl extends AuthRemoteData {
@@ -59,5 +62,10 @@ class AuthRemoteDataImpl extends AuthRemoteData {
     debugPrint("${await response.user?.getIdToken()}");
     debugPrint("${response.user?.refreshToken}");
     return response.user!.uid;
+  }
+
+  @override
+  Future<void> logOut() async {
+   await FirebaseAuth.instance.signOut();
   }
 }

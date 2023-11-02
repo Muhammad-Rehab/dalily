@@ -61,6 +61,8 @@
   "add_comment": "If you do not find a suitable category for your service, you can write it in the comments box below",
   "general_error": "Something went wrong. Please try again later",
   "internet_connection_error": "Please connect to the Internet and re -try again",
-  "previous_work" : "My previous work"
+  "previous_work" : "My previous work",
+  "log_out": "Log out",
+  "log_out_question": "Are you sure to log out ?"
 
 }

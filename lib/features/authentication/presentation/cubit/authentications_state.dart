@@ -27,7 +27,7 @@ class CodeIsSendState extends AuthenticationState {
 }
 
 class AuthExceptionState extends AuthenticationState {
-  String message;
+  final String message;
   AuthExceptionState({required this.message});
 
   @override
@@ -35,7 +35,7 @@ class AuthExceptionState extends AuthenticationState {
 }
 
 class AuthLoggedInState extends AuthenticationState {
-  String id ;
+  final String id ;
   AuthLoggedInState({required this.id});
 
   @override
@@ -45,8 +45,12 @@ class AuthLoggedInState extends AuthenticationState {
 class AuthRegisteredState extends AuthenticationState {}
 
 class Timing extends AuthenticationState {
-  int seconds ;
+  final int seconds ;
   Timing({required this.seconds});
 }
 class SecondPassed extends AuthenticationState {}
+
+class LoggingOutState extends AuthenticationState {}
+class UserLoggedOutState extends AuthenticationState {}
+
 

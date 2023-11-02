@@ -7,4 +7,6 @@ abstract class AuthRepository {
 
   Future<Either<AppFirebaseAuthException, Stream<String>>> sendOtp(String phoneNumber);
   Future<Either<AppFirebaseAuthException, String>> logIn(String otp);
+  Future<Either<AppFirebaseAuthException, void>> logOut();
+
 }
