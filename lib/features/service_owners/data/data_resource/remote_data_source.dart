@@ -12,9 +12,9 @@ abstract class ServiceOwnerStateRemoteSource {
 
   Future<void> updateServiceOwnerState({required String id, required String state, String? description});
 
-  Future<ServiceOwnerStateModel> getSingleServiceOwner({required String id});
+  Future<ServiceOwnerStateModel?> getSingleServiceOwner({required String id});
   
-  Future<ServiceOwnerModel> getCurrentUserData({required String id});
+  Future<ServiceOwnerModel?> getCurrentUserData({required String id});
 
   Future<void> addServiceOwner({required ServiceOwnerStateModel serviceOwnerStateModel});
 }
@@ -38,10 +38,10 @@ class ServiceOwnerStateRemoteSourceImp extends ServiceOwnerStateRemoteSource {
   }
 
   @override
-  Future<ServiceOwnerStateModel> getSingleServiceOwner({required String id}) async {
+  Future<ServiceOwnerStateModel?>  getSingleServiceOwner({required String id}) async {
     final QuerySnapshot<Map<String, dynamic>> response =
         await firebaseFirestore.collection(AppStrings.serviceOwnersCollection).limit(1).where('id', isEqualTo: id).get();
-    return ServiceOwnerStateModel.fromJson(response.docs.first.data());
+    return response.docs.isEmpty ? null : ServiceOwnerStateModel.fromJson(response.docs.first.data());
   }
 
   @override
@@ -82,10 +82,10 @@ class ServiceOwnerStateRemoteSourceImp extends ServiceOwnerStateRemoteSource {
   }
 
   @override
-  Future<ServiceOwnerModel> getCurrentUserData({required String id}) async {
+  Future<ServiceOwnerModel?> getCurrentUserData({required String id}) async {
     final QuerySnapshot<Map<String, dynamic>> response = await firebaseFirestore.collection(AppStrings.serviceOwnersCollection).where('cat_id',isEqualTo: id)
         .limit(1).get();
-    return ServiceOwnerModel.fromJson(response.docs.first.data()['service_owner_model']);
+    return response.docs.isEmpty ? null : ServiceOwnerModel.fromJson(response.docs.first.data()['service_owner_model']);
     
   }
 }

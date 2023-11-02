@@ -19,6 +19,7 @@ showCustomDialog ({required BuildContext context,String ?title, DialogType dialo
       btnOkText: okText ,
       desc: description,
       body: body == null ? null : Text(body),
+      autoDismiss: true,
       titleTextStyle: titleMedium(context),
       descTextStyle: bodySmall(context).copyWith(fontWeight: FontWeight.bold),
       buttonsTextStyle: bodyMedium(context).copyWith(color: Colors.white),

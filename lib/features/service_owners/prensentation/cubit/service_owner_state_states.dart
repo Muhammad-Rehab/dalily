@@ -33,7 +33,10 @@ class AddingOwnerState extends ServiceOwnerStateStates {}
 
 class AddedOwnerState extends ServiceOwnerStateStates {}
 
-class ServiceOwnerStateError extends ServiceOwnerStateStates {}
+class ServiceOwnerStateError extends ServiceOwnerStateStates {
+  final String ? message ;
+  ServiceOwnerStateError({this.message});
+}
 
 class GettingCurrentUserData extends ServiceOwnerStateStates {}
 class LoadedCurrentUserData extends ServiceOwnerStateStates {

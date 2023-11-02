@@ -63,6 +63,10 @@
   "internet_connection_error": "Please connect to the Internet and re -try again",
   "previous_work" : "My previous work",
   "log_out": "Log out",
-  "log_out_question": "Are you sure to log out ?"
+  "log_out_question": "Are you sure to log out ?",
+  "waiting_state_disc": "Your data is now being reviewed by the administrator, and upon approval, you will be notified as soon as possible",
+  "rejected_state_title": "Sorry, your data has been rejected because...",
+  "un_registered_user": "It seems that you have not logged in before. Please register your information by registering a new account first",
+  "sign_up_success": "Your data has been registered and will be reviewed by the administrator, and upon approval, you will be notified of this"
 
 }

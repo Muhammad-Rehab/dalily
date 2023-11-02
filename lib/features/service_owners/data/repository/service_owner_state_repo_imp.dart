@@ -1,5 +1,6 @@
 
 import 'package:dalily/core/error/failure.dart';
+import 'package:dalily/core/util/app_strings.dart';
 import 'package:dalily/features/authentication/data/model/service_owner_model.dart';
 import 'package:dalily/features/service_owners/data/data_resource/remote_data_source.dart';
 import 'package:dalily/features/service_owners/data/model/servic_woner_state_model.dart';
@@ -38,7 +39,8 @@ class ServiceOwnerStateRepoImp extends ServiceOwnerStateRepository {
   @override
   Future<Either<ServerFailure, ServiceOwnerStateModel>> getSingleServiceOwner({required String id}) async{
     try{
-      return Right(await serviceOwnerStateRemoteSource.getSingleServiceOwner(id: id));
+      final ServiceOwnerStateModel? response = await serviceOwnerStateRemoteSource.getSingleServiceOwner(id: id);
+      return response != null ? Right(response) : const Left(ServerFailure(message: AppStrings.nullCashError));
     }catch(e){
     debugPrint('service owner state repo imp / getSingleServiceOwner()');
     debugPrint(e.toString());
@@ -61,8 +63,9 @@ class ServiceOwnerStateRepoImp extends ServiceOwnerStateRepository {
   @override
   Future<Either<ServerFailure, ServiceOwnerModel>> getCurrentUserData({required String id}) async {
      try{
-       final ServiceOwnerModel response = await serviceOwnerStateRemoteSource.getCurrentUserData(id: id);
-       return Right(response);
+       final ServiceOwnerModel ?response = await serviceOwnerStateRemoteSource.getCurrentUserData(id: id);
+
+       return response!= null ? Right(response): const Left(ServerFailure(message: AppStrings.nullCashError));
      }catch (e){
        return const Left(ServerFailure());
      }

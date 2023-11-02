@@ -20,7 +20,7 @@ class MainAuthScreen extends StatelessWidget {
     return Scaffold(
       body: BlocConsumer<AuthenticationCubit,AuthenticationState>(
         buildWhen: (previousState,currentStat){
-          return (currentStat is AuthLoggedInState || currentStat is CodeIsSendState || currentStat is RegisterScreenState );
+          return (currentStat is CodeIsSendState || currentStat is RegisterScreenState || currentStat is InitialAuthenticationState);
         },
         listener: (context,state){
           if (state is AuthExceptionState) {
@@ -38,9 +38,7 @@ class MainAuthScreen extends StatelessWidget {
           }
         },
         builder: (context,state){
-          if(state is AuthLoggedInState || state is AuthRegisteredState){
-            return const HomePage();
-          }else if (state is CodeIsSendState || state is IsLoggingInState){
+          if (state is CodeIsSendState || state is IsLoggingInState){
             if(state is CodeIsSendState){
               return OtpVerificationScreen(phoneNumber: state.phoneNumber,
                 serviceOwnerModel: state.serviceOwnerModel,fromRegister: state
