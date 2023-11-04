@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dalily/core/helper/image_helper.dart';
+import 'package:dalily/core/screens/images_view.dart';
 import 'package:dalily/core/util/styles.dart';
 import 'package:dalily/features/authentication/data/model/service_owner_model.dart';
 import 'package:dalily/features/items/presentation/cubit/item_cubit.dart';
@@ -10,6 +11,7 @@ import 'package:dalily/features/language/presentation/cubit/language_cubit.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:page_transition/page_transition.dart';
 
 class ItemsScreen extends StatelessWidget {
   ItemsScreen({Key? key}) : super(key: key);
@@ -84,14 +86,24 @@ class ItemsScreen extends StatelessWidget {
                             shape: BoxShape.circle,
                             color: Theme.of(context).colorScheme.secondary.withOpacity(.3),
                           ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(75),
-                            child: FadeInImage(
-                              placeholder: const AssetImage(ImageHelper.badConnection),
-                              image: NetworkImage(
-                                state.itemModel.catImage,
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                PageTransition(
+                                  type: PageTransitionType.size,
+                                  alignment: Alignment.center,
+                                  child: ImagesView(images: [state.itemModel.catImage]), ),
+                              );
+                            },
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(75),
+                              child: FadeInImage(
+                                placeholder: const AssetImage(ImageHelper.badConnection),
+                                image: NetworkImage(
+                                  state.itemModel.catImage,
+                                ),
+                                fit: BoxFit.fill,
                               ),
-                              fit: BoxFit.fill,
                             ),
                           ),
                         ),

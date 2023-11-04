@@ -1,10 +1,12 @@
 import 'package:dalily/core/helper/image_helper.dart';
+import 'package:dalily/core/screens/images_view.dart';
 import 'package:dalily/core/util/styles.dart';
 import 'package:dalily/features/authentication/data/model/service_owner_model.dart';
 import 'package:dalily/features/language/presentation/cubit/language_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:page_transition/page_transition.dart';
 
 class ItemDetailsScreen extends StatelessWidget {
   final ServiceOwnerModel serviceOwnerModel;
@@ -54,22 +56,35 @@ class ItemDetailsScreen extends StatelessWidget {
                       color: Theme.of(context).colorScheme.background,
                       shape: BoxShape.circle,
                     ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(75),
-                      child: serviceOwnerModel.personalImage != null
-                          ? FadeInImage(
-                              placeholder: const AssetImage(
+                    child: InkWell(
+                      onTap: () {
+                        if (serviceOwnerModel.personalImage != null) {
+                          Navigator.of(context).push(
+                            PageTransition(
+                              type: PageTransitionType.size,
+                              alignment: Alignment.center,
+                              child: ImagesView(images: [serviceOwnerModel.personalImage!]), ),
+                          );
+
+                        }
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(75),
+                        child: serviceOwnerModel.personalImage != null
+                            ? FadeInImage(
+                                placeholder: const AssetImage(
+                                  ImageHelper.avatarImage,
+                                ),
+                                image: NetworkImage(
+                                  serviceOwnerModel.personalImage!,
+                                ),
+                                fit: BoxFit.fill,
+                              )
+                            : Image.asset(
                                 ImageHelper.avatarImage,
+                                fit: BoxFit.fill,
                               ),
-                              image: NetworkImage(
-                                serviceOwnerModel.personalImage!,
-                              ),
-                              fit: BoxFit.fill,
-                            )
-                          : Image.asset(
-                              ImageHelper.avatarImage,
-                              fit: BoxFit.fill,
-                            ),
+                      ),
                     ),
                   ),
                   const SizedBox(
@@ -294,15 +309,26 @@ class ItemDetailsScreen extends StatelessWidget {
                               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2, mainAxisExtent: 180, mainAxisSpacing: 10, crossAxisSpacing: 10),
                               itemCount: (serviceOwnerModel.workImages == null) ? 0 : serviceOwnerModel.workImages!.length,
-                              itemBuilder: (context, index) => Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Image.network(
-                                    serviceOwnerModel.workImages![index],
-                                    fit: BoxFit.fill,
+                              itemBuilder: (context, index) => InkWell(
+                                onTap: (){
+                                    Navigator.of(context).push(
+                                      PageTransition(
+                                        type: PageTransitionType.size,
+                                        alignment: Alignment.center,
+                                        child: ImagesView(images: serviceOwnerModel.workImages!), ),
+                                    );
+                                },
+
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.network(
+                                      serviceOwnerModel.workImages![index],
+                                      fit: BoxFit.fill,
+                                    ),
                                   ),
                                 ),
                               ),

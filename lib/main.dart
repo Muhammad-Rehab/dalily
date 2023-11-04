@@ -12,7 +12,7 @@ import 'package:dalily/features/categories/presentation/cubit/category_cubit.dar
 import 'package:dalily/features/categories/presentation/cubit/category_states.dart';
 import 'package:dalily/features/categories/presentation/screens/cat_screen_details.dart';
 import 'package:dalily/features/categories/presentation/screens/category_screen.dart';
-import 'package:dalily/core/screens/splash/splash.dart';
+import 'package:dalily/core/screens/splash.dart';
 import 'package:dalily/features/categories/presentation/widgets/category_drawer_button.dart';
 import 'package:dalily/features/items/item_injection_container.dart';
 import 'package:dalily/features/items/presentation/cubit/item_cubit.dart';
