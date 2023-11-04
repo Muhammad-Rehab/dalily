@@ -20,7 +20,6 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   LoginUseCase loginUseCase;
   LogOutUseCase logOutUseCase;
 
-  Timer? _timer;
 
   AuthenticationCubit({required this.sendOtpUseCase, required this.loginUseCase, required this.logOutUseCase}) : super(InitialAuthenticationState());
 
@@ -33,11 +32,10 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         (id) => AuthLoggedInState(id: id),
       ),
     );
-    cancelTimer();
   }
 
   Future<void> sendOtp(String phoneNumber, BuildContext context,
-      {ServiceOwnerModel? serviceOwnerModel, bool fromRegister = false, bool stopTimer = false, ItemModel? itemModel}) async {
+      {ServiceOwnerModel? serviceOwnerModel, bool fromRegister = false, ItemModel? itemModel}) async {
     emit(IsSendingOtpState());
     Either<AppFirebaseAuthException, Stream<String>> response = await sendOtpUseCase.call(phoneNumber);
     emit(response.fold((authException) {
@@ -48,9 +46,6 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
           emit(
             CodeIsSendState(phoneNumber: phoneNumber, serviceOwnerModel: serviceOwnerModel, fromRegister: fromRegister, itemModel: itemModel),
           );
-          if (!stopTimer) {
-            startTimer();
-          }
         } else {
           emit(getAuthExceptionMessage(null, context, errorMessage: event));
         }
@@ -88,20 +83,4 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     emit(authenticationState);
   }
 
-  startTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (timer.tick == 60) {
-        emit(SecondPassed());
-        emit(Timing(seconds: 0));
-        timer.cancel();
-      } else {
-        emit(SecondPassed());
-        emit(Timing(seconds: timer.tick));
-      }
-    });
-  }
-
-  cancelTimer() {
-    _timer!.cancel();
-  }
 }

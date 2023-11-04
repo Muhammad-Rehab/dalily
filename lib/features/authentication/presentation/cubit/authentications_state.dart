@@ -44,11 +44,6 @@ class AuthLoggedInState extends AuthenticationState {
 
 class AuthRegisteredState extends AuthenticationState {}
 
-class Timing extends AuthenticationState {
-  final int seconds ;
-  Timing({required this.seconds});
-}
-class SecondPassed extends AuthenticationState {}
 
 class LoggingOutState extends AuthenticationState {}
 class UserLoggedOutState extends AuthenticationState {}

@@ -1,8 +1,9 @@
-
 import 'dart:convert';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dalily/config/routes.dart';
+import 'package:dalily/core/cubit/timer/timer_cubit.dart';
+import 'package:dalily/core/cubit/timer/timer_state.dart';
 import 'package:dalily/core/helper/dialog.dart';
 import 'package:dalily/core/util/app_strings.dart';
 import 'package:dalily/core/util/styles.dart';
@@ -22,9 +23,9 @@ class OtpVerificationScreen extends StatefulWidget {
   ServiceOwnerModel? serviceOwnerModel;
   bool fromRegister;
 
-  String ? phoneNumber ;
+  String? phoneNumber;
 
-  OtpVerificationScreen({Key? key, this.fromRegister = false, this.serviceOwnerModel,this.phoneNumber}) : super(key: key);
+  OtpVerificationScreen({Key? key, this.fromRegister = false, this.serviceOwnerModel, this.phoneNumber}) : super(key: key);
 
   @override
   State<OtpVerificationScreen> createState() => _OtpVerificationScreenState();
@@ -34,10 +35,16 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   String otp = '';
 
   final GlobalKey _formKey = GlobalKey<FormState>();
+  bool isResendOtp = true ;
 
   listenToCode() async {
     await SmsAutoFill().listenForCode();
   }
+
+  startPeriodicTimer(){
+    BlocProvider.of<TimerCubit>(context).startPeriodicTimer(seconds: 60);
+  }
+
 
 
 
@@ -46,6 +53,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       listenToCode();
+      startPeriodicTimer();
     });
   }
 
@@ -70,8 +78,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                   onCodeSubmitted: (val) {
                     otp = val;
                   },
-                  onCodeChanged: (val){
-                    otp = val??'';
+                  onCodeChanged: (val) {
+                    otp = val ?? '';
                   },
                   decoration: BoxLooseDecoration(
                     strokeColorBuilder: FixedColorBuilder(
@@ -87,180 +95,149 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 height: 50,
               ),
               // confirm entry button
-              BlocListener<ServiceOwnerStateCubit,ServiceOwnerStateStates>(
-                listener: (context,state){
-                  if (state is LoadedSingleOwnerState){
-                    if(state.serviceOwnerStateModel.state == AppStrings.waitingState){
+              BlocListener<ServiceOwnerStateCubit, ServiceOwnerStateStates>(
+                listener: (context, state) {
+                  if (state is LoadedSingleOwnerState) {
+                    if (state.serviceOwnerStateModel.state == AppStrings.waitingState) {
                       showCustomDialog(
-                        context: context,
-                        dialogType: DialogType.warning,
-                        description: AppLocalizations.of(context)!.waiting_state_disc,
-                        okText: AppLocalizations.of(context)!.ok,
-                        onOK: (){
-                          BlocProvider.of<AuthenticationCubit>(context).initAuthCubit(InitialAuthenticationState());
-                          Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.initialRoute, (route) => false);
-                        }
-                      );
-                    }else if (state.serviceOwnerStateModel.state == AppStrings.rejectedState){
+                          context: context,
+                          dialogType: DialogType.warning,
+                          description: AppLocalizations.of(context)!.waiting_state_disc,
+                          okText: AppLocalizations.of(context)!.ok,
+                          onOK: () {
+                            BlocProvider.of<AuthenticationCubit>(context).initAuthCubit(InitialAuthenticationState());
+                            Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.initialRoute, (route) => false);
+                          });
+                    } else if (state.serviceOwnerStateModel.state == AppStrings.rejectedState) {
                       showCustomDialog(
-                        context: context,
-                        dialogType: DialogType.warning,
-                        title: AppLocalizations.of(context)!.rejected_state_title,
-                        description: state.serviceOwnerStateModel.description,
+                          context: context,
+                          dialogType: DialogType.warning,
+                          title: AppLocalizations.of(context)!.rejected_state_title,
+                          description: state.serviceOwnerStateModel.description,
                           okText: AppLocalizations.of(context)!.signup,
-                          onOK: (){
+                          onOK: () {
                             BlocProvider.of<AuthenticationCubit>(context).initAuthCubit(RegisterScreenState());
                             Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.mainAuthRoute, (route) => false);
-                        }
-                      );
-                    }else {
+                          });
+                    } else {
                       BlocProvider.of<ServiceOwnerStateCubit>(context).serviceOwnerModel = state.serviceOwnerStateModel.serviceOwnerModel;
                       Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.initialRoute, (route) => false);
                     }
-                  } else if (state is ServiceOwnerStateError){
-                    if(state.message != null){
+                  } else if (state is ServiceOwnerStateError) {
+                    if (state.message != null) {
                       showCustomDialog(
-                        context: context,
-                        dialogType: DialogType.warning,
-                        description: state.message,
-                        okText: AppLocalizations.of(context)!.signup,
-                        onOK: (){
-                          BlocProvider.of<AuthenticationCubit>(context).initAuthCubit(RegisterScreenState());
-                        }
-                      );
-                    }else {
+                          context: context,
+                          dialogType: DialogType.warning,
+                          description: state.message,
+                          okText: AppLocalizations.of(context)!.signup,
+                          onOK: () {
+                            BlocProvider.of<AuthenticationCubit>(context).initAuthCubit(RegisterScreenState());
+                          });
+                    } else {
                       showCustomDialog(
-                        context: context,
-                        dialogType: DialogType.error,
-                        description: AppLocalizations.of(context)!.internet_connection_error
-                      );
+                          context: context, dialogType: DialogType.error, description: AppLocalizations.of(context)!.internet_connection_error);
                     }
                   }
                 },
-                child:  BlocConsumer<AuthenticationCubit, AuthenticationState>(
-                    listener: (ctx,authState){
-                      if(authState is AuthLoggedInState && widget.fromRegister){
-                        widget.serviceOwnerModel!.id = authState.id;
-                        Map<String,dynamic> data = {
-                          'id': authState.id,
-                          'state': AppStrings.waitingState,
-                          'service_owner_model': jsonEncode(widget.serviceOwnerModel!.toJson()),
-                        };
-                        BlocProvider.of<ServiceOwnerStateCubit>(context).addServiceOwnerModel(
-                            ServiceOwnerStateModel.fromJson(data)
-                        );
-                        showCustomDialog(
-                            context: context,
-                            dialogType: DialogType.success,
-                            description: AppLocalizations.of(context)!.sign_up_success,
-                            okText: AppLocalizations.of(context)!.ok,
-                            onOK: (){
-                              BlocProvider.of<AuthenticationCubit>(context).initAuthCubit(RegisterScreenState());
-                              Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.initialRoute, (route) => false);
-                            }
-                        );
-                      }else if (authState is AuthLoggedInState && !widget.fromRegister){
-                        BlocProvider.of<ServiceOwnerStateCubit>(context).getSingleOwner(authState.id,context);
-                      }
-                    },
-                    builder: (context, state) {
-                      if (state is IsLoggingInState || state is IsSigningUpState) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      return Container(
-                        width: double.infinity,
-                        height: 50,
-                        margin: const EdgeInsets.symmetric(horizontal: 50),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(30),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              context.read<AuthenticationCubit>().logIn(otp, context);
-                            },
-                            child: Text(
-                              AppLocalizations.of(context)!.confirm_entry,
-                              style: titleSmall(context).copyWith(color: Colors.white),
-                            ),
-                          ),
+                child: BlocConsumer<AuthenticationCubit, AuthenticationState>(listener: (ctx, authState) {
+                  if (authState is AuthLoggedInState && widget.fromRegister) {
+                    widget.serviceOwnerModel!.id = authState.id;
+                    Map<String, dynamic> data = {
+                      'id': authState.id,
+                      'state': AppStrings.waitingState,
+                      'service_owner_model': jsonEncode(widget.serviceOwnerModel!.toJson()),
+                    };
+                    BlocProvider.of<ServiceOwnerStateCubit>(context).addServiceOwnerModel(ServiceOwnerStateModel.fromJson(data));
+                    showCustomDialog(
+                        context: context,
+                        dialogType: DialogType.success,
+                        description: AppLocalizations.of(context)!.sign_up_success,
+                        okText: AppLocalizations.of(context)!.ok,
+                        onOK: () {
+                          BlocProvider.of<AuthenticationCubit>(context).initAuthCubit(RegisterScreenState());
+                          Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.initialRoute, (route) => false);
+                        });
+                  } else if (authState is AuthLoggedInState && !widget.fromRegister) {
+                    BlocProvider.of<ServiceOwnerStateCubit>(context).getSingleOwner(authState.id, context);
+                  }
+                }, builder: (context, state) {
+                  if (state is IsLoggingInState || state is IsSigningUpState) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return Container(
+                    width: double.infinity,
+                    height: 50,
+                    margin: const EdgeInsets.symmetric(horizontal: 50),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(30),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          context.read<AuthenticationCubit>().logIn(otp, context);
+                        },
+                        child: Text(
+                          AppLocalizations.of(context)!.confirm_entry,
+                          style: titleSmall(context).copyWith(color: Colors.white),
                         ),
-                      );
-                    }),
+                      ),
+                    ),
+                  );
+                }),
               ),
               const SizedBox(
                 height: 20,
               ),
 
 
-              BlocBuilder<AuthenticationCubit,AuthenticationState>(
+              BlocBuilder<TimerCubit,TimerSate>(
                   builder: (context ,state){
-                  if(state is Timing && state.seconds != 0){
-                    return Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 55),
-                      alignment: Alignment.center,
-                      child: SafeArea(
-                        child: RichText(
-                          text: TextSpan(children: [
-                            TextSpan(
-                                text: AppLocalizations.of(context)!.resend_otp_after,
-                                style: bodyVerSmall(context).copyWith(fontWeight: FontWeight.bold)),
-                            TextSpan(
-                                text: '  ${60 - state.seconds}  ',
-                                style: bodyVerSmall(context).copyWith(fontWeight: FontWeight.bold)),
-                            TextSpan(
-                                text: AppLocalizations.of(context)!.second, style: bodyVerSmall(context).copyWith(fontWeight: FontWeight.bold)),
-                          ]),
+                    if(state is OnPeriodicTimerState){
+                      return Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 55),
+                        alignment: Alignment.center,
+                        child: SafeArea(
+                          child: RichText(
+                            text: TextSpan(children: [
+                              TextSpan(
+                                  text: AppLocalizations.of(context)!.resend_otp_after,
+                                  style: bodyVerSmall(context).copyWith(fontWeight: FontWeight.bold)),
+                              TextSpan(
+                                  text: '  ${60 - state.timer.tick}  ',
+                                  style: bodyVerSmall(context).copyWith(fontWeight: FontWeight.bold)),
+                              TextSpan(
+                                  text: AppLocalizations.of(context)!.second, style: bodyVerSmall(context).copyWith(fontWeight: FontWeight.bold)),
+                            ]),
+                          ),
                         ),
-                      ),
-                    );
-                  }else if (state is Timing && state.seconds == 0){
-                    return Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 55),
-                      child: InkWell(
-                        onTap: () {
-                          if(widget.fromRegister){
-                            context.read<AuthenticationCubit>().sendOtp(widget.phoneNumber!,context,
+                      );
+                    }else if (state is PeriodicTimerCanceled){
+                      return  isResendOtp ? Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 55),
+                        child: InkWell(
+                          onTap: () {
+                            setState(() {
+                              isResendOtp = false ;
+                            });
+                            if(widget.fromRegister){
+                              context.read<AuthenticationCubit>().sendOtp(widget.phoneNumber!,context,
                                 serviceOwnerModel: widget.serviceOwnerModel,fromRegister: widget.fromRegister,
-                              stopTimer: true,
-                            );
-                          }else{
-                            context.read<AuthenticationCubit>().sendOtp(widget.phoneNumber!,context,stopTimer: true);
-                          }
+                              );
+                            }else{
+                              context.read<AuthenticationCubit>().sendOtp(widget.phoneNumber!,context);
+                            }
 
-                        },
-                        child: Text(
-                          AppLocalizations.of(context)!.resend_otp,
-                          style: titleSmall(context),
+                          },
+                          child: Text(
+                            AppLocalizations.of(context)!.resend_otp,
+                            style: titleSmall(context),
+                          ),
                         ),
-                      ),
-                    );
-                  }else {
-                    return Container();
-                  }
-                }),
-
-
-              // Container(
-              //   width: double.infinity,
-              //   height: 50,
-              //   margin: const EdgeInsets.symmetric(horizontal: 50),
-              //   child: ClipRRect(
-              //     borderRadius: BorderRadius.circular(30),
-              //     child: ElevatedButton(
-              //       style: ButtonStyle(
-              //         backgroundColor: MaterialStateProperty.all(Colors.blue.shade900.withOpacity(.7)),
-              //       ),
-              //       onPressed: () {
-              //         Navigator.pop(context);
-              //       },
-              //       child: Text(
-              //         AppLocalizations.of(context)!.signup,
-              //         style: titleSmall(context).copyWith(color: Colors.white),
-              //       ),
-              //     ),
-              //   ),
-              // ),
+                      ) : Container();
+                    }else {
+                      return Container();
+                    }
+                  }),
             ],
           ),
         ),

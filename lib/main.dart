@@ -1,6 +1,7 @@
 import 'package:dalily/config/routes.dart';
 import 'package:dalily/config/super_injection_container.dart';
 import 'package:dalily/config/theme.dart';
+import 'package:dalily/core/cubit/timer/timer_cubit.dart';
 import 'package:dalily/core/helper/block_observer.dart';
 import 'package:dalily/features/authentication/auth_injection.dart';
 import 'package:dalily/features/authentication/presentation/cubit/authentication_cubit.dart';
@@ -60,6 +61,7 @@ void main() async {
       BlocProvider<CategoryCubit>(create: (context) => serverLocator<CategoryCubit>()),
       BlocProvider<ItemCubit>(create: (context) => serverLocator<ItemCubit>()),
       BlocProvider<ServiceOwnerStateCubit>(create: (context) => serverLocator<ServiceOwnerStateCubit>()),
+      BlocProvider<TimerCubit>(create: (context) => serverLocator<TimerCubit>()),
     ],
     child: const MyApp(),
   ),)
