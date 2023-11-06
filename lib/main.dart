@@ -26,6 +26,10 @@ import 'package:dalily/features/language/presentation/cubit/language_cubit.dart'
 import 'package:dalily/features/language/presentation/cubit/language_state.dart';
 import 'package:dalily/features/language/presentation/widget/language_record.dart';
 import 'package:dalily/features/service_owners/service_owners_injection_container.dart';
+import 'package:dalily/features/temporary_user/presentation/cubit/temp_user_cubit.dart';
+import 'package:dalily/features/temporary_user/presentation/screens/add_temp_user_screen.dart';
+import 'package:dalily/features/temporary_user/presentation/screens/temp_user_profile.dart';
+import 'package:dalily/features/temporary_user/temp_user_injection_container.dart';
 import 'package:dalily/features/theme/data/model/app_theme_model.dart';
 import 'package:dalily/features/theme/presentation/cubit/theme_cubit.dart';
 import 'package:dalily/features/theme/presentation/cubit/theme_state.dart';
@@ -48,6 +52,7 @@ void main() async {
   categoryInjectionContainer();
   getItemInjectionContainer();
   serviceOwnersInjectionContaier();
+  tempUserInjectionContainer();
 
   Bloc.observer = LoggingBlocObserver();
   runApp(
@@ -62,6 +67,7 @@ void main() async {
       BlocProvider<ItemCubit>(create: (context) => serverLocator<ItemCubit>()),
       BlocProvider<ServiceOwnerStateCubit>(create: (context) => serverLocator<ServiceOwnerStateCubit>()),
       BlocProvider<TimerCubit>(create: (context) => serverLocator<TimerCubit>()),
+      BlocProvider<TempUserCubit>(create: (context) => serverLocator<TempUserCubit>()),
     ],
     child: const MyApp(),
   ),)
@@ -97,6 +103,8 @@ class _MyAppState extends State<MyApp> {
                     AppRoutes.categoryDetails: (context) => CategoryDetailsScreen(),
                     AppRoutes.categoryScreen: (context) => CategoryScreen(),
                     AppRoutes.itemsScreen: (context) => ItemsScreen(),
+                    AppRoutes.addTempUserScreen: (context) => AddTempUserScreen(),
+                    AppRoutes.tempUserProfileScreen: (context) => TempUserProfileScreen(),
                   },
                 )));
   }
@@ -145,6 +153,21 @@ class HomePage extends StatelessWidget {
                 Navigator.of(context).push(MaterialPageRoute(builder: (_)=> AdminWaitingList()));
               },
               child: const Text("Waiting List"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, AppRoutes.addTempUserScreen);
+              },
+              child: const Text("Add Temporary User"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                BlocProvider.of<TempUserCubit>(context).getTempUser().then((value){
+                  Navigator.pushNamed(context, AppRoutes.tempUserProfileScreen);
+                });
+
+              },
+              child: const Text("Temporary User Profile"),
             ),
           ],
         ),

@@ -67,6 +67,9 @@
   "waiting_state_disc": "Your data is now being reviewed by the administrator, and upon approval, you will be notified as soon as possible",
   "rejected_state_title": "Sorry, your data has been rejected because...",
   "un_registered_user": "It seems that you have not logged in before. Please register your information by registering a new account first",
-  "sign_up_success": "Your data has been registered and will be reviewed by the administrator, and upon approval, you will be notified of this"
+  "sign_up_success": "Your data has been registered and will be reviewed by the administrator, and upon approval, you will be notified of this",
+  "temp_user_sign_up": "Add User",
+  "temp_user_signed_in_success": "Your account has been registered successfully",
+  "user_not_exist": "There is no data for current user please log in first"
 
 }

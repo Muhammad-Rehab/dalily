@@ -32,6 +32,10 @@ class AppStrings {
 
   static const String categoryListSharedKey = 'category_list';
 
+  static const String tempUserCollection = 'temporary_users';
+  static const String tempUserSharedKey = 'temporary_user';
+  static const String tempUserStorageRef = '$appName/temporary_user';
+
 
 
 }
