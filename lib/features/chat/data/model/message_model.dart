@@ -1,14 +1,13 @@
 import 'package:dalily/features/chat/domain/entity/message.dart';
 
 class MessageModel extends Message {
-  const MessageModel({
+   MessageModel({
     required super.messageId,
     required super.serviceOwnerId,
     required super.userId,
     required super.isImage,
     required super.message,
-    super.userImagePath,
-    super.serverImagePath,
+   required super.time,
   });
 
   factory MessageModel.fromJson(Map<String, dynamic> json) {
@@ -18,8 +17,7 @@ class MessageModel extends Message {
       userId: json['user_id'],
       isImage: json['is_image'],
       message: json['message'],
-      userImagePath: json['user_image_path'],
-      serverImagePath: json['server_image_path'],
+      time: json['time'],
     );
   }
 
@@ -30,8 +28,7 @@ class MessageModel extends Message {
       'user_id': userId,
       'is_image': isImage,
       'message': message,
-      'user_image_path': userImagePath,
-      'server_image_path': serverImagePath,
+      'time': time,
     };
   }
 }

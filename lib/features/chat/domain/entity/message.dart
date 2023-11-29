@@ -7,18 +7,17 @@ class Message extends Equatable {
   final String serviceOwnerId ;
   final String userId ;
   final bool isImage ;
-  final String message ;
-  final String ? userImagePath ;
-  final String ? serverImagePath ;
+  final String time ;
+  String message ;
 
-  const Message({
+
+  Message({
     required this.messageId,
     required this.serviceOwnerId,
     required this.userId,
     required this.isImage,
     required this.message,
-    this.serverImagePath,
-    this.userImagePath
+    required this.time
 });
 
   @override

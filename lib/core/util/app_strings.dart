@@ -36,6 +36,11 @@ class AppStrings {
   static const String tempUserSharedKey = 'temporary_user';
   static const String tempUserStorageRef = '$appName/temporary_user';
 
+  static const String chatsCollection = 'chats';
+  static const String chatsStorageRef = '$appName/chats';
+
+
+
 
 
 }
