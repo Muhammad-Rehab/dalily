@@ -1,4 +1,5 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:dalily/core/helper/admin_helper.dart';
 import 'package:dalily/core/helper/dialog.dart';
 import 'package:dalily/core/helper/image_helper.dart';
 import 'package:dalily/core/util/styles.dart';
@@ -49,6 +50,7 @@ class _LogInOrOutRecordState extends State<LogInOrOutRecord> {
                 dialogType: DialogType.info,
                 onOK: () {
                   BlocProvider.of<AuthenticationCubit>(context).logOut(context);
+                  AdminController.isAdmin = false;
                 },
                 okText: AppLocalizations.of(context)!.ok,
                 onCancel: () {},

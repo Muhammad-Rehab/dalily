@@ -1,3 +1,7 @@
+import 'package:dalily/core/helper/admin_helper.dart';
+import 'package:dalily/core/screens/admin_page.dart';
+import 'package:dalily/core/util/app_strings.dart';
+import 'package:dalily/core/util/styles.dart';
 import 'package:dalily/features/authentication/presentation/widgets/logout_record.dart';
 import 'package:dalily/features/categories/presentation/widgets/category_drawer_button.dart';
 import 'package:dalily/features/language/presentation/widget/language_record.dart';
@@ -23,9 +27,21 @@ class AppDrawer extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Builder(builder: (context) {
-            return const CategoryDrawerButton();
-          }),
+          if (AdminController.isAdmin)
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const AdminPage(),
+                  ),
+                );
+              },
+              child: Text(
+                'Admin page',
+                style: titleSmall(context),
+              ),
+            ),
           const ThemeRecord(),
           const LanguageRecord(),
           Builder(builder: (context) {

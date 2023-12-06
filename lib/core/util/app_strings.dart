@@ -45,8 +45,7 @@ class AppStrings {
   static const String generalNotificationType = 'general';
 
 
-
-
+  static const String adminCollection = 'admins';
 
 
 

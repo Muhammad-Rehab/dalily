@@ -4,6 +4,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dalily/config/routes.dart';
 import 'package:dalily/core/cubit/timer/timer_cubit.dart';
 import 'package:dalily/core/cubit/timer/timer_state.dart';
+import 'package:dalily/core/helper/admin_helper.dart';
 import 'package:dalily/core/helper/dialog.dart';
 import 'package:dalily/core/util/app_strings.dart';
 import 'package:dalily/core/util/styles.dart';
@@ -24,9 +25,9 @@ class OtpVerificationScreen extends StatefulWidget {
   ServiceOwnerModel? serviceOwnerModel;
   bool fromRegister;
 
-  String? phoneNumber;
+  String phoneNumber;
 
-  OtpVerificationScreen({Key? key, this.fromRegister = false, this.serviceOwnerModel, this.phoneNumber}) : super(key: key);
+  OtpVerificationScreen({Key? key, this.fromRegister = false, this.serviceOwnerModel,required this.phoneNumber}) : super(key: key);
 
   @override
   State<OtpVerificationScreen> createState() => _OtpVerificationScreenState();
@@ -42,11 +43,11 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     await SmsAutoFill().listenForCode();
   }
 
-  startPeriodicTimer(){
+  startPeriodicTimer() {
     BlocProvider.of<TimerCubit>(context).startPeriodicTimer(seconds: 60);
   }
 
-  getAppToken(){
+  getAppToken() {
     BlocProvider.of<NotificationCubit>(context).getAppToken();
   }
 
@@ -123,7 +124,9 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                             Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.mainAuthRoute, (route) => false);
                           });
                     } else {
-                      BlocProvider.of<ServiceOwnerStateCubit>(context).serviceOwnerModel = state.serviceOwnerStateModel.serviceOwnerModel;
+                      if(!AdminController.isAdminAccount(widget.phoneNumber)){
+                        BlocProvider.of<ServiceOwnerStateCubit>(context).serviceOwnerModel = state.serviceOwnerStateModel.serviceOwnerModel;
+                      }
                       Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.categoryScreen, (route) => false);
                     }
                   } else if (state is ServiceOwnerStateError) {

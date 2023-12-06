@@ -1,4 +1,3 @@
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dalily/core/helper/dialog.dart';
 import 'package:dalily/features/authentication/presentation/cubit/authentication_cubit.dart';
@@ -12,19 +11,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MainAuthScreen extends StatelessWidget {
-   MainAuthScreen({Key? key}) : super(key: key);
-
+  MainAuthScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer<AuthenticationCubit,AuthenticationState>(
-        buildWhen: (previousState,currentStat){
+      body: BlocConsumer<AuthenticationCubit, AuthenticationState>(
+        buildWhen: (previousState, currentStat) {
           return (currentStat is CodeIsSendState || currentStat is RegisterScreenState || currentStat is InitialAuthenticationState);
         },
-        listener: (context,state){
+        listener: (context, state) {
           if (state is AuthExceptionState) {
-            Future.delayed(const Duration(seconds: 0),(){
+            Future.delayed(const Duration(seconds: 0), () {
               showCustomDialog(
                 context: context,
                 dialogType: DialogType.error,
@@ -37,21 +35,19 @@ class MainAuthScreen extends StatelessWidget {
             });
           }
         },
-        builder: (context,state){
-          if (state is CodeIsSendState || state is IsLoggingInState){
-            if(state is CodeIsSendState){
-              return OtpVerificationScreen(phoneNumber: state.phoneNumber,
-                serviceOwnerModel: state.serviceOwnerModel,fromRegister: state
-                  .fromRegister,);
-            }
-            return OtpVerificationScreen();
-          }else if (state is RegisterScreenState){
+        builder: (context, state) {
+          if (state is CodeIsSendState) {
+            return OtpVerificationScreen(
+              phoneNumber: state.phoneNumber,
+              serviceOwnerModel: state.serviceOwnerModel,
+              fromRegister: state.fromRegister,
+            );
+          } else if (state is RegisterScreenState) {
             return SignUpScreen();
-          }else {
+          } else {
             return LoginScreen();
           }
         },
-
       ),
     );
   }

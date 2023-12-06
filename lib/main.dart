@@ -129,40 +129,7 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Builder(builder: (context) {
-              return ElevatedButton(
-                  onPressed: () {
-                    BlocProvider.of<AuthenticationCubit>(context).initAuthCubit(InitialAuthenticationState());
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MainAuthScreen()));
-                  },
-                  child: const Text("Log in screen"));
-            }),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed(AppRoutes.categoryScreen, arguments: BlocProvider.of<CategoryCubit>(context).appCategories);
-              },
-              child: const Text("Category Screen"),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (_) => AdminWaitingList()));
-              },
-              child: const Text("Waiting List"),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, AppRoutes.addTempUserScreen);
-              },
-              child: const Text("Add Temporary User"),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                BlocProvider.of<TempUserCubit>(context).getTempUser().then((value) {
-                  Navigator.pushNamed(context, AppRoutes.tempUserProfileScreen);
-                });
-              },
-              child: const Text("Temporary User Profile"),
-            ),
+
           ],
         ),
       ),

@@ -8,16 +8,21 @@ class CategoryDrawerButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
+    return ElevatedButton(
       onPressed: () {
         Navigator.pushNamed(
           context,
           AppRoutes.categoryDetails,
         );
       },
-      child: Text(
-        AppLocalizations.of(context)!.add_category,
-        style: bodyMedium(context).copyWith(fontWeight: FontWeight.bold),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+        child: Text(
+          AppLocalizations.of(context)!.add_category,
+          style: bodyMedium(context).copyWith(fontWeight: FontWeight.bold,
+          color: Theme.of(context).colorScheme.surface
+          ),
+        ),
       ),
     );
   }
