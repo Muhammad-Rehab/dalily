@@ -58,6 +58,7 @@ dependencies:
   firebase_messaging: ^14.7.6
   http: ^1.1.0
   flutter_local_notifications: ^16.2.0
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:

@@ -1,7 +1,7 @@
-import 'dart:io';
 
 import 'package:dalily/core/helper/image_helper.dart';
 import 'package:dalily/core/screens/images_view.dart';
+import 'package:dalily/core/screens/shimmer.dart';
 import 'package:dalily/core/util/styles.dart';
 import 'package:dalily/features/authentication/data/model/service_owner_model.dart';
 import 'package:dalily/features/items/presentation/cubit/item_cubit.dart';
@@ -10,7 +10,6 @@ import 'package:dalily/features/items/presentation/screens/item_detail_screen.da
 import 'package:dalily/features/language/presentation/cubit/language_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:page_transition/page_transition.dart';
 
 class ItemsScreen extends StatelessWidget {
@@ -52,9 +51,7 @@ class ItemsScreen extends StatelessWidget {
         },
         builder: (context, state) {
           if (state is ItemIsLoadingState) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const AppShimmer();
           } else if (state is ItemLoadedState) {
             List<ServiceOwnerModel> items = state.itemModel.itemServiceOwners;
             return Scaffold(
@@ -186,12 +183,6 @@ class ItemsScreen extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                            ),
-                            Divider(
-                              color: Theme.of(context).colorScheme.primary,
-                              thickness: 1,
-                              indent: 20,
-                              endIndent: 20,
                             ),
                           ],
                         );
