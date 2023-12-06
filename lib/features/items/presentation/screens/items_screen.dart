@@ -95,7 +95,7 @@ class ItemsScreen extends StatelessWidget {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(75),
                               child: FadeInImage(
-                                placeholder: const AssetImage(ImageHelper.badConnection),
+                                placeholder: const AssetImage(ImageHelper.placeholderImage),
                                 image: NetworkImage(
                                   state.itemModel.catImage,
                                 ),

@@ -5,4 +5,5 @@ class ImageHelper {
   static const avatarImage = 'assets/images/avatar.png';
   static const badConnection = 'assets/images/bad_connection.png';
   static const starIcon = 'assets/images/star.png';
+  static const placeholderImage = 'assets/images/placeholder.png';
 }

@@ -85,7 +85,7 @@ class CategoryScreen extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: FadeInImage(
-                        placeholder: const AssetImage(ImageHelper.badConnection),
+                        placeholder: const AssetImage(ImageHelper.placeholderImage,),
                         image: NetworkImage(appCategories[index].image,),
                         fit: BoxFit.fill,
                       ),
