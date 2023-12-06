@@ -12,7 +12,6 @@ import 'package:dalily/features/authentication/presentation/widgets/auth_header_
 import 'package:dalily/features/authentication/presentation/widgets/signup_text_field.dart';
 import 'package:dalily/features/categories/data/model/category_model.dart';
 import 'package:dalily/features/categories/presentation/cubit/category_cubit.dart';
-import 'package:dalily/features/items/data/model/ItemModel.dart';
 import 'package:dalily/features/language/presentation/cubit/language_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

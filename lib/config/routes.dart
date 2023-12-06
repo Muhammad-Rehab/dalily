@@ -1,7 +1,7 @@
 
 
 class AppRoutes {
-  static const initialRoute = '/';
+  static const initialRoute = 'initial_route';
   static const mainAuthRoute = 'main_auth_screen';
   static const splash = 'splash_screen';
   static const categoryDetails = 'category_details_screen';

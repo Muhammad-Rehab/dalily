@@ -40,6 +40,13 @@ class AppStrings {
   static const String chatsStorageRef = '$appName/chats';
 
 
+  static const String chatNotificationType = 'chat';
+  static const String userDataResponseNotificationType = 'userDataResponse';
+  static const String generalNotificationType = 'general';
+
+
+
+
 
 
 

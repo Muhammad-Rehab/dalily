@@ -4,7 +4,13 @@ import 'package:dalily/features/authentication/data/model/service_owner_model.da
 import 'package:dalily/features/service_owners/domain/entity/service_owner_state.dart';
 
 class ServiceOwnerStateModel extends ServiceOwnerState {
-  ServiceOwnerStateModel({required super.id, required super.serviceOwnerModel, required super.state, super.description});
+  ServiceOwnerStateModel({
+    required super.id,
+    required super.serviceOwnerModel,
+    required super.state,
+    required super.appToken,
+    super.description,
+  });
 
   factory ServiceOwnerStateModel.fromJson(Map<String, dynamic> json) {
     return ServiceOwnerStateModel(
@@ -12,15 +18,17 @@ class ServiceOwnerStateModel extends ServiceOwnerState {
       serviceOwnerModel: ServiceOwnerModel.fromJson(jsonDecode(json['service_owner_model'])),
       state: json['state'],
       description: json['description'],
+      appToken: json['app_token']
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'state':state,
+      'state': state,
       'description': description,
       'service_owner_model': jsonEncode(serviceOwnerModel.toJson()),
+      'app_token': appToken,
     };
   }
 }

@@ -3,6 +3,7 @@ import 'package:dalily/config/super_injection_container.dart';
 import 'package:dalily/config/theme.dart';
 import 'package:dalily/core/cubit/timer/timer_cubit.dart';
 import 'package:dalily/core/helper/block_observer.dart';
+import 'package:dalily/core/helper/notification_helper.dart';
 import 'package:dalily/features/authentication/auth_injection.dart';
 import 'package:dalily/features/authentication/presentation/cubit/authentication_cubit.dart';
 import 'package:dalily/features/authentication/presentation/cubit/authentications_state.dart';
@@ -10,13 +11,14 @@ import 'package:dalily/features/authentication/presentation/screans/main_auth.da
 import 'package:dalily/features/authentication/presentation/widgets/logout_record.dart';
 import 'package:dalily/features/categories/category_injection_container.dart';
 import 'package:dalily/features/categories/presentation/cubit/category_cubit.dart';
-import 'package:dalily/features/categories/presentation/cubit/category_states.dart';
 import 'package:dalily/features/categories/presentation/screens/cat_screen_details.dart';
 import 'package:dalily/features/categories/presentation/screens/category_screen.dart';
 import 'package:dalily/core/screens/splash.dart';
 import 'package:dalily/features/categories/presentation/widgets/category_drawer_button.dart';
 import 'package:dalily/features/items/item_injection_container.dart';
 import 'package:dalily/features/items/presentation/cubit/item_cubit.dart';
+import 'package:dalily/features/notification/notification_injection_container.dart';
+import 'package:dalily/features/notification/presentation/cubit/notification_cubit.dart';
 import 'package:dalily/features/service_owners/prensentation/cubit/service_owner_state_cubit.dart';
 import 'package:dalily/features/service_owners/prensentation/screens/admin_waiting_list.dart';
 import 'package:dalily/features/items/presentation/screens/items_screen.dart';
@@ -42,9 +44,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+getInjectionContainers() async {
   await superInjectionContainer();
   themeInjectionContainer();
   languageInjectionContainer();
@@ -53,60 +53,72 @@ void main() async {
   getItemInjectionContainer();
   serviceOwnersInjectionContaier();
   tempUserInjectionContainer();
+  notificationInjectionContainer();
+}
 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  await getInjectionContainers();
   Bloc.observer = LoggingBlocObserver();
-  runApp(
-  DevicePreview(
-    enabled: !kReleaseMode,
-    builder: (context)=> MultiBlocProvider(
-    providers: [
-      BlocProvider<ThemeCubit>(create: (context) => serverLocator<ThemeCubit>()),
-      BlocProvider<LanguageCubit>(create: (context) => serverLocator<LanguageCubit>()),
-      BlocProvider<AuthenticationCubit>(create: (context) => serverLocator<AuthenticationCubit>()),
-      BlocProvider<CategoryCubit>(create: (context) => serverLocator<CategoryCubit>()),
-      BlocProvider<ItemCubit>(create: (context) => serverLocator<ItemCubit>()),
-      BlocProvider<ServiceOwnerStateCubit>(create: (context) => serverLocator<ServiceOwnerStateCubit>()),
-      BlocProvider<TimerCubit>(create: (context) => serverLocator<TimerCubit>()),
-      BlocProvider<TempUserCubit>(create: (context) => serverLocator<TempUserCubit>()),
-    ],
-    child: const MyApp(),
-  ),)
-  );
+  NotificationHelper.requestNotificationPermissions();
+  NotificationHelper.handleIfNotificationAction();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  final String? route;
+
+  const MyApp({super.key, this.route});
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ThemeCubit, ThemeState>(
-        builder: (context, state) => BlocBuilder<LanguageCubit, LanguageState>(
-            builder: (context, state) => MaterialApp(
-                  localizationsDelegates: AppLocalizations.localizationsDelegates,
-                  supportedLocales: AppLocalizations.supportedLocales,
-                  locale: serverLocator<LanguageModel>().locale,
-                  darkTheme: AppThemeData.darkTheme,
-                  theme: AppThemeData.lightTheme,
-                  themeMode: serverLocator<AppThemeModel>().themeMode,
-                  debugShowCheckedModeBanner: false,
-                  initialRoute: AppRoutes.splash,
-                  routes: {
-                    AppRoutes.initialRoute: (context) => HomePage(),
-                    AppRoutes.splash: (context) => SplashScreen(),
-                    AppRoutes.mainAuthRoute: (context) => MainAuthScreen(),
-                    AppRoutes.categoryDetails: (context) => CategoryDetailsScreen(),
-                    AppRoutes.categoryScreen: (context) => CategoryScreen(),
-                    AppRoutes.itemsScreen: (context) => ItemsScreen(),
-                    AppRoutes.addTempUserScreen: (context) => AddTempUserScreen(),
-                    AppRoutes.tempUserProfileScreen: (context) => TempUserProfileScreen(),
-                  },
-                )));
+    return DevicePreview(
+      enabled: !kReleaseMode,
+      builder: (context) => MultiBlocProvider(
+        providers: [
+          BlocProvider<ThemeCubit>(create: (context) => serverLocator<ThemeCubit>()),
+          BlocProvider<LanguageCubit>(create: (context) => serverLocator<LanguageCubit>()),
+          BlocProvider<AuthenticationCubit>(create: (context) => serverLocator<AuthenticationCubit>()),
+          BlocProvider<CategoryCubit>(create: (context) => serverLocator<CategoryCubit>()),
+          BlocProvider<ItemCubit>(create: (context) => serverLocator<ItemCubit>()),
+          BlocProvider<ServiceOwnerStateCubit>(create: (context) => serverLocator<ServiceOwnerStateCubit>()),
+          BlocProvider<TimerCubit>(create: (context) => serverLocator<TimerCubit>()),
+          BlocProvider<TempUserCubit>(create: (context) => serverLocator<TempUserCubit>()),
+          BlocProvider<NotificationCubit>(create: (context) => serverLocator<NotificationCubit>()),
+        ],
+        child: BlocBuilder<ThemeCubit, ThemeState>(
+            builder: (context, state) => BlocBuilder<LanguageCubit, LanguageState>(
+                builder: (context, state) => MaterialApp(
+                      localizationsDelegates: AppLocalizations.localizationsDelegates,
+                      supportedLocales: AppLocalizations.supportedLocales,
+                      locale: serverLocator<LanguageModel>().locale,
+                      darkTheme: AppThemeData.darkTheme,
+                      theme: AppThemeData.lightTheme,
+                      themeMode: serverLocator<AppThemeModel>().themeMode,
+                      debugShowCheckedModeBanner: false,
+                      // initialRoute: AppRoutes.splash,
+                      home: SplashScreen(
+                        route: widget.route,
+                      ),
+                      routes: {
+                        AppRoutes.initialRoute: (context) => HomePage(),
+                        AppRoutes.splash: (context) => SplashScreen(),
+                        AppRoutes.mainAuthRoute: (context) => MainAuthScreen(),
+                        AppRoutes.categoryDetails: (context) => CategoryDetailsScreen(),
+                        AppRoutes.categoryScreen: (context) => CategoryScreen(),
+                        AppRoutes.itemsScreen: (context) => ItemsScreen(),
+                        AppRoutes.addTempUserScreen: (context) => AddTempUserScreen(),
+                        AppRoutes.tempUserProfileScreen: (context) => TempUserProfileScreen(),
+                      },
+                    ))),
+      ),
+    );
   }
 }
 
@@ -115,6 +127,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    NotificationHelper.onForegroundNotification(context);
     return Scaffold(
       drawer: const Drawer(
         child: Column(
@@ -143,14 +156,13 @@ class HomePage extends StatelessWidget {
             }),
             ElevatedButton(
               onPressed: () {
-                    Navigator.of(context).pushNamed(AppRoutes.categoryScreen,
-                        arguments: BlocProvider.of<CategoryCubit>(context).appCategories);
+                Navigator.of(context).pushNamed(AppRoutes.categoryScreen, arguments: BlocProvider.of<CategoryCubit>(context).appCategories);
               },
               child: const Text("Category Screen"),
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (_)=> AdminWaitingList()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (_) => AdminWaitingList()));
               },
               child: const Text("Waiting List"),
             ),
@@ -162,10 +174,9 @@ class HomePage extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                BlocProvider.of<TempUserCubit>(context).getTempUser().then((value){
+                BlocProvider.of<TempUserCubit>(context).getTempUser().then((value) {
                   Navigator.pushNamed(context, AppRoutes.tempUserProfileScreen);
                 });
-
               },
               child: const Text("Temporary User Profile"),
             ),
