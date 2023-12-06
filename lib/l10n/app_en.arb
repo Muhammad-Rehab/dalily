@@ -70,6 +70,7 @@
   "sign_up_success": "Your data has been registered and will be reviewed by the administrator, and upon approval, you will be notified of this",
   "temp_user_sign_up": "Add User",
   "temp_user_signed_in_success": "Your account has been registered successfully",
-  "user_not_exist": "There is no data for current user please log in first"
+  "user_not_exist": "There is no data for current user please log in first",
+  "register_as_service_owner": "Register as a service owner"
 
 }

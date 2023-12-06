@@ -80,7 +80,7 @@ class _AddTempUserScreenState extends State<AddTempUserScreen> {
                 onOK: (){},
 
                 autoDismissCallBack: (type){
-                  Navigator.pushNamedAndRemoveUntil(context, AppRoutes.initialRoute, (route) => false);
+                  Navigator.pushNamedAndRemoveUntil(context, AppRoutes.categoryScreen, (route) => false);
                 }
                 );
           }

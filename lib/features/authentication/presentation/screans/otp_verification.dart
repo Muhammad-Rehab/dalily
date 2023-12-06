@@ -109,7 +109,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                           okText: AppLocalizations.of(context)!.ok,
                           onOK: () {
                             BlocProvider.of<AuthenticationCubit>(context).initAuthCubit(InitialAuthenticationState());
-                            Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.initialRoute, (route) => false);
+                            Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.categoryScreen, (route) => false);
                           });
                     } else if (state.serviceOwnerStateModel.state == AppStrings.rejectedState) {
                       showCustomDialog(
@@ -124,7 +124,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                           });
                     } else {
                       BlocProvider.of<ServiceOwnerStateCubit>(context).serviceOwnerModel = state.serviceOwnerStateModel.serviceOwnerModel;
-                      Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.initialRoute, (route) => false);
+                      Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.categoryScreen, (route) => false);
                     }
                   } else if (state is ServiceOwnerStateError) {
                     if (state.message != null) {
@@ -160,7 +160,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                           okText: AppLocalizations.of(context)!.ok,
                           onOK: () {
                             BlocProvider.of<AuthenticationCubit>(context).initAuthCubit(RegisterScreenState());
-                            Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.initialRoute, (route) => false);
+                            Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.categoryScreen, (route) => false);
                           });
                     } else if (authState is AuthLoggedInState && !widget.fromRegister) {
                       BlocProvider.of<ServiceOwnerStateCubit>(context).getSingleOwner(authState.id, context);

@@ -1,7 +1,9 @@
 import 'package:dalily/config/routes.dart';
 import 'package:dalily/core/helper/image_helper.dart';
+import 'package:dalily/core/screens/drawer.dart';
 import 'package:dalily/core/util/styles.dart';
 import 'package:dalily/features/categories/data/model/category_model.dart';
+import 'package:dalily/features/categories/presentation/cubit/category_cubit.dart';
 import 'package:dalily/features/language/presentation/cubit/language_cubit.dart';
 import 'package:dalily/features/theme/presentation/cubit/theme_cubit.dart';
 import 'package:flutter/material.dart';
@@ -14,13 +16,16 @@ class CategoryScreen extends StatelessWidget {
 
    late List<CategoryModel> appCategories ;
    late bool isArabic ;
+   late bool showBackIcon ;
   @override
   Widget build(BuildContext context) {
     isArabic = BlocProvider.of<LanguageCubit>(context).isArabic;
     if(ModalRoute.of(context)!.settings.arguments != null){
       appCategories = ModalRoute.of(context)!.settings.arguments as List<CategoryModel>;
+      showBackIcon = true ;
     }else {
-      appCategories =[];
+      appCategories =  BlocProvider.of<CategoryCubit>(context).appCategories;
+      showBackIcon = false ;
     }
     return Scaffold(
       appBar: AppBar(
@@ -33,7 +38,8 @@ class CategoryScreen extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.background,
         elevation: 0,
         actions: [
-          IconButton(
+          if(showBackIcon)
+            IconButton(
             onPressed: (){
               Navigator.pop(context);
             },
@@ -41,16 +47,7 @@ class CategoryScreen extends StatelessWidget {
           ),
         ],
       ),
-      drawer: Drawer(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topRight: isArabic ? const Radius.circular(0) : const Radius.circular(30) ,
-            bottomRight: isArabic ? const Radius.circular(0) : const Radius.circular(30) ,
-            topLeft: isArabic ? const Radius.circular(30) : const Radius.circular(0),
-            bottomLeft: isArabic ? const Radius.circular(30) : const Radius.circular(0),
-          )
-        ),
-      ),
+      drawer: AppDrawer(isArabic:  isArabic,),
       body: Container(
         margin: const EdgeInsets.symmetric(vertical: 20,horizontal: 20),
         child: GridView.builder(

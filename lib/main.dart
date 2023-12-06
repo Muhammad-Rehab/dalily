@@ -8,13 +8,11 @@ import 'package:dalily/features/authentication/auth_injection.dart';
 import 'package:dalily/features/authentication/presentation/cubit/authentication_cubit.dart';
 import 'package:dalily/features/authentication/presentation/cubit/authentications_state.dart';
 import 'package:dalily/features/authentication/presentation/screans/main_auth.dart';
-import 'package:dalily/features/authentication/presentation/widgets/logout_record.dart';
 import 'package:dalily/features/categories/category_injection_container.dart';
 import 'package:dalily/features/categories/presentation/cubit/category_cubit.dart';
 import 'package:dalily/features/categories/presentation/screens/cat_screen_details.dart';
 import 'package:dalily/features/categories/presentation/screens/category_screen.dart';
 import 'package:dalily/core/screens/splash.dart';
-import 'package:dalily/features/categories/presentation/widgets/category_drawer_button.dart';
 import 'package:dalily/features/items/item_injection_container.dart';
 import 'package:dalily/features/items/presentation/cubit/item_cubit.dart';
 import 'package:dalily/features/notification/notification_injection_container.dart';
@@ -26,7 +24,6 @@ import 'package:dalily/features/language/data/model/language_model.dart';
 import 'package:dalily/features/language/language_injection_container.dart';
 import 'package:dalily/features/language/presentation/cubit/language_cubit.dart';
 import 'package:dalily/features/language/presentation/cubit/language_state.dart';
-import 'package:dalily/features/language/presentation/widget/language_record.dart';
 import 'package:dalily/features/service_owners/service_owners_injection_container.dart';
 import 'package:dalily/features/temporary_user/presentation/cubit/temp_user_cubit.dart';
 import 'package:dalily/features/temporary_user/presentation/screens/add_temp_user_screen.dart';
@@ -35,7 +32,6 @@ import 'package:dalily/features/temporary_user/temp_user_injection_container.dar
 import 'package:dalily/features/theme/data/model/app_theme_model.dart';
 import 'package:dalily/features/theme/presentation/cubit/theme_cubit.dart';
 import 'package:dalily/features/theme/presentation/cubit/theme_state.dart';
-import 'package:dalily/features/theme/presentation/widgets/theme_record.dart';
 import 'package:dalily/features/theme/theme_injection_container.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -107,11 +103,10 @@ class _MyAppState extends State<MyApp> {
                         route: widget.route,
                       ),
                       routes: {
-                        AppRoutes.initialRoute: (context) => HomePage(),
+                        AppRoutes.categoryScreen: (context) => CategoryScreen(),
                         AppRoutes.splash: (context) => SplashScreen(),
                         AppRoutes.mainAuthRoute: (context) => MainAuthScreen(),
                         AppRoutes.categoryDetails: (context) => CategoryDetailsScreen(),
-                        AppRoutes.categoryScreen: (context) => CategoryScreen(),
                         AppRoutes.itemsScreen: (context) => ItemsScreen(),
                         AppRoutes.addTempUserScreen: (context) => AddTempUserScreen(),
                         AppRoutes.tempUserProfileScreen: (context) => TempUserProfileScreen(),
@@ -129,18 +124,6 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     NotificationHelper.onForegroundNotification(context);
     return Scaffold(
-      drawer: const Drawer(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ThemeRecord(),
-            LanguageRecord(),
-            CategoryDrawerButton(),
-            LogOutRecord(),
-          ],
-        ),
-      ),
       appBar: AppBar(),
       body: Center(
         child: Column(

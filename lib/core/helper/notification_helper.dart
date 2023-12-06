@@ -52,7 +52,7 @@ class NotificationHelper {
     }else if (notificationModel.type == NotificationType.chat){
       /// todo nav to chat screen
     }else {
-      runApp( const MyApp(route: AppRoutes.initialRoute,));
+      runApp( const MyApp(route: AppRoutes.categoryScreen,));
 
     }
   }

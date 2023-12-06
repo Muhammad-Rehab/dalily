@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dalily/core/util/app_strings.dart';
 import 'package:dalily/features/authentication/data/model/service_owner_model.dart';
 import 'package:dalily/features/service_owners/data/model/servic_woner_state_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 abstract class ServiceOwnerStateRemoteSource {
@@ -50,6 +51,12 @@ class ServiceOwnerStateRemoteSourceImp extends ServiceOwnerStateRemoteSource {
       'state': state,
       'description': description,
     });
+    if(state == AppStrings.rejectedState){
+      User ? user = await FirebaseAuth.instance.userChanges().firstWhere((user) => user?.uid == id);
+      if(user != null){
+        await user.delete();
+      }
+    }
   }
 
   @override

@@ -55,12 +55,6 @@ class AuthRemoteDataImpl extends AuthRemoteData {
       smsCode: otp,
     );
     UserCredential response = await FirebaseAuth.instance.signInWithCredential(credential);
-
-    debugPrint("Provided id :  ${response.credential?.providerId}");
-    debugPrint("Token :  ${response.credential?.token}");
-    debugPrint("Access token :  ${response.credential?.accessToken}");
-    debugPrint("${await response.user?.getIdToken()}");
-    debugPrint("${response.user?.refreshToken}");
     return response.user!.uid;
   }
 

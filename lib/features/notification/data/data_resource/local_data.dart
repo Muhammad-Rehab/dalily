@@ -51,9 +51,9 @@ class NotificationLocalDataResImp extends NotificationLocalDataRes {
           }else if (notificationResponse.payload == NotificationType.chat.name){
             ///TODO navigate to chat screen
           }else {
-            runApp(const MyApp(route: AppRoutes.initialRoute,));
+            runApp(const MyApp(route: AppRoutes.categoryScreen,));
             // Navigator.pushAndRemoveUntil(context,
-            //     MaterialPageRoute(builder: (_)=>const SplashScreen(route: AppRoutes.initialRoute,)), (route) => false);
+            //     MaterialPageRoute(builder: (_)=>const SplashScreen(route: AppRoutes.categoryScreen,)), (route) => false);
           }
 
         }

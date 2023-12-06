@@ -31,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
         });
       }else {
         Future.delayed(const Duration(seconds: 2),(){
-          Navigator.pushReplacementNamed(context, AppRoutes.initialRoute);
+          Navigator.pushReplacementNamed(context, AppRoutes.categoryScreen);
         });
       }
     });
