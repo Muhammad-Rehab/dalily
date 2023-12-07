@@ -9,9 +9,11 @@ class TimerCubit extends Cubit<TimerSate>{
 
   TimerCubit():super(InitialTimerState());
 
+  Timer ? timer ;
+
   startPeriodicTimer({required int seconds}){
     emit(PeriodicTimerStartedState());
-    Timer.periodic(const Duration(seconds: 1), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if(timer.tick > seconds){
         timer.cancel();
         emit(PeriodicTimerCanceled());
@@ -21,5 +23,13 @@ class TimerCubit extends Cubit<TimerSate>{
       }
 
     });
+  }
+
+  closeTimer(){
+    emit(PeriodicTimerWorking());
+    if(timer != null){
+      timer!.cancel();
+    }
+    emit(PeriodicTimerCanceled());
   }
 }

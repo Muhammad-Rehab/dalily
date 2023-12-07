@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -16,6 +17,7 @@ import 'package:dalily/features/notification/presentation/cubit/notification_cub
 import 'package:dalily/features/service_owners/data/model/servic_woner_state_model.dart';
 import 'package:dalily/features/service_owners/prensentation/cubit/service_owner_state_cubit.dart';
 import 'package:dalily/features/service_owners/prensentation/cubit/service_owner_state_states.dart';
+import 'package:dalily/features/theme/presentation/cubit/theme_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -112,7 +114,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                             BlocProvider.of<AuthenticationCubit>(context).initAuthCubit(InitialAuthenticationState());
                             Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.categoryScreen, (route) => false);
                           });
-                    } else if (state.serviceOwnerStateModel.state == AppStrings.rejectedState) {
+                    }
+                    else if (state.serviceOwnerStateModel.state == AppStrings.rejectedState) {
                       showCustomDialog(
                           context: context,
                           dialogType: DialogType.warning,
@@ -123,13 +126,15 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                             BlocProvider.of<AuthenticationCubit>(context).initAuthCubit(RegisterScreenState());
                             Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.mainAuthRoute, (route) => false);
                           });
-                    } else {
+                    }
+                    else {
                       if(!AdminController.isAdminAccount(widget.phoneNumber)){
                         BlocProvider.of<ServiceOwnerStateCubit>(context).serviceOwnerModel = state.serviceOwnerStateModel.serviceOwnerModel;
                       }
                       Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.categoryScreen, (route) => false);
                     }
-                  } else if (state is ServiceOwnerStateError) {
+                  }
+                  else if (state is ServiceOwnerStateError) {
                     if (state.message != null) {
                       showCustomDialog(
                           context: context,
@@ -165,8 +170,11 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                             BlocProvider.of<AuthenticationCubit>(context).initAuthCubit(RegisterScreenState());
                             Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.categoryScreen, (route) => false);
                           });
-                    } else if (authState is AuthLoggedInState && !widget.fromRegister) {
+                      BlocProvider.of<TimerCubit>(context).closeTimer();
+                    }
+                    else if (authState is AuthLoggedInState && !widget.fromRegister) {
                       BlocProvider.of<ServiceOwnerStateCubit>(context).getSingleOwner(authState.id, context);
+                      BlocProvider.of<TimerCubit>(context).closeTimer();
                     }
                   },
                   builder: (context, state) {

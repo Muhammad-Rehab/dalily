@@ -7,11 +7,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ItemDetailsScreen extends StatelessWidget {
   final ServiceOwnerModel serviceOwnerModel;
 
   ItemDetailsScreen({Key? key, required this.serviceOwnerModel}) : super(key: key);
+
+  _makePhoneCall({required String phoneNumber})async{
+    await launchUrl(Uri.parse('tel:$phoneNumber'),
+        mode:LaunchMode.externalNonBrowserApplication,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +165,9 @@ class ItemDetailsScreen extends StatelessWidget {
                               style: bodySmall(context).copyWith(fontWeight: FontWeight.bold),
                             ),
                             trailing: IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                _makePhoneCall(phoneNumber: serviceOwnerModel.phoneNumber);
+                              },
                               icon: Icon(
                                 Icons.call,
                                 color: Theme.of(context).colorScheme.secondary,
@@ -184,7 +193,9 @@ class ItemDetailsScreen extends StatelessWidget {
                                 child: Column(
                                   children: [
                                     IconButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        _makePhoneCall(phoneNumber: serviceOwnerModel.phoneNumber);
+                                      },
                                       icon: const Icon(
                                         Icons.call,
                                         color: Colors.white,
@@ -224,7 +235,9 @@ class ItemDetailsScreen extends StatelessWidget {
                                   child: Column(
                                     children: [
                                       IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          _makePhoneCall(phoneNumber: serviceOwnerModel.secondPhoneNumber!);
+                                        },
                                         icon: const Icon(
                                           Icons.call,
                                           color: Colors.white,
@@ -235,7 +248,7 @@ class ItemDetailsScreen extends StatelessWidget {
                                         height: 20,
                                       ),
                                       Text(
-                                        serviceOwnerModel.phoneNumber,
+                                        serviceOwnerModel.secondPhoneNumber!,
                                         style: bodyVerSmall(context).copyWith(fontWeight: FontWeight.bold),
                                       ),
                                     ],
@@ -264,7 +277,9 @@ class ItemDetailsScreen extends StatelessWidget {
                                   child: Column(
                                     children: [
                                       IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          _makePhoneCall(phoneNumber: serviceOwnerModel.thirdPhoneNumber!);
+                                        },
                                         icon: const Icon(
                                           Icons.call,
                                           color: Colors.white,

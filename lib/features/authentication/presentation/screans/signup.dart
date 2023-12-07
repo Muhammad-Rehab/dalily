@@ -678,7 +678,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           return null;
                         },
                         onSaved: (value) {
-                          userData['second_phone_number'] = "+2$value";
+                          if(value != null && value.isNotEmpty){
+                            userData['second_phone_number'] = "+2$value";
+                          }
                         },
                       ),
                     if (extraPhoneNumbers)
@@ -705,7 +707,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           return null;
                         },
                         onSaved: (value) {
-                          userData['third_phone_number'] = "+2$value";
+                          if(value != null && value.isNotEmpty){
+                            userData['third_phone_number'] = "+2$value";
+                          }
                         },
                       ),
                     if (extraPhoneNumbers)

@@ -72,6 +72,8 @@
   "temp_user_signed_in_success": "Your account has been registered successfully",
   "user_not_exist": "There is no data for current user please log in first",
   "register_as_service_owner": "Register as a service owner",
-  "user_data_added": "User data is added successfully"
+  "user_data_added": "User data is added successfully",
+  "chat_coming_soon": "Chat feature will be available soon",
+  "attention_please": "Attention please."
 
 }

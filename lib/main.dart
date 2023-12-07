@@ -6,7 +6,6 @@ import 'package:dalily/core/helper/block_observer.dart';
 import 'package:dalily/core/helper/notification_helper.dart';
 import 'package:dalily/features/authentication/auth_injection.dart';
 import 'package:dalily/features/authentication/presentation/cubit/authentication_cubit.dart';
-import 'package:dalily/features/authentication/presentation/cubit/authentications_state.dart';
 import 'package:dalily/features/authentication/presentation/screans/main_auth.dart';
 import 'package:dalily/features/categories/category_injection_container.dart';
 import 'package:dalily/features/categories/presentation/cubit/category_cubit.dart';
@@ -18,7 +17,6 @@ import 'package:dalily/features/items/presentation/cubit/item_cubit.dart';
 import 'package:dalily/features/notification/notification_injection_container.dart';
 import 'package:dalily/features/notification/presentation/cubit/notification_cubit.dart';
 import 'package:dalily/features/service_owners/prensentation/cubit/service_owner_state_cubit.dart';
-import 'package:dalily/features/service_owners/prensentation/screens/admin_waiting_list.dart';
 import 'package:dalily/features/items/presentation/screens/items_screen.dart';
 import 'package:dalily/features/language/data/model/language_model.dart';
 import 'package:dalily/features/language/language_injection_container.dart';
@@ -98,7 +96,6 @@ class _MyAppState extends State<MyApp> {
                       theme: AppThemeData.lightTheme,
                       themeMode: serverLocator<AppThemeModel>().themeMode,
                       debugShowCheckedModeBanner: false,
-                      // initialRoute: AppRoutes.splash,
                       home: SplashScreen(
                         route: widget.route,
                       ),
@@ -117,22 +114,3 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    NotificationHelper.onForegroundNotification(context);
-    return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-
-          ],
-        ),
-      ),
-    );
-  }
-}

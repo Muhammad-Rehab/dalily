@@ -1,4 +1,5 @@
 
+import 'package:dalily/core/helper/dialog.dart';
 import 'package:dalily/core/helper/image_helper.dart';
 import 'package:dalily/core/screens/images_view.dart';
 import 'package:dalily/core/screens/shimmer.dart';
@@ -11,6 +12,8 @@ import 'package:dalily/features/language/presentation/cubit/language_cubit.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ItemsScreen extends StatelessWidget {
   ItemsScreen({Key? key}) : super(key: key);
@@ -164,7 +167,14 @@ class ItemsScreen extends StatelessWidget {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     InkWell(
-                                      onTap: () {},
+                                      onTap: () {
+                                        showCustomDialog(context: context,
+                                        title: AppLocalizations.of(context)!.attention_please,
+                                        description: AppLocalizations.of(context)!.chat_coming_soon,
+                                          onOK: (){},
+                                          okText: AppLocalizations.of(context)!.ok,
+                                        );
+                                      },
                                       child: Icon(
                                         Icons.chat,
                                         color: Theme.of(context).colorScheme.secondary,
@@ -174,7 +184,11 @@ class ItemsScreen extends StatelessWidget {
                                       width: 15,
                                     ),
                                     InkWell(
-                                      onTap: () {},
+                                      onTap: () async {
+                                        await launchUrl(Uri.parse('tel:${items[index].phoneNumber}'),
+                                        mode:LaunchMode.externalNonBrowserApplication,
+                                        );
+                                      },
                                       child: Icon(
                                         Icons.call,
                                         color: Theme.of(context).colorScheme.secondary,

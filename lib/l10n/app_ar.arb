@@ -72,6 +72,8 @@
   "temp_user_signed_in_success": "تم تسجيل حسابك بنجاح",
   "user_not_exist": "لا توجد بيانات للمستخدم الحالي يرجى تسجيل الدخول أولا",
   "register_as_service_owner": "التسجيل كصاحب خدمه",
-  "user_data_added": "تمت اضافه البيانات بنجاح"
+  "user_data_added": "تمت اضافه البيانات بنجاح",
+  "chat_coming_soon": "خاصيه الدردشه سوف تكون متاحه قريبا",
+  "attention_please": "يرجي الانتباه"
 
 }
