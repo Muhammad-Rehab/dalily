@@ -71,6 +71,7 @@
   "temp_user_sign_up": "إضافة حساب للمستخدم",
   "temp_user_signed_in_success": "تم تسجيل حسابك بنجاح",
   "user_not_exist": "لا توجد بيانات للمستخدم الحالي يرجى تسجيل الدخول أولا",
-  "register_as_service_owner": "التسجيل كصاحب خدمه"
+  "register_as_service_owner": "التسجيل كصاحب خدمه",
+  "user_data_added": "تمت اضافه البيانات بنجاح"
 
 }

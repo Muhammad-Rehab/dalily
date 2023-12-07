@@ -1,4 +1,5 @@
 import 'package:dalily/core/util/styles.dart';
+import 'package:dalily/features/authentication/presentation/screans/signup.dart';
 import 'package:dalily/features/categories/presentation/widgets/category_drawer_button.dart';
 import 'package:dalily/features/service_owners/prensentation/screens/admin_waiting_list.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +33,18 @@ class AdminPage extends StatelessWidget {
             ),
             const SizedBox(height: 20,),
             const CategoryDrawerButton(),
+            const SizedBox(height: 20,),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_)=> SignUpScreen(isAdmin: true,)));
+                },
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                child: Text("Add Service Owner",
+                  style: titleSmall(context).copyWith(color: Theme.of(context).colorScheme.surface),
+                ),
+              ),
+            ),
           ],
         ),
       ),

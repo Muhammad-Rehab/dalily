@@ -14,7 +14,7 @@ class ServiceOwnerStateRepoImp extends ServiceOwnerStateRepository {
 
 
   @override
-  Future<Either<ServerFailure, void>> addServiceOwnerState({required ServiceOwnerStateModel serviceOwnerStateModel}) async{
+  Future<Either<ServerFailure, ServiceOwnerModel>> addServiceOwnerState({required ServiceOwnerStateModel serviceOwnerStateModel}) async{
     try{
       return Right(await serviceOwnerStateRemoteSource.addServiceOwner(serviceOwnerStateModel: serviceOwnerStateModel));
     }catch(e){

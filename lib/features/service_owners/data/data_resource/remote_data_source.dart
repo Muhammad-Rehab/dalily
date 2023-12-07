@@ -17,7 +17,7 @@ abstract class ServiceOwnerStateRemoteSource {
   
   Future<ServiceOwnerModel?> getCurrentUserData({required String id});
 
-  Future<void> addServiceOwner({required ServiceOwnerStateModel serviceOwnerStateModel});
+  Future<ServiceOwnerModel> addServiceOwner({required ServiceOwnerStateModel serviceOwnerStateModel});
 }
 
 class ServiceOwnerStateRemoteSourceImp extends ServiceOwnerStateRemoteSource {
@@ -60,7 +60,7 @@ class ServiceOwnerStateRemoteSourceImp extends ServiceOwnerStateRemoteSource {
   }
 
   @override
-  Future<void> addServiceOwner({required ServiceOwnerStateModel serviceOwnerStateModel}) async {
+  Future<ServiceOwnerModel> addServiceOwner({required ServiceOwnerStateModel serviceOwnerStateModel}) async {
     ServiceOwnerModel serviceOwnerModel = serviceOwnerStateModel.serviceOwnerModel ;
     if (serviceOwnerModel.personalImage != null) {
       await storage
@@ -86,6 +86,7 @@ class ServiceOwnerStateRemoteSourceImp extends ServiceOwnerStateRemoteSource {
     }
     await firebaseFirestore.collection(AppStrings.serviceOwnersCollection)
         .doc(serviceOwnerStateModel.id).set(serviceOwnerStateModel.toJson());
+    return serviceOwnerModel ;
   }
 
   @override

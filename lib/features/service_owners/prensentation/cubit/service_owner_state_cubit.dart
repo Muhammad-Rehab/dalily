@@ -58,13 +58,13 @@ class ServiceOwnerStateCubit extends Cubit<ServiceOwnerStateStates> {
     );
   }
 
-  addServiceOwnerModel(ServiceOwnerStateModel serviceOwnerStateModel) async {
+  Future addServiceOwnerModel(ServiceOwnerStateModel serviceOwnerStateModel) async {
     emit(AddingOwnerState());
-    final Either<ServerFailure, void> response = await addServiceOwnerStateUseCase.call(serviceOwnerStateModel);
+    final Either<ServerFailure, ServiceOwnerModel> response = await addServiceOwnerStateUseCase.call(serviceOwnerStateModel);
     emit(
       response.fold(
         (l) => ServiceOwnerStateError(),
-        (r) => AddedOwnerState(),
+        (r) => AddedOwnerState(serviceOwnerModel: r),
       ),
     );
   }

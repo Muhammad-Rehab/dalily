@@ -9,6 +9,6 @@ abstract class ServiceOwnerStateRepository {
   Future<Either<ServerFailure,ServiceOwnerStateModel>> getSingleServiceOwner ({required String id});
   Future<Either<ServerFailure,ServiceOwnerModel>> getCurrentUserData ({required String id});
   Future<Either<ServerFailure,void>> updateServiceOwnerState ({required String id,required String states,String ? description});
-  Future<Either<ServerFailure,void>> addServiceOwnerState ({required ServiceOwnerStateModel serviceOwnerStateModel});
+  Future<Either<ServerFailure,ServiceOwnerModel>> addServiceOwnerState ({required ServiceOwnerStateModel serviceOwnerStateModel});
 
 }

@@ -31,7 +31,10 @@ class LoadedSingleOwnerState extends ServiceOwnerStateStates {
 
 class AddingOwnerState extends ServiceOwnerStateStates {}
 
-class AddedOwnerState extends ServiceOwnerStateStates {}
+class AddedOwnerState extends ServiceOwnerStateStates {
+  final ServiceOwnerModel serviceOwnerModel ;
+  AddedOwnerState({required this.serviceOwnerModel});
+}
 
 class ServiceOwnerStateError extends ServiceOwnerStateStates {
   final String ? message ;
