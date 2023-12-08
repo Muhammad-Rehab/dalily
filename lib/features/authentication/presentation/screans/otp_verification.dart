@@ -128,9 +128,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                           });
                     }
                     else {
-                      if(!AdminController.isAdminAccount(widget.phoneNumber)){
-                        BlocProvider.of<ServiceOwnerStateCubit>(context).serviceOwnerModel = state.serviceOwnerStateModel.serviceOwnerModel;
-                      }
+                      BlocProvider.of<ServiceOwnerStateCubit>(context).serviceOwnerModel = state.serviceOwnerStateModel.serviceOwnerModel;
                       Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.categoryScreen, (route) => false);
                     }
                   }
@@ -173,7 +171,11 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                       BlocProvider.of<TimerCubit>(context).closeTimer();
                     }
                     else if (authState is AuthLoggedInState && !widget.fromRegister) {
-                      BlocProvider.of<ServiceOwnerStateCubit>(context).getSingleOwner(authState.id, context);
+                      if(AdminController.isAdminAccount(widget.phoneNumber)){
+                        Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.categoryScreen, (route) => false);
+                      }else {
+                        BlocProvider.of<ServiceOwnerStateCubit>(context).getSingleOwner(authState.id, context);
+                      }
                       BlocProvider.of<TimerCubit>(context).closeTimer();
                     }
                   },

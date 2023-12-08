@@ -1,5 +1,6 @@
 import 'package:dalily/config/routes.dart';
 import 'package:dalily/core/helper/image_helper.dart';
+import 'package:dalily/core/helper/notification_helper.dart';
 import 'package:dalily/core/screens/drawer.dart';
 import 'package:dalily/core/util/styles.dart';
 import 'package:dalily/features/categories/data/model/category_model.dart';
@@ -19,6 +20,7 @@ class CategoryScreen extends StatelessWidget {
    late bool showBackIcon ;
   @override
   Widget build(BuildContext context) {
+    NotificationHelper.onForegroundNotification(context);
     isArabic = BlocProvider.of<LanguageCubit>(context).isArabic;
     if(ModalRoute.of(context)!.settings.arguments != null){
       appCategories = ModalRoute.of(context)!.settings.arguments as List<CategoryModel>;
