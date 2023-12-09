@@ -1,5 +1,6 @@
 
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,7 +12,7 @@ abstract class CategoryRemoteDataResource {
   Future<List<CategoryModel>> getCategory();
   CategoryModel ? getSingleLocalCategory({required String id, required List<CategoryModel> categories});
   Future<void> addCategory(CategoryModel categoryModel,List<CategoryModel> parents);
-  Future<void> update(CategoryModel categoryModel,bool updateImage);
+  Future<void> update(CategoryModel categoryModel,bool updateImage,List<CategoryModel> parents);
 }
 
 class CategoryRemoteDataResourceImp extends CategoryRemoteDataResource {
@@ -51,17 +52,25 @@ class CategoryRemoteDataResourceImp extends CategoryRemoteDataResource {
   }
 
   @override
-  Future<void> update(CategoryModel categoryModel,bool updateImage) async {
-
+  Future<void> update(CategoryModel categoryModel,bool updateImage,List<CategoryModel> parents) async {
     if(updateImage){
       await firebaseStorage.ref(AppStrings.categoriesStorageRef)
           .child(categoryModel.id).putFile(File(categoryModel.image));
       categoryModel.image = await firebaseStorage.ref(AppStrings.categoriesStorageRef)
           .child(categoryModel.id).getDownloadURL();
     }
-    await firebaseFirestore.collection(AppStrings.categoriesCollection)
-        .doc(categoryModel.id).update(categoryModel.toJson());
-
+    if(parents.isNotEmpty){
+      for (int i = 0 ; i< parents.last.subCategory.length ; i++){
+        if(parents.last.subCategory[i].id == categoryModel.id){
+          parents.last.subCategory[i] = categoryModel ;
+        }
+      }
+      await firebaseFirestore.collection(AppStrings.categoriesCollection)
+          .doc(parents.first.id).update(parents.first.toJson());
+    }else {
+      await firebaseFirestore.collection(AppStrings.categoriesCollection)
+          .doc(categoryModel.id).update(categoryModel.toJson());
+    }
   }
 
   @override

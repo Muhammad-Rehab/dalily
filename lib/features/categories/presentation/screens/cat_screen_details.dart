@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -64,8 +65,12 @@ class _CategoryDetailsScreen extends State<CategoryDetailsScreen> {
         'arabic_name': arabicName ?? categoryModel!.arabicName,
         'english_name': englishName ?? categoryModel!.englishName,
         'image': (_categoryImage != null) ? _categoryImage!.path : categoryModel!.image,
+        'sub_category': jsonEncode(categoryModel!.subCategory),
       };
-      BlocProvider.of<CategoryCubit>(context).update(CategoryModel.fromJson(data), (_categoryImage != null) ? true : false);
+      BlocProvider.of<CategoryCubit>(context
+      ).update(CategoryModel.fromJson(data), (_categoryImage != null) ? true : false,
+      categoriesID,
+      );
 
     }
 

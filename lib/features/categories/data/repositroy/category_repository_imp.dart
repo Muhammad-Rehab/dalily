@@ -49,9 +49,9 @@ class CategoryRepositoryImp extends CategoryRepository{
   }
 
   @override
-  Future<Either<ServerFailure, void>> update(CategoryModel categoryModel,bool updateImage) async{
+  Future<Either<ServerFailure, void>> update(CategoryModel categoryModel,bool updateImage,List<CategoryModel> parents) async{
    try{
-     return Right(await categoryRemoteDataResource.update(categoryModel,updateImage));
+     return Right(await categoryRemoteDataResource.update(categoryModel,updateImage,parents));
    }catch (e){
      debugPrint('category rop iml / update()');
      debugPrint(e.toString());

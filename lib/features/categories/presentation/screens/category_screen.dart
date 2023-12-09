@@ -1,4 +1,5 @@
 import 'package:dalily/config/routes.dart';
+import 'package:dalily/core/helper/admin_helper.dart';
 import 'package:dalily/core/helper/image_helper.dart';
 import 'package:dalily/core/helper/notification_helper.dart';
 import 'package:dalily/core/screens/drawer.dart';
@@ -69,6 +70,16 @@ class CategoryScreen extends StatelessWidget {
               }else{
                 Navigator.pushNamed(context, AppRoutes.itemsScreen,
                 arguments: appCategories[index].id,
+                );
+              }
+            },
+            onLongPress: (){
+              if(AdminController.isAdmin){
+                Navigator.pushNamed(context, AppRoutes.categoryDetails,
+                 arguments: {
+                  'is_add': false,
+                   'category_model': appCategories[index],
+                 }
                 );
               }
             },

@@ -46,9 +46,9 @@ class CategoryCubit extends Cubit<CategoryState>{
     );
   }
 
-  update(CategoryModel categoryModel,bool updateImage) async {
+  update(CategoryModel categoryModel,bool updateImage,List<CategoryModel> parents) async {
     emit(CategoryIsUpdating());
-    Either<ServerFailure, void> response = await updateCategoryUseCase.call([categoryModel,updateImage]);
+    Either<ServerFailure, void> response = await updateCategoryUseCase.call([categoryModel,updateImage,parents]);
     emit(response.fold((serverFailure) => CategoryErrorState(), (r) => CategoryIsUpdatedStated()));
   }
 

@@ -10,5 +10,5 @@ class UpdateCategoryUseCase extends UseCase<void,List>{
   UpdateCategoryUseCase({required this.categoryRepository});
 
   @override
-  Future<Either<ServerFailure, void>> call(List param) => categoryRepository.update(param[0],param[1]);
+  Future<Either<ServerFailure, void>> call(List param) => categoryRepository.update(param[0],param[1],param[2]);
 }
