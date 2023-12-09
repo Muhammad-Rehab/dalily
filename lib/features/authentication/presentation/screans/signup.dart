@@ -137,7 +137,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             expandedHeight: 255,
             backgroundColor: Theme.of(context).colorScheme.background,
             floating: true,
-            pinned: true,
+            pinned: false ,
             excludeHeaderSemantics: true,
             // automaticallyImplyLeading: false,
             leading: widget.isAdmin ? IconButton(
