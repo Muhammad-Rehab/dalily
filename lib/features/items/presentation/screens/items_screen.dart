@@ -1,4 +1,3 @@
-
 import 'package:dalily/core/helper/dialog.dart';
 import 'package:dalily/core/helper/image_helper.dart';
 import 'package:dalily/core/screens/images_view.dart';
@@ -9,6 +8,8 @@ import 'package:dalily/features/items/presentation/cubit/item_cubit.dart';
 import 'package:dalily/features/items/presentation/cubit/item_states.dart';
 import 'package:dalily/features/items/presentation/screens/item_detail_screen.dart';
 import 'package:dalily/features/language/presentation/cubit/language_cubit.dart';
+import 'package:dalily/features/theme/presentation/cubit/theme_cubit.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
@@ -92,7 +93,8 @@ class ItemsScreen extends StatelessWidget {
                                 PageTransition(
                                   type: PageTransitionType.size,
                                   alignment: Alignment.center,
-                                  child: ImagesView(images: [state.itemModel.catImage]), ),
+                                  child: ImagesView(images: [state.itemModel.catImage]),
+                                ),
                               );
                             },
                             child: ClipRRect(
@@ -168,10 +170,11 @@ class ItemsScreen extends StatelessWidget {
                                   children: [
                                     InkWell(
                                       onTap: () {
-                                        showCustomDialog(context: context,
-                                        title: AppLocalizations.of(context)!.attention_please,
-                                        description: AppLocalizations.of(context)!.chat_coming_soon,
-                                          onOK: (){},
+                                        showCustomDialog(
+                                          context: context,
+                                          title: AppLocalizations.of(context)!.attention_please,
+                                          description: AppLocalizations.of(context)!.chat_coming_soon,
+                                          onOK: () {},
                                           okText: AppLocalizations.of(context)!.ok,
                                         );
                                       },
@@ -185,8 +188,9 @@ class ItemsScreen extends StatelessWidget {
                                     ),
                                     InkWell(
                                       onTap: () async {
-                                        await launchUrl(Uri.parse('tel:${items[index].phoneNumber}'),
-                                        mode:LaunchMode.externalNonBrowserApplication,
+                                        await launchUrl(
+                                          Uri.parse('tel:${items[index].phoneNumber}'),
+                                          mode: LaunchMode.externalNonBrowserApplication,
                                         );
                                       },
                                       child: Icon(
@@ -207,32 +211,50 @@ class ItemsScreen extends StatelessWidget {
               ),
             );
           } else if (state is ItemErrorState) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 150,
-                    width: 150,
-                    child: Image.asset(
-                      ImageHelper.badConnection,
-                      fit: BoxFit.fill,
-                    ),
+            return Scaffold(
+              appBar: AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                leading: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: BlocProvider.of<ThemeCubit>(context).isDark
+                        ? Theme.of(context).colorScheme.surface
+                        : Theme.of(context).colorScheme.primary,
                   ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Expanded(
-                      child: Text(
-                        state.message,
-                        style: titleSmall(context),
-                        textAlign: TextAlign.center,
+                ),
+              ),
+              body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 150,
+                      width: 150,
+                      child: Image.asset(
+                        ImageHelper.badConnection,
+                        fit: BoxFit.fill,
                       ),
                     ),
-                  ),
-                ],
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 30),
+                      child: Expanded(
+                        child: Text(
+                          state.message,
+                          style: titleSmall(context),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           }
