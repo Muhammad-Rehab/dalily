@@ -18,13 +18,16 @@ class CategoryScreen extends StatelessWidget {
 
    late List<CategoryModel> appCategories ;
    late bool isArabic ;
+   late List<String> parentArEnName = [];
    late bool showBackIcon ;
   @override
   Widget build(BuildContext context) {
     NotificationHelper.onForegroundNotification(context);
     isArabic = BlocProvider.of<LanguageCubit>(context).isArabic;
     if(ModalRoute.of(context)!.settings.arguments != null){
-      appCategories = ModalRoute.of(context)!.settings.arguments as List<CategoryModel>;
+      Map<String,dynamic> data = ModalRoute.of(context)!.settings.arguments as Map<String,dynamic>;
+      appCategories = data['sub_categories'] as List<CategoryModel>;
+      parentArEnName = data['parent_name'] as List<String> ;
       showBackIcon = true ;
     }else {
       appCategories =  BlocProvider.of<CategoryCubit>(context).appCategories;
@@ -32,7 +35,9 @@ class CategoryScreen extends StatelessWidget {
     }
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.categories,
+        title: Text( (parentArEnName.isEmpty)
+            ? AppLocalizations.of(context)!.categories :
+             isArabic ? parentArEnName.first : parentArEnName.last ,
         style: titleMedium(context),
         ),
         foregroundColor: context.read<ThemeCubit>().isDark
@@ -65,7 +70,10 @@ class CategoryScreen extends StatelessWidget {
             onTap: (){
               if(appCategories[index].subCategory.isNotEmpty){
                 Navigator.pushNamed(context, AppRoutes.categoryScreen,
-                arguments: appCategories[index].subCategory,
+                arguments: {
+                  'sub_categories': appCategories[index].subCategory,
+                  'parent_name': [appCategories[index].arabicName,appCategories[index].englishName]
+                },
                 );
               }else{
                 Navigator.pushNamed(context, AppRoutes.itemsScreen,
