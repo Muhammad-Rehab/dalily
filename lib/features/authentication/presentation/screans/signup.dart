@@ -51,7 +51,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   };
   List<CategoryModel> categoryModels = [];
   double dropDownHeight = 70;
-  bool isLoading = false ;
+  bool isLoading = false;
+
   bool extraPhoneNumbers = false;
 
   pickImage(ImageSource src) async {
@@ -97,7 +98,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ServiceOwnerModel serviceOwnerModel = ServiceOwnerModel.fromJson(userData);
       if (widget.isAdmin) {
         setState(() {
-          isLoading = true ;
+          isLoading = true;
         });
         serviceOwnerModel.id = UniqueKey().toString();
         Map<String, dynamic> data = {
@@ -106,9 +107,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           'app_token': 'app_token',
           'service_owner_model': jsonEncode(serviceOwnerModel.toJson()),
         };
-        BlocProvider.of<ServiceOwnerStateCubit>(context)
-            .addServiceOwnerModel(ServiceOwnerStateModel.fromJson(data));
-
+        BlocProvider.of<ServiceOwnerStateCubit>(context).addServiceOwnerModel(ServiceOwnerStateModel.fromJson(data));
       } else {
         BlocProvider.of<AuthenticationCubit>(context).sendOtp(
           serviceOwnerModel.phoneNumber,
@@ -117,6 +116,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
           fromRegister: true,
         );
       }
+      userData = {
+        'id': '',
+        'name': '',
+        "phone_number": "",
+        "category_ids": [],
+        'work_images': [],
+      };
     }
   }
 
@@ -137,31 +143,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
             expandedHeight: 255,
             backgroundColor: Theme.of(context).colorScheme.background,
             floating: true,
-            pinned: false ,
+            pinned: false,
             excludeHeaderSemantics: true,
             // automaticallyImplyLeading: false,
-            leading: widget.isAdmin ? IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(
-                Icons.arrow_back,
-                color: BlocProvider.of<ThemeCubit>(context).isDark
-                    ? Theme.of(context).colorScheme.surface
-                    : Theme.of(context).colorScheme.primary,
-              ),
-            ) : null,
+            leading: widget.isAdmin
+                ? IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color:
+                          BlocProvider.of<ThemeCubit>(context).isDark ? Theme.of(context).colorScheme.surface : Theme.of(context).colorScheme.primary,
+                    ),
+                  )
+                : null,
             actions: [
-              if(!widget.isAdmin)
+              if (!widget.isAdmin)
                 IconButton(
                   onPressed: () {
                     Navigator.pushNamedAndRemoveUntil(context, AppRoutes.categoryScreen, (route) => false);
                   },
                   icon: Icon(
                     Icons.home_filled,
-                    color: BlocProvider.of<ThemeCubit>(context).isDark
-                        ? Theme.of(context).colorScheme.surface
-                        : Theme.of(context).colorScheme.primary,
+                    color:
+                        BlocProvider.of<ThemeCubit>(context).isDark ? Theme.of(context).colorScheme.surface : Theme.of(context).colorScheme.primary,
                   ),
                 ),
             ],
@@ -678,7 +684,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           return null;
                         },
                         onSaved: (value) {
-                          if(value != null && value.isNotEmpty){
+                          if (value != null && value.isNotEmpty) {
                             userData['second_phone_number'] = "+2$value";
                           }
                         },
@@ -707,7 +713,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           return null;
                         },
                         onSaved: (value) {
-                          if(value != null && value.isNotEmpty){
+                          if (value != null && value.isNotEmpty) {
                             userData['third_phone_number'] = "+2$value";
                           }
                         },
@@ -737,10 +743,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       height: 30,
                     ),
                     // sign up button
-                    BlocListener<ServiceOwnerStateCubit,ServiceOwnerStateStates>(
-                      listener: (previousState,currentState){
-                        if(currentState is AddedOwnerState && widget.isAdmin){
-                          Map<String,dynamic> itemData = {
+                    BlocListener<ServiceOwnerStateCubit, ServiceOwnerStateStates>(
+                      listener: (previousState, currentState) {
+                        if (currentState is AddedOwnerState && widget.isAdmin) {
+                          Map<String, dynamic> itemData = {
                             'cat_id': categoryModels.last.id,
                             'cat_arabic_name': categoryModels.last.arabicName,
                             'cat_english_name': categoryModels.last.englishName,
@@ -749,7 +755,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           };
                           BlocProvider.of<ItemCubit>(context).addItem(ItemModel.fromJson(itemData), context);
                           setState(() {
-                            isLoading = false ;
+                            isLoading = false;
                           });
                           showCustomDialog(
                               context: context,
@@ -760,47 +766,48 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         }
                       },
                       child: BlocBuilder<AuthenticationCubit, AuthenticationState>(builder: (context, state) {
-                          if (state is IsSendingOtpState) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                          return Container(
-                            width: double.infinity,
-                            height: 50,
-                            margin: const EdgeInsets.symmetric(horizontal: 50),
-                            child: isLoading ? const Center(child: CircularProgressIndicator())
-                                :ClipRRect(
-                              borderRadius: BorderRadius.circular(30),
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  sendOtp();
-                                },
-                                child: Text(
-                                  AppLocalizations.of(context)!.signup,
-                                  style: titleSmall(context).copyWith(color: Colors.white),
-                                ),
-                              ),
-                            ),
+                        if (state is IsSendingOtpState) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
                           );
-                        }),
+                        }
+                        return Container(
+                          width: double.infinity,
+                          height: 50,
+                          margin: const EdgeInsets.symmetric(horizontal: 50),
+                          child: isLoading
+                              ? const Center(child: CircularProgressIndicator())
+                              : ClipRRect(
+                                  borderRadius: BorderRadius.circular(30),
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      sendOtp();
+                                    },
+                                    child: Text(
+                                      AppLocalizations.of(context)!.signup,
+                                      style: titleSmall(context).copyWith(color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                        );
+                      }),
                     ),
                     const SizedBox(
                       height: 10,
                     ),
 
                     //log in button
-                    if(!widget.isAdmin)
+                    if (!widget.isAdmin)
                       TextButton(
-                      onPressed: () {
-                        BlocProvider.of<AuthenticationCubit>(context).initAuthCubit(InitialAuthenticationState());
-                        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (_) => MainAuthScreen()),(_)=> false);
-                      },
-                      child: Text(
-                        AppLocalizations.of(context)!.login,
-                        style: bodyMedium(context).copyWith(color: Colors.blue),
+                        onPressed: () {
+                          BlocProvider.of<AuthenticationCubit>(context).initAuthCubit(InitialAuthenticationState());
+                          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (_) => MainAuthScreen()), (_) => false);
+                        },
+                        child: Text(
+                          AppLocalizations.of(context)!.login,
+                          style: bodyMedium(context).copyWith(color: Colors.blue),
+                        ),
                       ),
-                    ),
                   ],
                 ),
               ),

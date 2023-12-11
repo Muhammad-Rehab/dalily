@@ -37,11 +37,9 @@ class ItemsScreen extends StatelessWidget {
           if (state is ItemErrorState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Expanded(
-                  child: Text(
-                    state.message,
-                    style: bodySmall(context).copyWith(fontWeight: FontWeight.bold),
-                  ),
+                content: Text(
+                  state.message,
+                  style: bodySmall(context).copyWith(fontWeight: FontWeight.bold),
                 ),
                 behavior: SnackBarBehavior.floating,
                 backgroundColor: Theme.of(context).colorScheme.secondary,
@@ -245,12 +243,10 @@ class ItemsScreen extends StatelessWidget {
                     ),
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 30),
-                      child: Expanded(
-                        child: Text(
-                          state.message,
-                          style: titleSmall(context),
-                          textAlign: TextAlign.center,
-                        ),
+                      child: Text(
+                        state.message,
+                        style: titleSmall(context),
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   ],

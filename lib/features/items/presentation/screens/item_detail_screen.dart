@@ -138,12 +138,10 @@ class ItemDetailsScreen extends StatelessWidget {
                   if (serviceOwnerModel.serviceDescription != null)
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 30),
-                      child: Expanded(
-                        child: Text(
-                          serviceOwnerModel.serviceDescription!,
-                          style: bodySmall(context).copyWith(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.secondary),
-                          textAlign: TextAlign.center,
-                        ),
+                      child: Text(
+                        serviceOwnerModel.serviceDescription!,
+                        style: bodySmall(context).copyWith(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.secondary),
+                        textAlign: TextAlign.center,
                       ),
                     ),
 
