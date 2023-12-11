@@ -46,3 +46,6 @@ class LoadedCurrentUserData extends ServiceOwnerStateStates {
   final ServiceOwnerModel serviceOwnerModel ;
   LoadedCurrentUserData({required this.serviceOwnerModel});
 }
+
+class DeletingServiceOwner extends ServiceOwnerStateStates {}
+class DeletedServiceOwner extends ServiceOwnerStateStates {}

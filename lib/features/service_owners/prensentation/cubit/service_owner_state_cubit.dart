@@ -3,6 +3,7 @@ import 'package:dalily/core/usecase/usecase.dart';
 import 'package:dalily/features/authentication/data/model/service_owner_model.dart';
 import 'package:dalily/features/service_owners/data/model/servic_woner_state_model.dart';
 import 'package:dalily/features/service_owners/domain/use_cases/add_service_owner_state.dart';
+import 'package:dalily/features/service_owners/domain/use_cases/delete_service_owner.dart';
 import 'package:dalily/features/service_owners/domain/use_cases/get_current_user_data.dart';
 import 'package:dalily/features/service_owners/domain/use_cases/get_single_service_owner.dart';
 import 'package:dalily/features/service_owners/domain/use_cases/get_waiting_list.dart';
@@ -20,10 +21,11 @@ class ServiceOwnerStateCubit extends Cubit<ServiceOwnerStateStates> {
 
   AddServiceOwnerStateUseCase addServiceOwnerStateUseCase;
   GetCurrentUserDataUseCase getCurrentUserDataUseCase;
+  DeleteServiceOwnerUseCase deleteServiceOwnerUseCase;
 
   GetSingleServiceOwnerUseCase getSingleServiceOwnerUseCase;
 
-  ServiceOwnerModel  ? serviceOwnerModel ;
+  ServiceOwnerModel? serviceOwnerModel;
 
   ServiceOwnerStateCubit({
     required this.getSingleServiceOwnerUseCase,
@@ -31,6 +33,7 @@ class ServiceOwnerStateCubit extends Cubit<ServiceOwnerStateStates> {
     required this.updateServerStateListUseCase,
     required this.getServersWaitingListUseCase,
     required this.getCurrentUserDataUseCase,
+    required this.deleteServiceOwnerUseCase,
   }) : super(InitialServiceOwnerState());
 
   getOwnersWaitingList() async {
@@ -44,14 +47,13 @@ class ServiceOwnerStateCubit extends Cubit<ServiceOwnerStateStates> {
     );
   }
 
-  Future<void> getSingleOwner(String id,BuildContext context) async {
+  Future<void> getSingleOwner(String id, BuildContext context) async {
     emit(GettingSingleOwnerState());
     final Either<ServerFailure, ServiceOwnerStateModel> response = await getSingleServiceOwnerUseCase.call(id);
     emit(
       response.fold(
         (l) {
-          return l.message == null ? ServiceOwnerStateError()
-              : ServiceOwnerStateError(message: AppLocalizations.of(context)!.un_registered_user );
+          return l.message == null ? ServiceOwnerStateError() : ServiceOwnerStateError(message: AppLocalizations.of(context)!.un_registered_user);
         },
         (r) => LoadedSingleOwnerState(serviceOwnerStateModel: r),
       ),
@@ -80,19 +82,29 @@ class ServiceOwnerStateCubit extends Cubit<ServiceOwnerStateStates> {
     );
   }
 
-  getCurrentUserData(String id,BuildContext context) async {
+  getCurrentUserData(String id, BuildContext context) async {
     emit(GettingCurrentUserData());
     final Either<ServerFailure, ServiceOwnerModel> response = await getCurrentUserDataUseCase.call(id);
     emit(
       response.fold(
         (l) {
-          return l.message == null ? ServiceOwnerStateError()
-              : ServiceOwnerStateError(message: AppLocalizations.of(context)!.un_registered_user );
+          return l.message == null ? ServiceOwnerStateError() : ServiceOwnerStateError(message: AppLocalizations.of(context)!.un_registered_user);
         },
         (serviceOwner) {
-          serviceOwnerModel = serviceOwner ;
+          serviceOwnerModel = serviceOwner;
           return LoadedCurrentUserData(serviceOwnerModel: serviceOwner);
         },
+      ),
+    );
+  }
+
+  Future deleteServiceOwner({required String serviceOwnerId, required String parentCatId}) async {
+    emit(DeletingServiceOwner());
+    final response = await deleteServiceOwnerUseCase.call([serviceOwnerId, parentCatId]);
+    emit(
+      response.fold(
+        (l) => ServiceOwnerStateError(),
+        (r) => DeletedServiceOwner(),
       ),
     );
   }

@@ -1,8 +1,12 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:dalily/core/helper/admin_helper.dart';
+import 'package:dalily/core/helper/dialog.dart';
 import 'package:dalily/core/helper/image_helper.dart';
 import 'package:dalily/core/screens/images_view.dart';
 import 'package:dalily/core/util/styles.dart';
 import 'package:dalily/features/authentication/data/model/service_owner_model.dart';
 import 'package:dalily/features/language/presentation/cubit/language_cubit.dart';
+import 'package:dalily/features/service_owners/prensentation/cubit/service_owner_state_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -14,9 +18,10 @@ class ItemDetailsScreen extends StatelessWidget {
 
   ItemDetailsScreen({Key? key, required this.serviceOwnerModel}) : super(key: key);
 
-  _makePhoneCall({required String phoneNumber})async{
-    await launchUrl(Uri.parse('tel:$phoneNumber'),
-        mode:LaunchMode.externalNonBrowserApplication,
+  _makePhoneCall({required String phoneNumber}) async {
+    await launchUrl(
+      Uri.parse('tel:$phoneNumber'),
+      mode: LaunchMode.externalNonBrowserApplication,
     );
   }
 
@@ -26,6 +31,27 @@ class ItemDetailsScreen extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.primary,
       appBar: AppBar(
         elevation: 0,
+        actions: [
+          if (AdminController.isAdmin)
+            IconButton(
+              onPressed: () {
+                showCustomDialog(context: context,
+                dialogType: DialogType.warning,
+                  description: 'Do You want to delete this service owner',
+                  onOK: (){
+                  BlocProvider.of<ServiceOwnerStateCubit>(context)
+                      .deleteServiceOwner(serviceOwnerId: serviceOwnerModel.id ,
+                      parentCatId: serviceOwnerModel.categoryIds.last,
+                  );
+                  },
+                  onCancel: (){}
+                );
+              },
+              icon: const Icon(
+                Icons.delete,
+              ),
+            ),
+        ],
         title: serviceOwnerModel.serviceName == null
             ? null
             : Text(
@@ -70,9 +96,9 @@ class ItemDetailsScreen extends StatelessWidget {
                             PageTransition(
                               type: PageTransitionType.size,
                               alignment: Alignment.center,
-                              child: ImagesView(images: [serviceOwnerModel.personalImage!]), ),
+                              child: ImagesView(images: [serviceOwnerModel.personalImage!]),
+                            ),
                           );
-
                         }
                       },
                       child: ClipRRect(
@@ -325,15 +351,15 @@ class ItemDetailsScreen extends StatelessWidget {
                                   crossAxisCount: 2, mainAxisExtent: 180, mainAxisSpacing: 10, crossAxisSpacing: 10),
                               itemCount: (serviceOwnerModel.workImages == null) ? 0 : serviceOwnerModel.workImages!.length,
                               itemBuilder: (context, index) => InkWell(
-                                onTap: (){
-                                    Navigator.of(context).push(
-                                      PageTransition(
-                                        type: PageTransitionType.size,
-                                        alignment: Alignment.center,
-                                        child: ImagesView(images: serviceOwnerModel.workImages!), ),
-                                    );
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    PageTransition(
+                                      type: PageTransitionType.size,
+                                      alignment: Alignment.center,
+                                      child: ImagesView(images: serviceOwnerModel.workImages!),
+                                    ),
+                                  );
                                 },
-
                                 child: Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),

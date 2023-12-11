@@ -67,8 +67,22 @@ class ServiceOwnerStateRepoImp extends ServiceOwnerStateRepository {
 
        return response!= null ? Right(response): const Left(ServerFailure(message: AppStrings.nullCashError));
      }catch (e){
+       debugPrint('service owner state repo imp / getCurrentUserData()');
+       debugPrint(e.toString());
        return const Left(ServerFailure());
      }
+  }
+
+  @override
+  Future<Either<ServerFailure, void>> deleteServiceOwner({required String serviceOwnerId,
+    required String parentCatId})async {
+    try{
+      return Right(await serviceOwnerStateRemoteSource.deleteServiceOwnerData(serviceOwnerId,parentCatId));
+    }catch(e){
+    debugPrint('service owner state repo imp / deleteServiceOwner()');
+    debugPrint(e.toString());
+    return const Left(ServerFailure());
+    }
   }
 
 }
