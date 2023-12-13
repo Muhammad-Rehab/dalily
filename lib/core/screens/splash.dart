@@ -1,8 +1,6 @@
 import 'package:dalily/config/routes.dart';
 import 'package:dalily/core/helper/admin_helper.dart';
 import 'package:dalily/core/helper/image_helper.dart';
-import 'package:dalily/core/helper/notification_helper.dart';
-import 'package:dalily/core/util/styles.dart';
 import 'package:dalily/features/categories/presentation/cubit/category_cubit.dart';
 import 'package:dalily/features/language/presentation/cubit/language_cubit.dart';
 import 'package:dalily/features/notification/presentation/cubit/notification_cubit.dart';
@@ -39,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
           Navigator.pushReplacementNamed(context, widget.route!);
         });
       } else {
-        Future.delayed(const Duration(seconds: 50), () {
+        Future.delayed(const Duration(seconds: 2), () {
           Navigator.pushReplacementNamed(context, AppRoutes.categoryScreen);
         });
       }
