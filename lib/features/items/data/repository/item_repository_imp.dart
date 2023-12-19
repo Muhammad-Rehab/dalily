@@ -33,9 +33,11 @@ class ItemRepoImp extends ItemRepository {
     final ConnectivityResult result = await connectivity.checkConnectivity();
    try{
      if(result != ConnectivityResult.none){
-       return Right(await itemRemoteDataResource.getItemModel(categoryId));
+       final itemModel = await itemRemoteDataResource.getItemModel(categoryId);
+       itemLocalDataResource.addItem(itemModel);
+       return Right(itemModel);
      }else{
-       ItemModel ? itemModel = await itemLocalDataResource.getItem(categoryId);
+       ItemModel ? itemModel = itemLocalDataResource.getItem(categoryId);
        if(itemModel != null){
          return Right(itemModel);
        }else{

@@ -5,8 +5,9 @@ import 'package:dalily/features/categories/data/model/category_model.dart';
 import 'package:dartz/dartz.dart';
 
 abstract class CategoryRepository {
-  Future<Either<Failure,List<CategoryModel>>> getData();
+  Future<Either<Failure,List<dynamic>>> getData();
   Either<CashFailure,CategoryModel?> getSingleLocalCategory({required String id,required List<CategoryModel> categories});
   Future<Either<ServerFailure,void>> addCategory({required CategoryModel categoryModel,required List<CategoryModel> parents});
   Future<Either<ServerFailure,void>> update(CategoryModel categoryModel,bool updateImage,List<CategoryModel> parents);
+  Future<Either<CashFailure,Map<String,dynamic>>> storeCatImages(List<CategoryModel> catList);
 }

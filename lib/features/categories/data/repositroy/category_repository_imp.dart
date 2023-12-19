@@ -18,15 +18,15 @@ class CategoryRepositoryImp extends CategoryRepository{
   CategoryRepositoryImp({required this.categoryRemoteDataResource,required this.categoryLocalDataResource, required this.connectivity});
 
   @override
-  Future<Either<Failure, List<CategoryModel>>> getData() async{
+  Future<Either<Failure, List<dynamic>>> getData() async{
     try{
       final ConnectivityResult connectivityResult = await connectivity.checkConnectivity();
       if(connectivityResult != ConnectivityResult.none){
         List<CategoryModel> response = await categoryRemoteDataResource.getCategory();
-        await categoryLocalDataResource.addCategoryList(response);
-        return Right(response);
+        Map<String,dynamic> catLocalImages = await categoryLocalDataResource.addCategoryList(response);
+        return Right([response,catLocalImages]);
       }else{
-        List<CategoryModel> response = categoryLocalDataResource.getCategory();
+        List<dynamic> response = categoryLocalDataResource.getCategory();
         return response.isNotEmpty ? Right(response): const Left(CashFailure(message: AppStrings.nullCashError));
       }
 
@@ -67,6 +67,17 @@ class CategoryRepositoryImp extends CategoryRepository{
       return Right(categoryRemoteDataResource.getSingleLocalCategory(id: id, categories: categories));
     }catch(e){
       debugPrint('cat repo imp / getSingleLocalCategory()');
+      debugPrint(e.toString());
+      return const Left(CashFailure());
+    }
+  }
+
+  @override
+  Future<Either<CashFailure,Map<String,dynamic>>> storeCatImages(List<CategoryModel> catList) async {
+    try{
+      return Right(await categoryLocalDataResource.storeCatImages(catList));
+    }catch(e){
+      debugPrint('cat repo imp / storeCatImages()');
       debugPrint(e.toString());
       return const Left(CashFailure());
     }

@@ -31,6 +31,7 @@ class AppStrings {
   static const String acceptedState = 'accepted';
 
   static const String categoryListSharedKey = 'category_list';
+  static const String catLocalImagesSharedKey = 'cat_local_images';
 
   static const String tempUserCollection = 'temporary_users';
   static const String tempUserSharedKey = 'temporary_user';

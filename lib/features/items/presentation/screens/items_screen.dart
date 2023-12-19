@@ -1,15 +1,17 @@
+import 'dart:io';
+
 import 'package:dalily/core/helper/dialog.dart';
 import 'package:dalily/core/helper/image_helper.dart';
 import 'package:dalily/core/screens/images_view.dart';
 import 'package:dalily/core/screens/shimmer.dart';
 import 'package:dalily/core/util/styles.dart';
 import 'package:dalily/features/authentication/data/model/service_owner_model.dart';
+import 'package:dalily/features/categories/presentation/cubit/category_cubit.dart';
 import 'package:dalily/features/items/presentation/cubit/item_cubit.dart';
 import 'package:dalily/features/items/presentation/cubit/item_states.dart';
 import 'package:dalily/features/items/presentation/screens/item_detail_screen.dart';
 import 'package:dalily/features/language/presentation/cubit/language_cubit.dart';
 import 'package:dalily/features/theme/presentation/cubit/theme_cubit.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
@@ -20,6 +22,15 @@ class ItemsScreen extends StatelessWidget {
   ItemsScreen({Key? key}) : super(key: key);
 
   late final String catId;
+  Map<String, dynamic> catLocalImages = {};
+
+  String? getCatLocalImage(String catId) {
+    if (catLocalImages.containsKey('${catId}img')) {
+      return catLocalImages['${catId}img'];
+    } else {
+      return null;
+    }
+  }
 
   getItemModel(BuildContext context) {
     BlocProvider.of<ItemCubit>(context).getItem(catId, context);
@@ -31,6 +42,7 @@ class ItemsScreen extends StatelessWidget {
       catId = ModalRoute.of(context)!.settings.arguments as String;
       getItemModel(context);
     }
+    catLocalImages = BlocProvider.of<CategoryCubit>(context).catLocalImages;
     return Scaffold(
       body: BlocConsumer<ItemCubit, ItemState>(
         listener: (context, state) {
@@ -97,13 +109,21 @@ class ItemsScreen extends StatelessWidget {
                             },
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(75),
-                              child: FadeInImage(
-                                placeholder: const AssetImage(ImageHelper.placeholderImage),
-                                image: NetworkImage(
-                                  state.itemModel.catImage,
-                                ),
-                                fit: BoxFit.fill,
-                              ),
+                              child: Builder(builder: (context) {
+                                String? imagePath = getCatLocalImage(catId);
+                                return imagePath != null
+                                    ? Image.file(
+                                        File(imagePath),
+                                        fit: BoxFit.fill,
+                                      )
+                                    : FadeInImage(
+                                        placeholder: const AssetImage(ImageHelper.placeholderImage),
+                                        image: NetworkImage(
+                                          state.itemModel.catImage,
+                                        ),
+                                        fit: BoxFit.fill,
+                                      );
+                              }),
                             ),
                           ),
                         ),
@@ -219,9 +239,8 @@ class ItemsScreen extends StatelessWidget {
                   },
                   icon: Icon(
                     Icons.arrow_back,
-                    color: BlocProvider.of<ThemeCubit>(context).isDark
-                        ? Theme.of(context).colorScheme.surface
-                        : Theme.of(context).colorScheme.primary,
+                    color:
+                        BlocProvider.of<ThemeCubit>(context).isDark ? Theme.of(context).colorScheme.surface : Theme.of(context).colorScheme.primary,
                   ),
                 ),
               ),
