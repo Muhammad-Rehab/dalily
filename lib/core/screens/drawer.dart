@@ -27,7 +27,7 @@ class AppDrawer extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (AdminController.isAdmin)
+          if (!AdminController.isAdmin)
             TextButton(
               onPressed: () {
                 Navigator.push(

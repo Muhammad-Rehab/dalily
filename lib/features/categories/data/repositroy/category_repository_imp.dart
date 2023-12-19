@@ -26,8 +26,8 @@ class CategoryRepositoryImp extends CategoryRepository{
         await categoryLocalDataResource.addCategoryList(response);
         return Right(response);
       }else{
-        List<CategoryModel> ?response = categoryLocalDataResource.getCategory();
-        return response!=null ? Right(response): const Left(CashFailure(message: AppStrings.nullCashError));
+        List<CategoryModel> response = categoryLocalDataResource.getCategory();
+        return response.isNotEmpty ? Right(response): const Left(CashFailure(message: AppStrings.nullCashError));
       }
 
     }catch(e){
