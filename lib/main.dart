@@ -16,6 +16,8 @@ import 'package:dalily/features/items/item_injection_container.dart';
 import 'package:dalily/features/items/presentation/cubit/item_cubit.dart';
 import 'package:dalily/features/notification/notification_injection_container.dart';
 import 'package:dalily/features/notification/presentation/cubit/notification_cubit.dart';
+import 'package:dalily/features/rating/presentation/cubit/rate_cubit.dart';
+import 'package:dalily/features/rating/rating_injection_container.dart';
 import 'package:dalily/features/service_owners/prensentation/cubit/service_owner_state_cubit.dart';
 import 'package:dalily/features/items/presentation/screens/items_screen.dart';
 import 'package:dalily/features/language/data/model/language_model.dart';
@@ -48,6 +50,7 @@ getInjectionContainers() async {
   serviceOwnersInjectionContaier();
   tempUserInjectionContainer();
   notificationInjectionContainer();
+  getRatingInjectionContainer();
 }
 
 void main() async {
@@ -86,6 +89,7 @@ class _MyAppState extends State<MyApp> {
           BlocProvider<TimerCubit>(create: (context) => serverLocator<TimerCubit>()),
           BlocProvider<TempUserCubit>(create: (context) => serverLocator<TempUserCubit>()),
           BlocProvider<NotificationCubit>(create: (context) => serverLocator<NotificationCubit>()),
+          BlocProvider<RateCubit>(create: (context) => serverLocator<RateCubit>()),
         ],
         child: BlocBuilder<ThemeCubit, ThemeState>(
             builder: (context, state) => BlocBuilder<LanguageCubit, LanguageState>(

@@ -5,7 +5,10 @@ import 'package:dalily/core/helper/image_helper.dart';
 import 'package:dalily/core/screens/images_view.dart';
 import 'package:dalily/core/util/styles.dart';
 import 'package:dalily/features/authentication/data/model/service_owner_model.dart';
+import 'package:dalily/features/items/data/model/ItemModel.dart';
 import 'package:dalily/features/language/presentation/cubit/language_cubit.dart';
+import 'package:dalily/features/rating/presentation/widget/rating_bar.dart';
+import 'package:dalily/features/rating/presentation/widget/rating_details.dart';
 import 'package:dalily/features/service_owners/prensentation/cubit/service_owner_state_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,8 +18,9 @@ import 'package:url_launcher/url_launcher.dart';
 
 class ItemDetailsScreen extends StatelessWidget {
   final ServiceOwnerModel serviceOwnerModel;
+  final ItemModel itemModel;
 
-  ItemDetailsScreen({Key? key, required this.serviceOwnerModel}) : super(key: key);
+  ItemDetailsScreen({Key? key, required this.serviceOwnerModel, required this.itemModel}) : super(key: key);
 
   _makePhoneCall({required String phoneNumber}) async {
     await launchUrl(
@@ -32,25 +36,53 @@ class ItemDetailsScreen extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         actions: [
+          InkWell(
+            onTap: (){
+              showDialog(context: context, builder: (_)=> AlertDialog(
+                backgroundColor: Theme.of(context).colorScheme.background,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                content: RatingDetails(rateModel: serviceOwnerModel.rateModel,),
+              ));
+            },
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 10),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                   Padding(
+                    padding:  EdgeInsets.only(bottom: BlocProvider.of<LanguageCubit>(context).isArabic ? 8.0 : 0),
+                    child:  const Icon(Icons.star,size: 20,),
+                  ),
+                  const SizedBox(width: 5,),
+                  Text(serviceOwnerModel.rateModel.averageRating.toString(),
+                    style: bodySmall(context).copyWith(fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.surface,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
           if (AdminController.isAdmin)
             IconButton(
               onPressed: () {
-                showCustomDialog(context: context,
-                dialogType: DialogType.warning,
-                  description: 'Do You want to delete this service owner',
-                  onOK: (){
-                  BlocProvider.of<ServiceOwnerStateCubit>(context)
-                      .deleteServiceOwner(serviceOwnerId: serviceOwnerModel.id ,
-                      parentCatId: serviceOwnerModel.categoryIds.last,
-                  );
-                  },
-                  onCancel: (){}
-                );
+                showCustomDialog(
+                    context: context,
+                    dialogType: DialogType.warning,
+                    description: 'Do You want to delete this service owner',
+                    onOK: () {
+                      BlocProvider.of<ServiceOwnerStateCubit>(context).deleteServiceOwner(
+                        serviceOwnerId: serviceOwnerModel.id,
+                        parentCatId: serviceOwnerModel.categoryIds.last,
+                      );
+                    },
+                    onCancel: () {});
               },
               icon: const Icon(
                 Icons.delete,
               ),
             ),
+
         ],
         title: serviceOwnerModel.serviceName == null
             ? null
@@ -59,6 +91,31 @@ class ItemDetailsScreen extends StatelessWidget {
                 style: titleSmall(context).copyWith(color: Theme.of(context).colorScheme.surface),
               ),
       ),
+      floatingActionButton: Builder(builder: (context) {
+        return FloatingActionButton.extended(
+          label: Text(
+            AppLocalizations.of(context)!.add_rate,
+            style: bodySmall(context).copyWith(
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.surface,
+            ),
+          ),
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                      backgroundColor: Theme.of(context).colorScheme.background,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                      content: AppRatingBar(
+                        itemModel: itemModel,
+                        serviceOwnerModel: serviceOwnerModel,
+                      ),
+                    ));
+          },
+          // child: Icon(Icons.star),
+        );
+      }),
       body: SingleChildScrollView(
         physics: (serviceOwnerModel.workImages == null || serviceOwnerModel.workImages!.isEmpty)
             ? const NeverScrollableScrollPhysics()

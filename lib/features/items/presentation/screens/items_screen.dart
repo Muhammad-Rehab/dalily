@@ -144,6 +144,7 @@ class ItemsScreen extends StatelessWidget {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (_) => ItemDetailsScreen(
+                                      itemModel: state.itemModel,
                                       serviceOwnerModel: items[index],
                                     ),
                                   ),

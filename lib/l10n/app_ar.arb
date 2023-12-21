@@ -75,6 +75,12 @@
   "user_data_added": "تمت اضافه البيانات بنجاح",
   "chat_coming_soon": "خاصيه الدردشه سوف تكون متاحه قريبا",
   "attention_please": "يرجي الانتباه",
-  "contact_us": "تواصل معنا"
+  "contact_us": "تواصل معنا",
+  "rate_service_owner": "قيِم صاحب الخدمة",
+  "send_rating": "إرسال تقييم",
+  "your_rate_is_sent_before": "تم تسجيل تقييمك مسبقا",
+  "add_rate": "إضافة تقييم",
+  "total": "إجمالي",
+  "rating": "تقييم"
 
 }

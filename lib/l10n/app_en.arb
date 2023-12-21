@@ -75,6 +75,12 @@
   "user_data_added": "User data is added successfully",
   "chat_coming_soon": "Chat feature will be available soon",
   "attention_please": "Attention please.",
-  "contact_us": "Contact Us"
+  "contact_us": "Contact Us",
+  "rate_service_owner": "Rate the service owner",
+  "send_rating": "Submit the rating",
+  "your_rate_is_sent_before": "Your rating has already been registered",
+  "add_rate": "Add a rating",
+  "total": "Total",
+  "rating": "ratings"
 
 }
