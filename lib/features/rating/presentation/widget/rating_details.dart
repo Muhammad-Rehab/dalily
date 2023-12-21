@@ -13,6 +13,13 @@ class RatingDetails extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+        Text(
+          AppLocalizations.of(context)!.average_rating,
+          style: bodyMedium(context).copyWith(fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
         SizedBox(
           width: 150,
           height: 30,
@@ -46,13 +53,16 @@ class RatingDetails extends StatelessWidget {
           height: 20,
         ),
         RichText(
-          text: TextSpan(style: titleSmall(context), children: [
-            TextSpan(text: AppLocalizations.of(context)!.total),
-            TextSpan(
-                text: "   ${rateModel.totalRateNumber.toString()}   ",
-                style: titleSmall(context).copyWith(color: Theme.of(context).colorScheme.primary)),
-            TextSpan(text: AppLocalizations.of(context)!.rating),
-          ]),
+          text: TextSpan(
+            style: bodySmall(context).copyWith(fontWeight: FontWeight.bold),
+            children: [
+              TextSpan(text: AppLocalizations.of(context)!.total),
+              TextSpan(
+                  text: "   ${rateModel.totalRateNumber.toString()}   ",
+                  style: titleSmall(context).copyWith(color: Theme.of(context).colorScheme.primary)),
+              TextSpan(text: AppLocalizations.of(context)!.rating),
+            ],
+          ),
         ),
       ],
     );

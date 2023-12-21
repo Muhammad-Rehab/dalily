@@ -81,6 +81,7 @@
   "your_rate_is_sent_before": "Your rating has already been registered",
   "add_rate": "Add a rating",
   "total": "Total",
-  "rating": "ratings"
+  "rating": "ratings",
+  "average_rating": "Average ratings"
 
 }

@@ -81,6 +81,7 @@
   "your_rate_is_sent_before": "تم تسجيل تقييمك مسبقا",
   "add_rate": "إضافة تقييم",
   "total": "إجمالي",
-  "rating": "تقييم"
+  "rating": "تقييم",
+  "average_rating": "متوسط التقييمات"
 
 }

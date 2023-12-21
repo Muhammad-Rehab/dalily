@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dalily/config/routes.dart';
 import 'package:dalily/core/helper/admin_helper.dart';
 import 'package:dalily/core/helper/image_helper.dart';
+import 'package:dalily/core/helper/list_sorting.dart';
 import 'package:dalily/core/helper/notification_helper.dart';
 import 'package:dalily/core/screens/drawer.dart';
 import 'package:dalily/core/util/styles.dart';
@@ -48,6 +49,7 @@ class CategoryScreen extends StatelessWidget {
       appCategories = BlocProvider.of<CategoryCubit>(context).appCategories;
       showBackIcon = false;
     }
+    appCategories = ListSortingHelper.sortCategories(appCategories, isArabic);
     catLocalImages = BlocProvider.of<CategoryCubit>(context).catLocalImages;
     return Scaffold(
       appBar: AppBar(

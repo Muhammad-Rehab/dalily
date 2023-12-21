@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dalily/core/helper/dialog.dart';
 import 'package:dalily/core/helper/image_helper.dart';
+import 'package:dalily/core/helper/list_sorting.dart';
 import 'package:dalily/core/screens/images_view.dart';
 import 'package:dalily/core/screens/shimmer.dart';
 import 'package:dalily/core/util/styles.dart';
@@ -11,6 +12,7 @@ import 'package:dalily/features/items/presentation/cubit/item_cubit.dart';
 import 'package:dalily/features/items/presentation/cubit/item_states.dart';
 import 'package:dalily/features/items/presentation/screens/item_detail_screen.dart';
 import 'package:dalily/features/language/presentation/cubit/language_cubit.dart';
+import 'package:dalily/features/rating/presentation/widget/rating_bar.dart';
 import 'package:dalily/features/theme/presentation/cubit/theme_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -68,6 +70,7 @@ class ItemsScreen extends StatelessWidget {
             return const AppShimmer();
           } else if (state is ItemLoadedState) {
             List<ServiceOwnerModel> items = state.itemModel.itemServiceOwners;
+            items = ListSortingHelper.sortServiceOwners(items);
             return Scaffold(
               appBar: AppBar(
                 elevation: 0,
@@ -189,16 +192,26 @@ class ItemsScreen extends StatelessWidget {
                                   children: [
                                     InkWell(
                                       onTap: () {
-                                        showCustomDialog(
+                                        showDialog(
+                                            context: context,
+                                            builder: (_) => AlertDialog(
+                                              backgroundColor: Theme.of(context).colorScheme.background,
+                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                              content: AppRatingBar(
+                                                itemModel: state.itemModel,
+                                                serviceOwnerModel: items[index],
+                                              ),
+                                            ));
+                                       /* showCustomDialog(
                                           context: context,
                                           title: AppLocalizations.of(context)!.attention_please,
                                           description: AppLocalizations.of(context)!.chat_coming_soon,
                                           onOK: () {},
                                           okText: AppLocalizations.of(context)!.ok,
-                                        );
+                                        );*/
                                       },
                                       child: Icon(
-                                        Icons.chat,
+                                        Icons.stars,
                                         color: Theme.of(context).colorScheme.secondary,
                                       ),
                                     ),

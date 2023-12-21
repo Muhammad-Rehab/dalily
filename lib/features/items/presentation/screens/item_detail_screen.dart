@@ -95,7 +95,7 @@ class ItemDetailsScreen extends StatelessWidget {
         return FloatingActionButton.extended(
           label: Text(
             AppLocalizations.of(context)!.add_rate,
-            style: bodySmall(context).copyWith(
+            style: bodyVerSmall(context).copyWith(
               fontWeight: FontWeight.bold,
               color: Theme.of(context).colorScheme.surface,
             ),
