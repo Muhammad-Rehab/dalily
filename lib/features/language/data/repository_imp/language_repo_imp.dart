@@ -15,7 +15,7 @@ class LanguageRepoImp extends LanguageRepository {
     try{
       return Right(await languageLocalDataResource.loadLanguage());
     }catch (e) {
-      return Left(CashFailure());
+      return const Left(CashFailure());
     }
   }
 
@@ -24,7 +24,7 @@ class LanguageRepoImp extends LanguageRepository {
     try {
       return Right( await languageLocalDataResource.toggleLanguage());
     }catch(e){
-      return Left(CashFailure());
+      return const Left(CashFailure());
     }
   }
 
